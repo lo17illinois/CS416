@@ -1,0 +1,23 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+#chart {
+    margin-top: 50px;
+}
+
+.narrative {
+    margin-top: 20px;
+}
+
+.narrative p {
+    font-size: 18px;
+}
