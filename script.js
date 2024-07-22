@@ -1,63 +1,98 @@
+document.addEventListener("DOMContentLoaded", function() {
+    // Function to handle tab switching
+    function openPage(pageName, elmnt, color) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablink");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].style.backgroundColor = "";
+        }
+        document.getElementById(pageName).style.display = "block";
+        elmnt.style.backgroundColor = color;
+    }
+    
+    // Default open tab
+    document.getElementById("defaultOpen").click();
 
-// Function to create the chart using D3.js
-function createChart(data) {
-    const margin = { top: 20, right: 30, bottom: 30, left: 40 };
-    const width = 800 - margin.left - margin.right;
-    const height = 400 - margin.top - margin.bottom;
+    // Load data and create charts
+    Promise.all([
+        d3.csv("GDP_cleaned.csv"),
+        d3.csv("Inbound_cleaned.csv")
+    ]).then(function([gdpData, inboundData]) {
+        createPage1Chart(gdpData, inboundData);
+    });
 
-    const svg = d3.select("#chart")
-        .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", `translate(${margin.left},${margin.top})`);
+    function createPage1Chart(gdpData, inboundData) {
+        const svg = d3.select("#chart1")
+            .append("svg")
+            .attr("width", "100%")
+            .attr("height", "500px");
 
-    const xScale = d3.scaleTime()
-        .domain(d3.extent(data, d => d.date))
-        .range([0, width]);
+        const margin = { top: 20, right: 60, bottom: 30, left: 60 },
+              width = svg.node().getBoundingClientRect().width - margin.left - margin.right,
+              height = svg.node().getBoundingClientRect().height - margin.top - margin.bottom;
 
-    const yScale = d3.scaleLinear()
-        .domain([0, d3.max(data, d => d.value)])
-        .range([height, 0]);
+        const x = d3.scaleTime().range([0, width]);
+        const y0 = d3.scaleLinear().range([height, 0]);
+        const y1 = d3.scaleLinear().range([height, 0]);
 
-    svg.append("g")
-        .attr("transform", `translate(0,${height})`)
-        .call(d3.axisBottom(xScale));
+        const line1 = d3.line()
+            .x(d => x(new Date(d.Date)))
+            .y(d => y0(d.PrivateConsumption));
 
-    svg.append("g")
-        .call(d3.axisLeft(yScale));
+        const line2 = d3.line()
+            .x(d => x(new Date(d.Date)))
+            .y(d => y1(d.GrandTotal));
 
-    const line = d3.line()
-        .x(d => xScale(d.date))
-        .y(d => yScale(d.value));
+        const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
 
-    svg.append("path")
-        .datum(data)
-        .attr("fill", "none")
-        .attr("stroke", "steelblue")
-        .attr("stroke-width", 1.5)
-        .attr("d", line);
+        x.domain(d3.extent(gdpData, d => new Date(d.Date)));
+        y0.domain([0, d3.max(gdpData, d => +d.PrivateConsumption)]);
+        y1.domain([0, d3.max(inboundData, d => +d.GrandTotal)]);
 
-    svg.selectAll("circle")
-        .data(data)
-        .enter().append("circle")
-        .attr("cx", d => xScale(d.date))
-        .attr("cy", d => yScale(d.value))
-        .attr("r", 5)
-        .on("mouseover", (event, d) => {
-            d3.select("#narrative-text").text(`On ${d3.timeFormat("%B %d, %Y")(d.date)}, the value was ${d.value}.`);
-        })
-        .on("mouseout", () => {
-            d3.select("#narrative-text").text("Hover over the points to see more details.");
-        });
-}
+        g.append("g")
+            .attr("class", "axis axis--x")
+            .attr("transform", `translate(0,${height})`)
+            .call(d3.axisBottom(x));
 
-// Load and process the CSV file
-d3.csv("data.csv", d => {
-    return {
-        date: d3.timeParse("%Y-%m-%d")(d.date), // Assuming the date is in 'YYYY-MM-DD' format
-        value: +d.value // Assuming the value is numeric
-    };
-}).then(data => {
-    createChart(data);
+        g.append("g")
+            .attr("class", "axis axis--y0")
+            .call(d3.axisLeft(y0))
+            .append("text")
+            .attr("fill", "#000")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 6)
+            .attr("dy", "0.71em")
+            .attr("text-anchor", "end")
+            .text("Private Consumption");
+
+        g.append("g")
+            .attr("class", "axis axis--y1")
+            .attr("transform", `translate(${width},0)`)
+            .call(d3.axisRight(y1))
+            .append("text")
+            .attr("fill", "#000")
+            .attr("transform", "rotate(-90)")
+            .attr("y", -20)
+            .attr("dy", "0.71em")
+            .attr("text-anchor", "end")
+            .text("Grand Total");
+
+        g.append("path")
+            .datum(gdpData)
+            .attr("class", "line")
+            .attr("d", line1)
+            .attr("stroke", "blue")
+            .attr("fill", "none");
+
+        g.append("path")
+            .datum(inboundData)
+            .attr("class", "line")
+            .attr("d", line2)
+            .attr("stroke", "red")
+            .attr("fill", "none");
+    }
 });
