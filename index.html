@@ -110,7 +110,7 @@ async function init() {
             .attr('class', 'line-secondary')
             .attr('d', lineInbound);
 
-        document.getElementById('status').textContent = 'Data loaded successfully!';
+        document.getElementById('status').textContent = 'Data loaded successfully';
 
         // Display the first 10 rows of data for both datasets
         const table = d3.select('#data-table').append('table');
