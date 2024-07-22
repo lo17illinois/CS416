@@ -12,11 +12,24 @@
             stroke: steelblue;
             stroke-width: 2px;
         }
+        table {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
     </style>
 </head>
 <body onload='init()'>
 <svg width="800" height="500"></svg>
 <p id="status"></p>
+<div id="data-table"></div>
 <script>
 async function init() {
     try {
@@ -65,6 +78,30 @@ async function init() {
             .attr('d', line);
 
         document.getElementById('status').textContent = 'Data loaded successfully';
+
+        // Display the first 10 rows of data
+        const table = d3.select('#data-table').append('table');
+        const thead = table.append('thead');
+        const tbody = table.append('tbody');
+
+        thead.append('tr')
+            .selectAll('th')
+            .data(['Date', 'Private Consumption'])
+            .enter()
+            .append('th')
+            .text(d => d);
+
+        const rows = tbody.selectAll('tr')
+            .data(data.slice(0, 10))
+            .enter()
+            .append('tr');
+
+        rows.selectAll('td')
+            .data(d => [d.Date, d.PrivateConsumption])
+            .enter()
+            .append('td')
+            .text(d => d instanceof Date ? d3.timeFormat("%Y-%m-%d")(d) : d);
+
     } catch (error) {
         document.getElementById('status').textContent = 'Error loading data';
     }
