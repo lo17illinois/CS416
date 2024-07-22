@@ -42,9 +42,9 @@ async function init() {
         const data = await d3.csv('JapanTourism.csv', d => {
             return {
                 Date: d3.timeParse("%m/%d/%Y")(d.Date),
-                Inbound: +d.Inbound
-                Outbound: +d.Outbound
-                GDP: +d.GDP
+                Inbound: +d.Inbound,
+                Outbound: +d.Outbound,
+                GDP: +d.GDP,
                 USDJPY: +d.USDJPY
             };
         });
