@@ -12,6 +12,11 @@
             stroke: steelblue;
             stroke-width: 2px;
         }
+        .line-secondary {
+            fill: none;
+            stroke: orange;
+            stroke-width: 2px;
+        }
         table {
             margin-top: 20px;
             border-collapse: collapse;
@@ -33,35 +38,48 @@
 <script>
 async function init() {
     try {
-        const data = await d3.csv('GDP_cleaned.csv', d => {
+        const gdpData = await d3.csv('GDP_cleaned.csv', d => {
             return {
                 Date: d3.timeParse("%m/%d/%Y")(d.Date),
                 PrivateConsumption: +d.PrivateConsumption
             };
         });
 
+        const inboundData = await d3.csv('Inbound_cleaned.csv', d => {
+            return {
+                Date: d3.timeParse("%m/%d/%Y")(d.Date),
+                GrandTotal: +d['Grand Total']
+            };
+        });
+
         const svg = d3.select('svg'),
-            margin = {top: 20, right: 20, bottom: 30, left: 50},
+            margin = {top: 20, right: 60, bottom: 30, left: 50},
             width = +svg.attr('width') - margin.left - margin.right,
             height = +svg.attr('height') - margin.top - margin.bottom,
             g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
 
         const x = d3.scaleTime().rangeRound([0, width]),
-            y = d3.scaleLinear().rangeRound([height, 0]);
+            yLeft = d3.scaleLinear().rangeRound([height, 0]),
+            yRight = d3.scaleLinear().rangeRound([height, 0]);
 
-        const line = d3.line()
+        const lineGDP = d3.line()
             .x(d => x(d.Date))
-            .y(d => y(d.PrivateConsumption));
+            .y(d => yLeft(d.PrivateConsumption));
 
-        x.domain(d3.extent(data, d => d.Date));
-        y.domain(d3.extent(data, d => d.PrivateConsumption));
+        const lineInbound = d3.line()
+            .x(d => x(d.Date))
+            .y(d => yRight(d.GrandTotal));
+
+        x.domain(d3.extent(gdpData, d => d.Date));
+        yLeft.domain(d3.extent(gdpData, d => d.PrivateConsumption));
+        yRight.domain(d3.extent(inboundData, d => d.GrandTotal));
 
         g.append('g')
             .attr('transform', `translate(0,${height})`)
             .call(d3.axisBottom(x));
 
         g.append('g')
-            .call(d3.axisLeft(y))
+            .call(d3.axisLeft(yLeft))
             .append('text')
             .attr('fill', '#000')
             .attr('transform', 'rotate(-90)')
@@ -70,37 +88,57 @@ async function init() {
             .attr('text-anchor', 'end')
             .text('Private Consumption');
 
+        g.append('g')
+            .attr('transform', `translate(${width},0)`)
+            .call(d3.axisRight(yRight))
+            .append('text')
+            .attr('fill', '#000')
+            .attr('transform', 'rotate(-90)')
+            .attr('y', -12)
+            .attr('dy', '0.71em')
+            .attr('text-anchor', 'end')
+            .text('Grand Total');
+
         g.append('path')
-            .datum(data)
+            .datum(gdpData)
             .attr('class', 'line')
-            .attr('d', line);
+            .attr('d', lineGDP);
+
+        g.append('path')
+            .datum(inboundData)
+            .attr('class', 'line-secondary')
+            .attr('d', lineInbound);
 
         document.getElementById('status').textContent = 'Data loaded successfully!';
 
-        // Display the first 10 rows of data
+        // Display the first 10 rows of data for both datasets
         const table = d3.select('#data-table').append('table');
         const thead = table.append('thead');
         const tbody = table.append('tbody');
 
         thead.append('tr')
             .selectAll('th')
-            .data(['Date', 'Private Consumption'])
+            .data(['Date', 'Private Consumption', 'Grand Total'])
             .enter()
             .append('th')
             .text(d => d);
 
         const rows = tbody.selectAll('tr')
-            .data(data.slice(0, 10))
+            .data(gdpData.slice(0, 10))
             .enter()
             .append('tr');
 
         rows.selectAll('td')
-            .data(d => [d.Date, d.PrivateConsumption])
+            .data((d, i) => {
+                const inbound = inboundData[i] || {};
+                return [d.Date, d.PrivateConsumption, inbound.GrandTotal];
+            })
             .enter()
             .append('td')
             .text(d => d instanceof Date ? d3.timeFormat("%Y-%m-%d")(d) : d);
 
     } catch (error) {
+        console.error(error);
         document.getElementById('status').textContent = 'Error loading data';
     }
 }
