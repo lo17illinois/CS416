@@ -7,7 +7,18 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
-<body>
+
+    
+<body onload='init()>
+<svg width=300 height=300>
+</svg>
+<script>
+async function init() {
+    const data1 = await d3.csv('ExchangeRate_cleaned.csv');
+    const data2 = await d3.csv('GDP_cleaned.csv');
+    const data3 = await d3.csv('Inbound_cleaned.csv');  
+}
+</script>
     <div class="tabs">
         <button class="tablink" onclick="openPage('Page1', this, 'red')" id="defaultOpen">Page 1</button>
         <button class="tablink" onclick="openPage('Page2', this, 'green')">Page 2</button>
@@ -30,45 +41,4 @@
     </div>
 
     <script>
-    async function init() {
-        try {
-            const data1 = await d3.csv('ExchangeRate_cleaned.csv');
-            const data2 = await d3.csv('GDP_cleaned.csv');
-            const data3 = await d3.csv('Inbound_cleaned.csv');
-            
-            // Call functions to create charts with the loaded data
-            createPage1Chart(data2, data3);
-            // You can create other page charts similarly
-        } catch (error) {
-            console.error('Error loading the CSV files:', error);
-        }
-    }
     
-    function openPage(pageName, elmnt, color) {
-        var i, tabcontent, tablinks;
-        tabcontent = document.getElementsByClassName("tabcontent");
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = "none";
-        }
-        tablinks = document.getElementsByClassName("tablink");
-        for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].style.backgroundColor = "";
-        }
-        document.getElementById(pageName).style.display = "block";
-        elmnt.style.backgroundColor = color;
-    }
-
-    // Default open tab
-    document.addEventListener("DOMContentLoaded", function() {
-        document.getElementById("defaultOpen").click();
-        init();
-    });
-
-    function createPage1Chart(gdpData, inboundData) {
-        const svg = d3.select("#chart1")
-            .append("svg")
-            .attr("width", "100%")
-            .attr("height", "500px");
-
-        const margin = { top: 20, right: 60, bottom: 30, left: 60 },
-              width = svg.node().getBoundingClient
