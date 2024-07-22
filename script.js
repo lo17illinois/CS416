@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function() {
-    // Function to handle tab switching
     function openPage(pageName, elmnt, color) {
         var i, tabcontent, tablinks;
         tabcontent = document.getElementsByClassName("tabcontent");
@@ -14,15 +13,15 @@ document.addEventListener("DOMContentLoaded", function() {
         elmnt.style.backgroundColor = color;
     }
     
-    // Default open tab
     document.getElementById("defaultOpen").click();
 
-    // Load data and create charts
     Promise.all([
         d3.csv("GDP_cleaned.csv"),
         d3.csv("Inbound_cleaned.csv")
     ]).then(function([gdpData, inboundData]) {
         createPage1Chart(gdpData, inboundData);
+    }).catch(function(error) {
+        console.error('Error loading the CSV files:', error);
     });
 
     function createPage1Chart(gdpData, inboundData) {
@@ -63,36 +62,4 @@ document.addEventListener("DOMContentLoaded", function() {
             .call(d3.axisLeft(y0))
             .append("text")
             .attr("fill", "#000")
-            .attr("transform", "rotate(-90)")
-            .attr("y", 6)
-            .attr("dy", "0.71em")
-            .attr("text-anchor", "end")
-            .text("Private Consumption");
-
-        g.append("g")
-            .attr("class", "axis axis--y1")
-            .attr("transform", `translate(${width},0)`)
-            .call(d3.axisRight(y1))
-            .append("text")
-            .attr("fill", "#000")
-            .attr("transform", "rotate(-90)")
-            .attr("y", -20)
-            .attr("dy", "0.71em")
-            .attr("text-anchor", "end")
-            .text("Grand Total");
-
-        g.append("path")
-            .datum(gdpData)
-            .attr("class", "line")
-            .attr("d", line1)
-            .attr("stroke", "blue")
-            .attr("fill", "none");
-
-        g.append("path")
-            .datum(inboundData)
-            .attr("class", "line")
-            .attr("d", line2)
-            .attr("stroke", "red")
-            .attr("fill", "none");
-    }
-});
+            .attr("
