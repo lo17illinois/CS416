@@ -45,10 +45,10 @@ async function init() {
             };
         });
 
-        const inboundData = await d3.csv('Inbound_cleaned.csv', d => {
+        const inboundData = await d3.csv('Inbound_cleaned2.csv', d => {
             return {
                 Date: d3.timeParse("%m/%d/%Y")(d.Date),
-                GrandTotal: +d['Grand Total'].replace(/,/g, '') // Remove commas
+                GrandTotal: +d['Grand Total']
             };
         });
 
