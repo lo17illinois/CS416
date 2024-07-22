@@ -40,14 +40,14 @@ async function init() {
     try {
         const gdpData = await d3.csv('GDP_cleaned.csv', d => {
             return {
-                Date: d3.timeParse("%m/%d/%Y")(d.Date),
+                Date_GDP: d3.timeParse("%m/%d/%Y")(d.Date),
                 PrivateConsumption: +d.PrivateConsumption
             };
         });
 
         const inboundData = await d3.csv('Inbound_cleaned2.csv', d => {
             return {
-                Date: d3.timeParse("%m/%d/%Y")(d.Date),
+                Date_Inbound: d3.timeParse("%m/%d/%Y")(d.Date),
                 GrandTotal: +d['Grand Total']
             };
         });
@@ -63,14 +63,14 @@ async function init() {
             yRight = d3.scaleLinear().rangeRound([height, 0]);
 
         const lineGDP = d3.line()
-            .x(d => x(d.Date))
+            .x(d => x(d.Date_GDP))
             .y(d => yLeft(d.PrivateConsumption));
 
         const lineInbound = d3.line()
-            .x(d => x(d.Date))
+            .x(d => x(d.Date_Inbound))
             .y(d => yRight(d.GrandTotal));
 
-        const allDates = gdpData.map(d => d.Date).concat(inboundData.map(d => d.Date));
+        const allDates = gdpData.map(d => d.Date_GDP).concat(inboundData.map(d => d.Date_Inbound));
         x.domain(d3.extent(allDates));
         yLeft.domain(d3.extent(gdpData, d => d.PrivateConsumption));
         yRight.domain(d3.extent(inboundData, d => d.GrandTotal));
@@ -119,23 +119,30 @@ async function init() {
 
         thead.append('tr')
             .selectAll('th')
-            .data(['Date', 'Private Consumption', 'Grand Total'])
+            .data(['Date_GDP', 'Private Consumption', 'Date_Inbound', 'Grand Total'])
             .enter()
             .append('th')
             .text(d => d);
 
         // Merge data for table display
-        const mergedData = d3.merge([gdpData, inboundData]).sort((a, b) => a.Date - b.Date);
+        const mergedData = d3.merge([gdpData.map(d => ({ ...d, type: 'GDP' })), inboundData.map(d => ({ ...d, type: 'Inbound' }))])
+            .sort((a, b) => a.Date_GDP - b.Date_GDP || a.Date_Inbound - b.Date_Inbound);
+        
         const rows = tbody.selectAll('tr')
             .data(mergedData.slice(0, 10))
             .enter()
             .append('tr');
 
         rows.selectAll('td')
-            .data(d => [d.Date, d.PrivateConsumption, d.GrandTotal])
+            .data(d => [
+                d.Date_GDP ? d3.timeFormat("%Y-%m-%d")(d.Date_GDP) : 'N/A',
+                d.PrivateConsumption !== undefined ? d.PrivateConsumption : 'N/A',
+                d.Date_Inbound ? d3.timeFormat("%Y-%m-%d")(d.Date_Inbound) : 'N/A',
+                d.GrandTotal !== undefined ? d.GrandTotal : 'N/A'
+            ])
             .enter()
             .append('td')
-            .text(d => d instanceof Date ? d3.timeFormat("%Y-%m-%d")(d) : (d !== undefined ? d : 'N/A'));
+            .text(d => d);
 
     } catch (error) {
         console.error(error);
