@@ -48,7 +48,7 @@ async function init() {
         const inboundData = await d3.csv('Inbound_cleaned.csv', d => {
             return {
                 Date: d3.timeParse("%m/%d/%Y")(d.Date),
-                GrandTotal: +d['Grand Total']
+                GrandTotal: +d['Grand Total'].replace(/,/g, '') // Remove commas
             };
         });
 
@@ -70,7 +70,8 @@ async function init() {
             .x(d => x(d.Date))
             .y(d => yRight(d.GrandTotal));
 
-        x.domain(d3.extent(gdpData, d => d.Date));
+        const allDates = gdpData.map(d => d.Date).concat(inboundData.map(d => d.Date));
+        x.domain(d3.extent(allDates));
         yLeft.domain(d3.extent(gdpData, d => d.PrivateConsumption));
         yRight.domain(d3.extent(inboundData, d => d.GrandTotal));
 
@@ -123,19 +124,18 @@ async function init() {
             .append('th')
             .text(d => d);
 
+        // Merge data for table display
+        const mergedData = d3.merge([gdpData, inboundData]).sort((a, b) => a.Date - b.Date);
         const rows = tbody.selectAll('tr')
-            .data(gdpData.slice(0, 10))
+            .data(mergedData.slice(0, 10))
             .enter()
             .append('tr');
 
         rows.selectAll('td')
-            .data((d, i) => {
-                const inbound = inboundData[i] || {};
-                return [d.Date, d.PrivateConsumption, inbound.GrandTotal];
-            })
+            .data(d => [d.Date, d.PrivateConsumption, d.GrandTotal])
             .enter()
             .append('td')
-            .text(d => d instanceof Date ? d3.timeFormat("%Y-%m-%d")(d) : d);
+            .text(d => d instanceof Date ? d3.timeFormat("%Y-%m-%d")(d) : (d !== undefined ? d : 'N/A'));
 
     } catch (error) {
         console.error(error);
