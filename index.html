@@ -1,24 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Narrative Visualization</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src='https://d3js.org/d3.v5.min.js'></script>
+    <style>
+        circle {
+            fill: lightblue;
+            stroke: black;
+        }
+        .line {
+            fill: none;
+            stroke: steelblue;
+            stroke-width: 2px;
+        }
+    </style>
 </head>
-
-<body onload='init()>
-<svg width=300 height=300>
-</svg>
+<body onload='init()'>
+<svg width="800" height="500"></svg>
 <script>
 async function init() {
-    const data1 = await d3.csv('ExchangeRate_cleaned.csv');
-    const data2 = await d3.csv('GDP_cleaned.csv');
-    const data3 = await d3.csv('Inbound_cleaned.csv');  \
-    d3.seelect('body').selectAll
+    const data = await d3.csv('GDP_cleaned.csv', d => {
+        return {
+            Date: d3.timeParse("%Y-%m-%d")(d.Date),
+            PrivateConsumption: +d.PrivateConsumption
+        };
+    });
+
+    const svg = d3.select('svg'),
+        margin = {top: 20, right: 20, bottom: 30, left: 50},
+        width = +svg.attr('width') - margin.left - margin.right,
+        height = +svg.attr('height') - margin.top - margin.bottom,
+        g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+    const x = d3.scaleTime().rangeRound([0, width]),
+        y = d3.scaleLinear().rangeRound([height, 0]);
+
+    const line = d3.line()
+        .x(d => x(d.Date))
+        .y(d => y(d.PrivateConsumption));
+
+    x.domain(d3.extent(data, d => d.Date));
+    y.domain(d3.extent(data, d => d.PrivateConsumption));
+
+    g.append('g')
+        .attr('transform', `translate(0,${height})`)
+        .call(d3.axisBottom(x))
+        .select('.domain')
+        .remove();
+
+    g.append('g')
+        .call(d3.axisLeft(y))
+        .append('text')
+        .attr('fill', '#000')
+        .attr('transform', 'rotate(-90)')
+        .attr('y', 6)
+        .attr('dy', '0.71em')
+        .attr('text-anchor', 'end')
+        .text('Private Consumption');
+
+    g.append('path')
+        .datum(data)
+        .attr('class', 'line')
+        .attr('d', line);
 }
+
 </script>
 </body>
 </html>
-    
