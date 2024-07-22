@@ -100,7 +100,7 @@ async function init() {
             .data(d => [d.Date, d.PrivateConsumption])
             .enter()
             .append('td')
-            .text(d => d instanceof Date ? d3.timeFormat("%Y-%m-%d")(d) : d);
+            .text(d => d instanceof Date ? d3.timeFormat("%m/%d/%Y")(d) : d);
 
     } catch (error) {
         document.getElementById('status').textContent = 'Error loading data';
