@@ -5,17 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Narrative Visualization</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>Narrative Visualization Example</h1>
-        <p>This is a simple narrative visualization showing a trend over time.</p>
-        <div id="chart"></div>
-        <div class="narrative">
-            <p id="narrative-text">Hover over the points to see more details.</p>
-        </div>
+    <div class="tabs">
+        <button class="tablink" onclick="openPage('Page1', this, 'red')" id="defaultOpen">Page 1</button>
+        <button class="tablink" onclick="openPage('Page2', this, 'green')">Page 2</button>
+        <button class="tablink" onclick="openPage('Page3', this, 'blue')">Page 3</button>
     </div>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <div id="Page1" class="tabcontent">
+        <h3>Page 1</h3>
+        <div id="chart1"></div>
+    </div>
+
+    <div id="Page2" class="tabcontent">
+        <h3>Page 2</h3>
+        <div id="chart2"></div>
+    </div>
+
+    <div id="Page3" class="tabcontent">
+        <h3>Page 3</h3>
+        <div id="chart3"></div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
