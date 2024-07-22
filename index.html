@@ -40,16 +40,6 @@ async function init() {
             };
         });
 
-        // Debugging: Log the first few rows of data to check date parsing
-        console.log("Data loaded:", data.slice(0, 5));
-
-        // Check if the dates are parsed correctly
-        data.forEach(d => {
-            if (isNaN(d.Date)) {
-                console.error("Date parsing error:", d);
-            }
-        });
-
         const svg = d3.select('svg'),
             margin = {top: 20, right: 20, bottom: 30, left: 50},
             width = +svg.attr('width') - margin.left - margin.right,
