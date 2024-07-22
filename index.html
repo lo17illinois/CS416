@@ -49,33 +49,21 @@ async function init() {
             };
         });
 
-        const inboundData = await d3.csv('Inbound_cleaned2.csv', d => {
-            return {
-                Date_Inbound: d3.timeParse("%m/%d/%Y")(d.Date),
-                GrandTotal: +d.GrandTotal
-            };
-        });
-
         const svg = d3.select('svg'),
             margin = {top: 20, right: 60, bottom: 30, left: 50},
             width = +svg.attr('width') - margin.left - margin.right,
             height = +svg.attr('height') - margin.top - margin.bottom,
             g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
-
         const x = d3.scaleTime().rangeRound([0, width]),
             yLeft = d3.scaleLinear().rangeRound([height, 0]),
             yRight = d3.scaleLinear().rangeRound([height, 0]);
-
-        const lineGDP = d3.line()
-            .x(d => x(d.Date_GDP))
-            .y(d => yLeft(d.PrivateConsumption));
-
         const lineInbound = d3.line()
-            .x(d => x(d.Date_Inbound))
-            .y(d => yRight(d.GrandTotal));
+            .x(d => x(d.Date))
+            .y(d => yLeft(d.Inbound));
+        const lineGDP = d3.line()
+            .x(d => x(d.Date))
+            .y(d => yRight(d.InBound));
 
-        const allDates = gdpData.map(d => d.Date_GDP).concat(inboundData.map(d => d.Date_Inbound));
-        x.domain(d3.extent(allDates));
         yLeft.domain(d3.extent(gdpData, d => d.PrivateConsumption));
         yRight.domain(d3.extent(inboundData, d => d.GrandTotal));
 
@@ -115,58 +103,6 @@ async function init() {
             .attr('d', lineInbound);
 
         document.getElementById('status').textContent = 'Data loaded successfully';
-
-        // Display the first 10 rows of GDP data
-        const tableGDP = d3.select('#data-table-gdp').append('table');
-        const theadGDP = tableGDP.append('thead');
-        const tbodyGDP = tableGDP.append('tbody');
-
-        theadGDP.append('tr')
-            .selectAll('th')
-            .data(['Date_GDP', 'Private Consumption'])
-            .enter()
-            .append('th')
-            .text(d => d);
-
-        const rowsGDP = tbodyGDP.selectAll('tr')
-            .data(gdpData.slice(0, 10))
-            .enter()
-            .append('tr');
-
-        rowsGDP.selectAll('td')
-            .data(d => [
-                d.Date_GDP ? d3.timeFormat("%Y-%m-%d")(d.Date_GDP) : 'N/A',
-                d.PrivateConsumption !== undefined ? d.PrivateConsumption : 'N/A'
-            ])
-            .enter()
-            .append('td')
-            .text(d => d);
-
-        // Display the first 10 rows of Inbound data
-        const tableInbound = d3.select('#data-table-inbound').append('table');
-        const theadInbound = tableInbound.append('thead');
-        const tbodyInbound = tableInbound.append('tbody');
-
-        theadInbound.append('tr')
-            .selectAll('th')
-            .data(['Date_Inbound', 'GrandTotal'])
-            .enter()
-            .append('th')
-            .text(d => d);
-
-        const rowsInbound = tbodyInbound.selectAll('tr')
-            .data(inboundData.slice(0, 10))
-            .enter()
-            .append('tr');
-
-        rowsInbound.selectAll('td')
-            .data(d => [
-                d.Date_Inbound ? d3.timeFormat("%Y-%m-%d")(d.Date_Inbound) : 'N/A',
-                d.GrandTotal !== undefined ? d.GrandTotal : 'N/A'
-            ])
-            .enter()
-            .append('td')
-            .text(d => d);
 
     } catch (error) {
         console.error(error);
