@@ -22,7 +22,7 @@ async function init() {
     try {
         const data = await d3.csv('GDP_cleaned.csv', d => {
             return {
-                Date: d3.timeParse("%Y-%m-%d")(d.Date),
+                Date: d3.timeParse("%m/%d/%Y")(d.Date),
                 PrivateConsumption: +d.PrivateConsumption
             };
         });
