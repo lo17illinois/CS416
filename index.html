@@ -7,6 +7,14 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
+<body onload='init()'>
+<script>
+async function init() {
+    const data1 = await d3.csv('ExchangeRate_cleaned.csv');
+    const data2 = await d3.csv('GDP_cleaned.csv');
+    const data3 = await d3.csv('Inbound_cleaned.csv');                      
+}
+</script>
 <body>
     <div class="tabs">
         <button class="tablink" onclick="openPage('Page1', this, 'red')" id="defaultOpen">Page 1</button>
