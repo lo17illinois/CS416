@@ -34,7 +34,8 @@
 <body onload='init()'>
 <svg width="800" height="500"></svg>
 <p id="status"></p>
-<div id="data-table"></div>
+<div id="data-table-gdp"></div>
+<div id="data-table-inbound"></div>
 <script>
 async function init() {
     try {
@@ -112,31 +113,51 @@ async function init() {
 
         document.getElementById('status').textContent = 'Data loaded successfully';
 
-        // Display the first 10 rows of data for both datasets
-        const table = d3.select('#data-table').append('table');
-        const thead = table.append('thead');
-        const tbody = table.append('tbody');
+        // Display the first 10 rows of GDP data
+        const tableGDP = d3.select('#data-table-gdp').append('table');
+        const theadGDP = tableGDP.append('thead');
+        const tbodyGDP = tableGDP.append('tbody');
 
-        thead.append('tr')
+        theadGDP.append('tr')
             .selectAll('th')
-            .data(['Date_GDP', 'Private Consumption', 'Date_Inbound', 'Grand Total'])
+            .data(['Date_GDP', 'Private Consumption'])
             .enter()
             .append('th')
             .text(d => d);
 
-        // Merge data for table display
-        const mergedData = d3.merge([gdpData.map(d => ({ ...d, type: 'GDP' })), inboundData.map(d => ({ ...d, type: 'Inbound' }))])
-            .sort((a, b) => a.Date_GDP - b.Date_GDP || a.Date_Inbound - b.Date_Inbound);
-        
-        const rows = tbody.selectAll('tr')
-            .data(mergedData.slice(0, 10))
+        const rowsGDP = tbodyGDP.selectAll('tr')
+            .data(gdpData.slice(0, 10))
             .enter()
             .append('tr');
 
-        rows.selectAll('td')
+        rowsGDP.selectAll('td')
             .data(d => [
                 d.Date_GDP ? d3.timeFormat("%Y-%m-%d")(d.Date_GDP) : 'N/A',
-                d.PrivateConsumption !== undefined ? d.PrivateConsumption : 'N/A',
+                d.PrivateConsumption !== undefined ? d.PrivateConsumption : 'N/A'
+            ])
+            .enter()
+            .append('td')
+            .text(d => d);
+
+        // Display the first 10 rows of Inbound data
+        const tableInbound = d3.select('#data-table-inbound').append('table');
+        const theadInbound = tableInbound.append('thead');
+        const tbodyInbound = tableInbound.append('tbody');
+
+        theadInbound.append('tr')
+            .selectAll('th')
+            .data(['Date_Inbound', 'Grand Total'])
+            .enter()
+            .append('th')
+            .text(d => d);
+
+        const rowsInbound = tbodyInbound.selectAll('tr')
+            .data(inboundData.slice(0, 10))
+            .enter()
+            .append('tr');
+
+        rowsInbound.selectAll('td')
+            .data(d => [
                 d.Date_Inbound ? d3.timeFormat("%Y-%m-%d")(d.Date_Inbound) : 'N/A',
                 d.GrandTotal !== undefined ? d.GrandTotal : 'N/A'
             ])
