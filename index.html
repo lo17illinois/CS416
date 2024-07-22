@@ -16,53 +16,59 @@
 </head>
 <body onload='init()'>
 <svg width="800" height="500"></svg>
+<p id="status"></p>
 <script>
 async function init() {
-    const data = await d3.csv('GDP_cleaned.csv', d => {
-        return {
-            Date: d3.timeParse("%Y-%m-%d")(d.Date),
-            PrivateConsumption: +d.PrivateConsumption
-        };
-    });
+    try {
+        const data = await d3.csv('GDP_cleaned.csv', d => {
+            return {
+                Date: d3.timeParse("%Y-%m-%d")(d.Date),
+                PrivateConsumption: +d.PrivateConsumption
+            };
+        });
 
-    const svg = d3.select('svg'),
-        margin = {top: 20, right: 20, bottom: 30, left: 50},
-        width = +svg.attr('width') - margin.left - margin.right,
-        height = +svg.attr('height') - margin.top - margin.bottom,
-        g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+        const svg = d3.select('svg'),
+            margin = {top: 20, right: 20, bottom: 30, left: 50},
+            width = +svg.attr('width') - margin.left - margin.right,
+            height = +svg.attr('height') - margin.top - margin.bottom,
+            g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
 
-    const x = d3.scaleTime().rangeRound([0, width]),
-        y = d3.scaleLinear().rangeRound([height, 0]);
+        const x = d3.scaleTime().rangeRound([0, width]),
+            y = d3.scaleLinear().rangeRound([height, 0]);
 
-    const line = d3.line()
-        .x(d => x(d.Date))
-        .y(d => y(d.PrivateConsumption));
+        const line = d3.line()
+            .x(d => x(d.Date))
+            .y(d => y(d.PrivateConsumption));
 
-    x.domain(d3.extent(data, d => d.Date));
-    y.domain(d3.extent(data, d => d.PrivateConsumption));
+        x.domain(d3.extent(data, d => d.Date));
+        y.domain(d3.extent(data, d => d.PrivateConsumption));
 
-    g.append('g')
-        .attr('transform', `translate(0,${height})`)
-        .call(d3.axisBottom(x))
-        .select('.domain')
-        .remove();
+        g.append('g')
+            .attr('transform', `translate(0,${height})`)
+            .call(d3.axisBottom(x))
+            .select('.domain')
+            .remove();
 
-    g.append('g')
-        .call(d3.axisLeft(y))
-        .append('text')
-        .attr('fill', '#000')
-        .attr('transform', 'rotate(-90)')
-        .attr('y', 6)
-        .attr('dy', '0.71em')
-        .attr('text-anchor', 'end')
-        .text('Private Consumption');
+        g.append('g')
+            .call(d3.axisLeft(y))
+            .append('text')
+            .attr('fill', '#000')
+            .attr('transform', 'rotate(-90)')
+            .attr('y', 6)
+            .attr('dy', '0.71em')
+            .attr('text-anchor', 'end')
+            .text('Private Consumption');
 
-    g.append('path')
-        .datum(data)
-        .attr('class', 'line')
-        .attr('d', line);
+        g.append('path')
+            .datum(data)
+            .attr('class', 'line')
+            .attr('d', line);
+
+        document.getElementById('status').textContent = 'Data loaded successfully';
+    } catch (error) {
+        document.getElementById('status').textContent = 'Error loading data';
+    }
 }
-
 </script>
 </body>
 </html>
