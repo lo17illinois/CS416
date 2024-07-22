@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Narrative Visualization</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
 </head>
 
-    
 <body onload='init()>
 <svg width=300 height=300>
 </svg>
@@ -16,29 +15,10 @@
 async function init() {
     const data1 = await d3.csv('ExchangeRate_cleaned.csv');
     const data2 = await d3.csv('GDP_cleaned.csv');
-    const data3 = await d3.csv('Inbound_cleaned.csv');  
+    const data3 = await d3.csv('Inbound_cleaned.csv');  \
+    d3.seelect('body').selectAll
 }
 </script>
-    <div class="tabs">
-        <button class="tablink" onclick="openPage('Page1', this, 'red')" id="defaultOpen">Page 1</button>
-        <button class="tablink" onclick="openPage('Page2', this, 'green')">Page 2</button>
-        <button class="tablink" onclick="openPage('Page3', this, 'blue')">Page 3</button>
-    </div>
-
-    <div id="Page1" class="tabcontent">
-        <h3>Page 1</h3>
-        <div id="chart1"></div>
-    </div>
-
-    <div id="Page2" class="tabcontent">
-        <h3>Page 2</h3>
-        <div id="chart2"></div>
-    </div>
-
-    <div id="Page3" class="tabcontent">
-        <h3>Page 3</h3>
-        <div id="chart3"></div>
-    </div>
-
-    <script>
+</body>
+</html>
     
