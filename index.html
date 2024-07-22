@@ -48,7 +48,7 @@ async function init() {
         const inboundData = await d3.csv('Inbound_cleaned2.csv', d => {
             return {
                 Date_Inbound: d3.timeParse("%m/%d/%Y")(d.Date),
-                GrandTotal: +d.Grand Total
+                GrandTotal: +d.GrandTotal
             };
         });
 
