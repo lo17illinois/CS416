@@ -22,6 +22,16 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+        .line {
+            fill: none;
+            stroke-width: 2px;
+        }
+        .line-primary {
+            stroke: steelblue;
+        }
+        .line-secondary {
+            stroke: orange;
+        }
     </style>
 </head>
 <body onload='init()'>
@@ -29,6 +39,7 @@
         <div class="tab active" onclick="showPage(0)">Page 1</div>
         <div class="tab" onclick="showPage(1)">Page 2</div>
         <div class="tab" onclick="showPage(2)">Page 3</div>
+        <div class="tab" onclick="showPage(3)">Page 4</div>
         <div class="next-btn" onclick="nextPage()">Next</div>
     </div>
     <div id="container">
@@ -37,7 +48,7 @@
     <p id="status"></p>
     <script>
         let currentPage = 0;
-        const pages = ['Page 1', 'Page 2', 'Page 3'];
+        const pages = ['Page 1', 'Page 2', 'Page 3', 'Page 4'];
 
         async function init() {
             await loadPage(currentPage);
@@ -63,28 +74,50 @@
                 g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
 
             const x = d3.scaleTime().rangeRound([0, width]),
-                y = d3.scaleLinear().rangeRound([height, 0]);
+                yLeft = d3.scaleLinear().rangeRound([height, 0]),
+                yRight = d3.scaleLinear().rangeRound([height, 0]);
 
-            const line = d3.line()
-                .x(d => x(d.Date));
+            const linePrimary = d3.line().x(d => x(d.Date)),
+                lineSecondary = d3.line().x(d => x(d.Date));
 
-            let filteredData, yAxisLabel;
+            let filteredDataPrimary, filteredDataSecondary, yLeftLabel, yRightLabel;
 
             if (pageIndex === 0) {
-                filteredData = data.filter(d => d.Inbound !== null);
-                y.domain(d3.extent(filteredData, d => d.Inbound));
-                line.y(d => y(d.Inbound));
-                yAxisLabel = 'Inbound Tourism into Japan';
+                filteredDataPrimary = data.filter(d => d.Inbound !== null);
+                filteredDataSecondary = data.filter(d => d.GDP !== null);
+                yLeft.domain(d3.extent(filteredDataPrimary, d => d.Inbound));
+                yRight.domain(d3.extent(filteredDataSecondary, d => d.GDP));
+                linePrimary.y(d => yLeft(d.Inbound));
+                lineSecondary.y(d => yRight(d.GDP));
+                yLeftLabel = 'Inbound Tourism into Japan';
+                yRightLabel = 'GDP';
             } else if (pageIndex === 1) {
-                filteredData = data.filter(d => d.GDP !== null);
-                y.domain(d3.extent(filteredData, d => d.GDP));
-                line.y(d => y(d.GDP));
-                yAxisLabel = 'GDP';
+                filteredDataPrimary = data.filter(d => d.Inbound !== null);
+                filteredDataSecondary = data.filter(d => d.USDJPY !== null);
+                yLeft.domain(d3.extent(filteredDataPrimary, d => d.Inbound));
+                yRight.domain(d3.extent(filteredDataSecondary, d => d.USDJPY));
+                linePrimary.y(d => yLeft(d.Inbound));
+                lineSecondary.y(d => yRight(d.USDJPY));
+                yLeftLabel = 'Inbound Tourism into Japan';
+                yRightLabel = 'USD/JPY Exchange Rate';
             } else if (pageIndex === 2) {
-                filteredData = data.filter(d => d.Outbound !== null);
-                y.domain(d3.extent(filteredData, d => d.Outbound));
-                line.y(d => y(d.Outbound));
-                yAxisLabel = 'Outbound Tourism from Japan';
+                filteredDataPrimary = data.filter(d => d.Outbound !== null);
+                filteredDataSecondary = data.filter(d => d.USDJPY !== null);
+                yLeft.domain(d3.extent(filteredDataPrimary, d => d.Outbound));
+                yRight.domain(d3.extent(filteredDataSecondary, d => d.USDJPY));
+                linePrimary.y(d => yLeft(d.Outbound));
+                lineSecondary.y(d => yRight(d.USDJPY));
+                yLeftLabel = 'Outbound Tourism from Japan';
+                yRightLabel = 'USD/JPY Exchange Rate';
+            } else if (pageIndex === 3) {
+                filteredDataPrimary = data.filter(d => d.Inbound !== null);
+                filteredDataSecondary = data.filter(d => d.Outbound !== null);
+                yLeft.domain(d3.extent(filteredDataPrimary, d => d.Inbound));
+                yRight.domain(d3.extent(filteredDataSecondary, d => d.Outbound));
+                linePrimary.y(d => yLeft(d.Inbound));
+                lineSecondary.y(d => yRight(d.Outbound));
+                yLeftLabel = 'Inbound Tourism into Japan';
+                yRightLabel = 'Outbound Tourism from Japan';
             }
 
             x.domain(d3.extent(data, d => d.Date));
@@ -94,19 +127,35 @@
                 .call(d3.axisBottom(x));
 
             g.append('g')
-                .call(d3.axisLeft(y))
+                .call(d3.axisLeft(yLeft))
                 .append('text')
                 .attr('fill', '#000')
                 .attr('transform', 'rotate(-90)')
                 .attr('y', 6)
                 .attr('dy', '0.71em')
                 .attr('text-anchor', 'end')
-                .text(yAxisLabel);
+                .text(yLeftLabel);
+
+            g.append('g')
+                .attr('transform', `translate(${width},0)`)
+                .call(d3.axisRight(yRight))
+                .append('text')
+                .attr('fill', '#000')
+                .attr('transform', 'rotate(-90)')
+                .attr('y', -12)
+                .attr('dy', '0.71em')
+                .attr('text-anchor', 'end')
+                .text(yRightLabel);
 
             g.append('path')
-                .datum(filteredData)
-                .attr('class', 'line')
-                .attr('d', line);
+                .datum(filteredDataPrimary)
+                .attr('class', 'line line-primary')
+                .attr('d', linePrimary);
+
+            g.append('path')
+                .datum(filteredDataSecondary)
+                .attr('class', 'line line-secondary')
+                .attr('d', lineSecondary);
 
             document.getElementById('status').textContent = `Loaded ${pages[pageIndex]}`;
         }
