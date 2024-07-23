@@ -54,16 +54,20 @@ async function init() {
             width = +svg.attr('width') - margin.left - margin.right,
             height = +svg.attr('height') - margin.top - margin.bottom,
             g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+        
         const x = d3.scaleTime().rangeRound([0, width]),
             yLeft = d3.scaleLinear().rangeRound([height, 0]),
             yRight = d3.scaleLinear().rangeRound([height, 0]);
+        
         const lineInbound = d3.line()
             .x(d => x(d.Date))
-            .y(d => yLeft(d.Inbound));
+            .y(d => yRight(d.Inbound));
+        
         const lineGDP = d3.line()
             .x(d => x(d.Date))
-            .y(d => yRight(d.GDP));
-
+            .y(d => yLeft(d.GDP));
+        
+        x.domain(d3.extent(data, d => d.Date));
         yLeft.domain(d3.extent(data, d => d.GDP));
         yRight.domain(d3.extent(data, d => d.Inbound));
 
