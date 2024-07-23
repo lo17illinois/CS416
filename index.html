@@ -262,11 +262,11 @@
                 .attr("fill", function(d) {
                     if (secondaryDataset === 'Inbound') {
                         return colorMapping.Inbound;
-                    } else if (primaryDataset === 'Outbound') {
+                    } else if (secondaryDataset === 'Outbound') {
                         return colorMapping.Outbound;
-                    } else if (primaryDataset === 'GDP') {
+                    } else if (secondaryDataset === 'GDP') {
                         return colorMapping.GDP;
-                    } else if (primaryDataset === 'USDJPY') {
+                    } else if (secondaryDataset === 'USDJPY') {
                         return colorMapping.USDJPY;
                     }
                 })
