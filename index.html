@@ -110,52 +110,10 @@
                 const annotations = [
                     // Annotations for Page 1
                     {
-                        note: { label: "Start of 2007 Global Financial Crisis" },
-                        title: "Global Financial Crisis",
-                        x: x(new Date(2007, 5, 1)),
-                        y: yRight(data.find(d => d.Date.getTime() === new Date(2007, 5, 1).getTime()).GDP),
-                        dy: 50,
-                        dx: 50
-                    },
-                    {
-                        note: { label: "End of 2007 Global Financial Crisis" },
-                        title: "End of Crisis",
-                        x: x(new Date(2009, 5, 1)),
-                        y: yRight(data.find(d => d.Date.getTime() === new Date(2009, 5, 1).getTime()).GDP),
-                        dy: 50,
-                        dx: 50
-                    },
-                    {
-                        note: { label: "2011 East Japan Great Earthquake and Tsunami Disaster" },
-                        title: "Earthquake & Tsunami",
-                        x: x(new Date(2011, 2, 1)),
-                        y: yLeft(data.find(d => d.Date.getTime() === new Date(2011, 2, 1).getTime()).Inbound),
-                        dy: 50,
-                        dx: 50
-                    },
-                    {
-                        note: { label: "Start of Abenomics (fiscal stimulus)" },
-                        title: "Abenomics",
-                        x: x(new Date(2012, 5, 1)),
-                        y: yRight(data.find(d => d.Date.getTime() === new Date(2012, 5, 1).getTime()).GDP),
-                        dy: 50,
-                        dx: 50
-                    },
-                    {
-                        note: { label: "First case of Covid-19 in Japan" },
-                        title: "Covid-19",
-                        x: x(new Date(2020, 0, 1)),
-                        y: yLeft(data.find(d => d.Date.getTime() === new Date(2020, 0, 1).getTime()).Inbound),
-                        dy: 50,
-                        dx: 162
-                    },
-                    {
-                        note: { label: "Japan reopens to individual tourists" },
-                        title: "Reopens to Tourism",
-                        x: x(new Date(2022, 9, 1)),
-                        y: yLeft(data.find(d => d.Date.getTime() === new Date(2022, 9, 1).getTime()).Inbound),
-                        dy: 50,
-                        dx: 50
+                        note: { label: "TEXT1",
+                        title: "d3.annotationLabel",
+                        wrap: 150, align: "left"
+                        }, connector: {end: "arrow"}, x: 100, y: 100, dy:0, dx:0
                     }
                 ];
                 const makeAnnotations = d3.annotation()
