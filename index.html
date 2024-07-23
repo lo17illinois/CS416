@@ -220,20 +220,19 @@
                 .attr('stroke', colorMapping[secondaryDataset]);
 
             // Add circles for data points
-            const circleRadius = 3;
             g.selectAll(".dot")
                 .data(filteredDataPrimary)
                 .enter().append("circle")
                 .attr("class", "dot")
                 .attr("cx", d => x(d.Date))
                 .attr("cy", d => yLeft(d[primaryDataset]))
-                .attr("r", circleRadius)
-                .attr("fill", colorMapping[primaryDataset]) // Match color to the primary dataset line
+                .attr("r", 5)
+                .attr("fill", colorMapping[primaryDataset])
                 .on("mouseover", function(event, d) {
                     tooltip.transition()
                         .duration(200)
                         .style("opacity", .9);
-                    tooltip.html(`${primaryDataset}: ${d[primaryDataset]}<br>${secondaryDataset}: ${d[secondaryDataset]}`)
+                    tooltip.html(${primaryDataset}: ${d[primaryDataset]}<br>${secondaryDataset}: ${d[secondaryDataset]})
                         .style("left", (event.pageX + 15) + "px")
                         .style("top", (event.pageY - 28) + "px");
                 })
@@ -249,13 +248,13 @@
                 .attr("class", "dot-secondary")
                 .attr("cx", d => x(d.Date))
                 .attr("cy", d => yRight(d[secondaryDataset]))
-                .attr("r", circleRadius)
-                .attr("fill", colorMapping[secondaryDataset]) // Match color to the secondary dataset line
+                .attr("r", 5)
+                .attr("fill", colorMapping[secondaryDataset])
                 .on("mouseover", function(event, d) {
                     tooltip.transition()
                         .duration(200)
                         .style("opacity", .9);
-                    tooltip.html(`${primaryDataset}: ${d[primaryDataset]}<br>${secondaryDataset}: ${d[secondaryDataset]}`)
+                    tooltip.html(${primaryDataset}: ${d[primaryDataset]}<br>${secondaryDataset}: ${d[secondaryDataset]})
                         .style("left", (event.pageX + 15) + "px")
                         .style("top", (event.pageY - 28) + "px");
                 })
