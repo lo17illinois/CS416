@@ -64,8 +64,8 @@ async function init() {
             .x(d => x(d.Date))
             .y(d => yRight(d.GDP));
 
-        yLeft.domain(d3.extent(GDP, d => d.GDP));
-        yRight.domain(d3.extent(Inbound, d => d.Inbound));
+        yLeft.domain(d3.extent(data, d => d.GDP));
+        yRight.domain(d3.extent(data, d => d.Inbound));
 
         g.append('g')
             .attr('transform', `translate(0,${height})`)
