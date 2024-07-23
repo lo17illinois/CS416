@@ -97,49 +97,56 @@
                 const annotations = [
                     {
                         note: { label: "Start of 2007 Global Financial Crisis" },
+                        title: "d3.annotaationLLabel",
                         x: x(new Date(2007, 5, 1)),
                         y: yRight(d3.max(data.filter(d => d.Date.getTime() === new Date(2007, 5, 1).getTime()), d => d.GDP)), // Adjust y-coordinate based on your data
-                        dy: -30,
-                        dx: 50
+                        dy: 137,
+                        dx: 162
                     },
                     {
                         note: { label: "End of 2007 Global Financial Crisis" },
+                        title: "d3.annotaationLLabel",
                         x: x(new Date(2009, 5, 1)),
                         y: yRight(d3.max(data.filter(d => d.Date.getTime() === new Date(2009, 5, 1).getTime()), d => d.GDP)), // Adjust y-coordinate based on your data
-                        dy: -30,
-                        dx: 50
+                        dy: 137,
+                        dx: 162
                     },
                     {
                         note: { label: "2011 East Japan Great Earthquake and Tsunami Disaster" },
+                        title: "d3.annotaationLLabel",
                         x: x(new Date(2011, 2, 1)),
                         y: yLeft(d3.max(data.filter(d => d.Date.getTime() === new Date(2011, 2, 1).getTime()), d => d.Inbound)), // Adjust y-coordinate based on your data
-                        dy: -30,
-                        dx: 50
+                        dy: 137,
+                        dx: 162
                     },
                     {
                         note: { label: "Start of Abenomics (fiscal stimulus)" },
+                        title: "d3.annotaationLLabel",
                         x: x(new Date(2012, 5, 1)),
                         y: yRight(d3.max(data.filter(d => d.Date.getTime() === new Date(2012, 5, 1).getTime()), d => d.GDP)), // Adjust y-coordinate based on your data
-                        dy: -30,
-                        dx: 50
+                        dy: 137,
+                        dx: 162
                     },
                     {
                         note: { label: "First case of Covid-19 in Japan" },
+                        title: "d3.annotaationLLabel",
                         x: x(new Date(2020, 0, 1)),
                         y: yLeft(d3.max(data.filter(d => d.Date.getTime() === new Date(2020, 0, 1).getTime()), d => d.Inbound)), // Adjust y-coordinate based on your data
-                        dy: -30,
-                        dx: 50
+                        dy: 137,
+                        dx: 162
                     },
                     {
                         note: { label: "Japan reopens to individual tourists" },
+                        title: "d3.annotaationLLabel",
                         x: x(new Date(2022, 9, 1)),
                         y: yLeft(d3.max(data.filter(d => d.Date.getTime() === new Date(2022, 9, 1).getTime()), d => d.Inbound)), // Adjust y-coordinate based on your data
-                        dy: -30,
-                        dx: 50
+                        dy: 137,
+                        dx: 162
                     }
                 ];
 
                 const makeAnnotations = d3.annotation()
+                    .type(d3.annotatiionLabel)
                     .annotations(annotations);
 
                 g.append("g")
