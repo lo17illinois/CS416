@@ -39,15 +39,19 @@
 <script>
 async function init() {
     try {
-        const data = await d3.csv('JapanTourism.csv', d => {
+        let data = await d3.csv('JapanTourism.csv', d => {
             return {
                 Date: d3.timeParse("%m/%d/%Y")(d.Date),
-                Inbound: +d.Inbound,
-                Outbound: +d.Outbound,
-                GDP: +d.GDP,
-                USDJPY: +d.USDJPY
+                Inbound: d.Inbound ? +d.Inbound : null,
+                Outbound: d.Outbound ? +d.Outbound : null,
+                GDP: d.GDP ? +d.GDP : null,
+                USDJPY: d.USDJPY ? +d.USDJPY : null
             };
         });
+
+        // Filter out data points where specific columns are null
+        let dataInbound = data.filter(d => d.Inbound !== null);
+        let dataGDP = data.filter(d => d.GDP !== null);
 
         const svg = d3.select('svg'),
             margin = {top: 20, right: 60, bottom: 30, left: 50},
@@ -68,8 +72,8 @@ async function init() {
             .y(d => yLeft(d.GDP));
         
         x.domain(d3.extent(data, d => d.Date));
-        yLeft.domain(d3.extent(data, d => d.GDP));
-        yRight.domain(d3.extent(data, d => d.Inbound));
+        yLeft.domain(d3.extent(dataGDP, d => d.GDP));
+        yRight.domain(d3.extent(dataInbound, d => d.Inbound));
 
         g.append('g')
             .attr('transform', `translate(0,${height})`)
@@ -97,12 +101,12 @@ async function init() {
             .text('Inbound Tourism into Japan');
 
         g.append('path')
-            .datum(data)
+            .datum(dataGDP)
             .attr('class', 'line')
             .attr('d', lineGDP);
 
         g.append('path')
-            .datum(data)
+            .datum(dataInbound)
             .attr('class', 'line-secondary')
             .attr('d', lineInbound);
 
