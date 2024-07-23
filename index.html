@@ -110,14 +110,14 @@
                 yLeftLabel = 'Outbound Tourism from Japan';
                 yRightLabel = 'USD/JPY Exchange Rate';
             } else if (pageIndex === 3) {
-                filteredDataPrimary = data.filter(d => d.Inbound !== null);
-                filteredDataSecondary = data.filter(d => d.Outbound !== null);
-                yLeft.domain(d3.extent(filteredDataPrimary, d => d.Inbound));
-                yRight.domain(d3.extent(filteredDataSecondary, d => d.Outbound));
-                linePrimary.y(d => yLeft(d.Inbound));
-                lineSecondary.y(d => yRight(d.Outbound));
-                yLeftLabel = 'Inbound Tourism into Japan';
-                yRightLabel = 'Outbound Tourism from Japan';
+                filteredDataPrimary = data.filter(d => d.Outbound !== null);
+                filteredDataSecondary = data.filter(d => d.Inbound !== null);
+                yLeft.domain(d3.extent(filteredDataPrimary, d => d.Outbound));
+                yRight.domain(d3.extent(filteredDataSecondary, d => d.Inbound));
+                linePrimary.y(d => yLeft(d.Outbound));
+                lineSecondary.y(d => yRight(d.Inbound));
+                yLeftLabel = 'Outbound Tourism into Japan';
+                yRightLabel = 'Inbound Tourism from Japan';
             }
 
             x.domain(d3.extent(data, d => d.Date));
