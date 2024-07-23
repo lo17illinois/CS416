@@ -69,6 +69,8 @@
                 };
             });
 
+            console.log('Raw data:', data); // Debugging statement
+
             const svg = d3.select('svg');
             svg.html('');  // Clear previous content
             d3.select('#outbound-data').html('');  // Clear previous outbound data
@@ -127,6 +129,9 @@
                 printOutboundData(filteredDataSecondary);
             }
 
+            console.log('Filtered data (Primary):', filteredDataPrimary); // Debugging statement
+            console.log('Filtered data (Secondary):', filteredDataSecondary); // Debugging statement
+
             x.domain(d3.extent(data, d => d.Date));
 
             g.append('g')
@@ -178,7 +183,7 @@
 
             const rows = table.append('tbody')
                 .selectAll('tr')
-                .data(data.slice(0, 100))
+                .data(data.slice(0, 10))
                 .enter()
                 .append('tr');
 
