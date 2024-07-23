@@ -49,7 +49,7 @@
             const margin = {top: 20, right: 60, bottom: 30, left: 150},
                 width = +svg.attr('width') - margin.left - margin.right,
                 height = +svg.attr('height') - margin.top - margin.bottom,
-                g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+                g = svg.append('g').attr('transform', translate(${margin.left},${margin.top}));
 
             const x = d3.scaleTime().rangeRound([0, width]),
                 yLeft = d3.scaleLinear().rangeRound([height, 0]),
@@ -133,7 +133,7 @@
             x.domain(d3.extent(data, d => d.Date));
 
             g.append('g')
-                .attr('transform', `translate(0,${height})`)
+                .attr('transform', translate(0,${height}))
                 .call(d3.axisBottom(x));
 
             g.append('g')
@@ -148,7 +148,7 @@
                 .text(yLeftLabel);
 
             g.append('g')
-                .attr('transform', `translate(${width},0)`)
+                .attr('transform', translate(${width},0))
                 .call(d3.axisRight(yRight))
                 .append('text')
                 .attr('fill', '#000')
@@ -161,31 +161,30 @@
 
             g.append('path')
                 .datum(filteredDataPrimary)
-                .attr('class', `line line-${primaryDataset.toLowerCase()}`)
+                .attr('class', line line-${primaryDataset.toLowerCase()})
                 .attr('d', linePrimary)
                 .attr('stroke', colorMapping[primaryDataset]);
 
             g.append('path')
                 .datum(filteredDataSecondary)
-                .attr('class', `line line-${secondaryDataset.toLowerCase()}`)
+                .attr('class', line line-${secondaryDataset.toLowerCase()})
                 .attr('d', lineSecondary)
                 .attr('stroke', colorMapping[secondaryDataset]);
 
             // Add circles for data points
-            const circleRadius = 3;
             g.selectAll(".dot")
                 .data(filteredDataPrimary)
                 .enter().append("circle")
                 .attr("class", "dot")
                 .attr("cx", d => x(d.Date))
                 .attr("cy", d => yLeft(d[primaryDataset]))
-                .attr("r", circleRadius)
-                .attr("fill", colorMapping[primaryDataset]) // Match color to the primary dataset line
+                .attr("r", 5)
+                .attr("fill", colorMapping[primaryDataset])
                 .on("mouseover", function(event, d) {
                     tooltip.transition()
                         .duration(200)
                         .style("opacity", .9);
-                    tooltip.html(`${primaryDataset}: ${d[primaryDataset]}<br>${secondaryDataset}: ${d[secondaryDataset]}`)
+                    tooltip.html(${primaryDataset}: ${d[primaryDataset]}<br>${secondaryDataset}: ${d[secondaryDataset]})
                         .style("left", (event.pageX + 15) + "px")
                         .style("top", (event.pageY - 28) + "px");
                 })
@@ -195,20 +194,19 @@
                         .style("opacity", 0);
                 });
 
-            // Update circles for secondary dataset
             g.selectAll(".dot-secondary")
                 .data(filteredDataSecondary)
                 .enter().append("circle")
                 .attr("class", "dot-secondary")
                 .attr("cx", d => x(d.Date))
                 .attr("cy", d => yRight(d[secondaryDataset]))
-                .attr("r", circleRadius)
-                .attr("fill", colorMapping[secondaryDataset]) // Match color to the secondary dataset line
+                .attr("r", 5)
+                .attr("fill", colorMapping[secondaryDataset])
                 .on("mouseover", function(event, d) {
                     tooltip.transition()
                         .duration(200)
                         .style("opacity", .9);
-                    tooltip.html(`${primaryDataset}: ${d[primaryDataset]}<br>${secondaryDataset}: ${d[secondaryDataset]}`)
+                    tooltip.html(${primaryDataset}: ${d[primaryDataset]}<br>${secondaryDataset}: ${d[secondaryDataset]})
                         .style("left", (event.pageX + 15) + "px")
                         .style("top", (event.pageY - 28) + "px");
                 })
