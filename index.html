@@ -31,13 +31,13 @@
             stroke: steelblue;
         }
         .line-outbound {
-            stroke: green;
-        }
-        .line-gdp {
             stroke: orange;
         }
+        .line-gdp {
+            stroke: green;
+        }
         .line-usdjpy {
-            stroke: red;
+            stroke: purple;
         }
     </style>
 </head>
@@ -213,6 +213,7 @@
                 .attr('y', 6)
                 .attr('dy', '0.71em')
                 .attr('text-anchor', 'end')
+                .attr('font-size', '14px')
                 .text(yLeftLabel);
 
             g.append('g')
@@ -224,6 +225,7 @@
                 .attr('y', -12)
                 .attr('dy', '0.71em')
                 .attr('text-anchor', 'end')
+                .attr('font-size', '14px')
                 .text(yRightLabel);
 
             g.append('path')
