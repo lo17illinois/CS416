@@ -5,23 +5,39 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/2.5.1/d3-annotation.min.js"></script>
     <style>
         .tab {
-            display: inline-block;margin-right: 10px;padding: 10px;cursor: pointer;border: 1px solid #ccc;border-radius: 5px;
+            display: inline-block;
+            margin-right: 10px;
+            padding: 10px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
         .active {
             background-color: #ddd;
         }
         .next-btn {
-            display: inline-block;margin-left: 20px;padding: 10px;cursor: pointer;border: 1px solid #ccc;border-radius: 5px;
+            display: inline-block;
+            margin-left: 20px;
+            padding: 10px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
         .line {
             fill: none;
             stroke-width: 2px;
         }
-        .line-primary {
+        .line-inbound {
             stroke: steelblue;
         }
-        .line-secondary {
+        .line-outbound {
+            stroke: green;
+        }
+        .line-gdp {
             stroke: orange;
+        }
+        .line-usdjpy {
+            stroke: red;
         }
     </style>
 </head>
@@ -40,9 +56,18 @@
     <script>
         let currentPage = 0;
         const pages = ['Page 1', 'Page 2', 'Page 3', 'Page 4'];
+
+        const colorMapping = {
+            Inbound: 'steelblue',
+            Outbound: 'green',
+            GDP: 'orange',
+            USDJPY: 'red'
+        };
+
         async function init() {
             await loadPage(currentPage);
         }
+
         async function loadPage(pageIndex) {
             const data = await d3.csv('JapanTourism.csv', d => {
                 return {
@@ -53,18 +78,24 @@
                     USDJPY: d.USDJPY ? +d.USDJPY : null
                 };
             });
+
             const svg = d3.select('svg');
             svg.html('');  // Clear previous content
-            const margin = {top: 20, right: 60, bottom: 30, left: 50},
+
+            const margin = {top: 20, right: 60, bottom: 30, left: 150},
                 width = +svg.attr('width') - margin.left - margin.right,
                 height = +svg.attr('height') - margin.top - margin.bottom,
                 g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
             const x = d3.scaleTime().rangeRound([0, width]),
                 yLeft = d3.scaleLinear().rangeRound([height, 0]),
                 yRight = d3.scaleLinear().rangeRound([height, 0]);
+
             const linePrimary = d3.line().x(d => x(d.Date)),
                 lineSecondary = d3.line().x(d => x(d.Date));
-            let filteredDataPrimary, filteredDataSecondary, yLeftLabel, yRightLabel;
+
+            let filteredDataPrimary, filteredDataSecondary, yLeftLabel, yRightLabel, primaryDataset, secondaryDataset;
+
             if (pageIndex === 0) {
                 filteredDataPrimary = data.filter(d => d.Inbound !== null);
                 filteredDataSecondary = data.filter(d => d.GDP !== null);
@@ -74,7 +105,10 @@
                 lineSecondary.y(d => yRight(d.GDP));
                 yLeftLabel = 'Inbound Tourism into Japan';
                 yRightLabel = 'GDP';
-                const annotations = [        // Annotations for Page 1
+                primaryDataset = 'Inbound';
+                secondaryDataset = 'GDP';
+                const annotations = [
+                    // Annotations for Page 1
                     {
                         note: { label: "Start of 2007 Global Financial Crisis" },
                         title: "Global Financial Crisis",
@@ -122,15 +156,7 @@
                         y: yLeft(d3.max(filteredDataPrimary, d => d.Date.getTime() === new Date(2022, 9, 1).getTime() && d.Inbound)), // Adjust y-coordinate based on your data
                         dy: 137,
                         dx: 162
-                    },
-                    {
-                        note: { label: "HELLOHELLOHELLOHELLOHELLOHELLOHELLOHELLOHELLOHELLOHELLO" },
-                        title: "test",
-                        x: 500,
-                        y: 500,
-                        dy: 0,
-                        dx: 0
-                    },
+                    }
                 ];
                 const makeAnnotations = d3.annotation()
                     .type(d3.annotationLabel)
@@ -147,6 +173,8 @@
                 lineSecondary.y(d => yRight(d.USDJPY));
                 yLeftLabel = 'Inbound Tourism into Japan';
                 yRightLabel = 'USD/JPY Exchange Rate';
+                primaryDataset = 'Inbound';
+                secondaryDataset = 'USDJPY';
             } else if (pageIndex === 2) {
                 filteredDataPrimary = data.filter(d => d.Outbound !== null);
                 filteredDataSecondary = data.filter(d => d.USDJPY !== null);
@@ -156,6 +184,8 @@
                 lineSecondary.y(d => yRight(d.USDJPY));
                 yLeftLabel = 'Outbound Tourism from Japan';
                 yRightLabel = 'USD/JPY Exchange Rate';
+                primaryDataset = 'Outbound';
+                secondaryDataset = 'USDJPY';
             } else if (pageIndex === 3) {
                 filteredDataPrimary = data.filter(d => d.Outbound !== null);
                 filteredDataSecondary = data.filter(d => d.Inbound !== null);
@@ -165,11 +195,16 @@
                 lineSecondary.y(d => yRight(d.Inbound));
                 yLeftLabel = 'Outbound Tourism from Japan';
                 yRightLabel = 'Inbound Tourism into Japan';
+                primaryDataset = 'Outbound';
+                secondaryDataset = 'Inbound';
             }
+
             x.domain(d3.extent(data, d => d.Date));
+
             g.append('g')
                 .attr('transform', `translate(0,${height})`)
                 .call(d3.axisBottom(x));
+
             g.append('g')
                 .call(d3.axisLeft(yLeft))
                 .append('text')
@@ -179,6 +214,7 @@
                 .attr('dy', '0.71em')
                 .attr('text-anchor', 'end')
                 .text(yLeftLabel);
+
             g.append('g')
                 .attr('transform', `translate(${width},0)`)
                 .call(d3.axisRight(yRight))
@@ -189,21 +225,27 @@
                 .attr('dy', '0.71em')
                 .attr('text-anchor', 'end')
                 .text(yRightLabel);
+
             g.append('path')
                 .datum(filteredDataPrimary)
-                .attr('class', 'line line-primary')
-                .attr('d', linePrimary);
+                .attr('class', `line line-${primaryDataset.toLowerCase()}`)
+                .attr('d', linePrimary)
+                .attr('stroke', colorMapping[primaryDataset]);
+
             g.append('path')
                 .datum(filteredDataSecondary)
-                .attr('class', 'line line-secondary')
-                .attr('d', lineSecondary);
+                .attr('class', `line line-${secondaryDataset.toLowerCase()}`)
+                .attr('d', lineSecondary)
+                .attr('stroke', colorMapping[secondaryDataset]);
         }
+
         function showPage(pageIndex) {
             currentPage = pageIndex;
             d3.selectAll('.tab').classed('active', false);
             d3.selectAll('.tab').filter((d, i) => i === pageIndex).classed('active', true);
             loadPage(pageIndex);
         }
+
         function nextPage() {
             currentPage = (currentPage + 1) % pages.length;
             showPage(currentPage);
@@ -211,3 +253,4 @@
     </script>
 </body>
 </html>
+v
