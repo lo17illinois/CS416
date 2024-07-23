@@ -5,23 +5,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/2.5.1/d3-annotation.min.js"></script>
     <style>
         .tab {
-            display: inline-block;
-            margin-right: 10px;
-            padding: 10px;
-            cursor: pointer;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            display: inline-block;margin-right: 10px;padding: 10px;cursor: pointer;border: 1px solid #ccc;border-radius: 5px;
         }
         .active {
             background-color: #ddd;
         }
         .next-btn {
-            display: inline-block;
-            margin-left: 20px;
-            padding: 10px;
-            cursor: pointer;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            display: inline-block;margin-left: 20px;padding: 10px;cursor: pointer;border: 1px solid #ccc;border-radius: 5px;
         }
         .line {
             fill: none;
@@ -284,6 +274,10 @@
     <div id="container">
         <svg width="1600" height="800"></svg>
     </div>
+    const svgWidth = +svg.attr('width');
+    const svgHeight = +svg.attr('height');
+    const centerX = svgWidth / 2;
+    const centerY = svgHeight / 2;
     <p id="status"></p>
     <script>
         let currentPage = 0;
