@@ -62,10 +62,10 @@ async function init() {
             .y(d => yLeft(d.Inbound));
         const lineGDP = d3.line()
             .x(d => x(d.Date))
-            .y(d => yRight(d.InBound));
+            .y(d => yRight(d.GDP));
 
-        yLeft.domain(d3.extent(gdpData, d => d.PrivateConsumption));
-        yRight.domain(d3.extent(inboundData, d => d.GrandTotal));
+        yLeft.domain(d3.extent(GDP, d => d.GDP));
+        yRight.domain(d3.extent(Inbound, d => d.Inbound));
 
         g.append('g')
             .attr('transform', `translate(0,${height})`)
@@ -79,7 +79,7 @@ async function init() {
             .attr('y', 6)
             .attr('dy', '0.71em')
             .attr('text-anchor', 'end')
-            .text('Private Consumption');
+            .text('GDP');
 
         g.append('g')
             .attr('transform', `translate(${width},0)`)
@@ -90,10 +90,10 @@ async function init() {
             .attr('y', -12)
             .attr('dy', '0.71em')
             .attr('text-anchor', 'end')
-            .text('Grand Total');
+            .text('Inbound Tourism into Japan');
 
         g.append('path')
-            .datum(gdpData)
+            .datum(GDP)
             .attr('class', 'line')
             .attr('d', lineGDP);
 
