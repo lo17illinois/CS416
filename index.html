@@ -243,9 +243,11 @@
                     tooltip.transition()
                         .duration(200)
                         .style("opacity", .9);
+                    const tooltipX = event.pageX + 15;
+                    const tooltipY = event.pageY - 28;
                     tooltip.html(`${primaryDataset}: ${d[primaryDataset]}<br>${secondaryDataset}: ${d[secondaryDataset]}`)
-                        .style("left", (event.pageX + 15) + "px")
-                        .style("top", (event.pageY - 28) + "px");
+                        .style("left", `${tooltipX}px`)
+                        .style("top", `${tooltipY}px`);
                 })
                 .on("mouseout", function() {
                     d3.select(this).attr("r",2);
@@ -277,9 +279,11 @@
                     tooltip.transition()
                         .duration(200)
                         .style("opacity", .9);
+                    const tooltipX = event.pageX + 15;
+                    const tooltipY = event.pageY - 28;
                     tooltip.html(`${primaryDataset}: ${d[primaryDataset]}<br>${secondaryDataset}: ${d[secondaryDataset]}`)
-                        .style("left", (event.pageX + 15) + "px")
-                        .style("top", (event.pageY - 28) + "px");
+                        .style("left", `${tooltipX}px`)
+                        .style("top", `${tooltipY}px`);
                 })
                 .on("mouseout", function() {
                     d3.select(this).attr("r",2);
