@@ -282,7 +282,7 @@
         <div class="next-btn" onclick="nextPage()">Next</div>
     </div>
     <div id="container">
-        <svg width="800" height="500"></svg>
+        <svg width="1600" height="800"></svg>
     </div>
     <p id="status"></p>
     <script>
@@ -380,7 +380,16 @@
                         y: yLeft(d3.max(filteredDataPrimary, d => d.Date.getTime() === new Date(2022, 9, 1).getTime() && d.Inbound)), // Adjust y-coordinate based on your data
                         dy: 137,
                         dx: 162
-                    }
+                    },
+                    {
+                        note: { label: HELLO" },
+                        title: "Reopens to Tourism",
+                        x: centerX
+                        y: centerY,
+                        dy: 0,
+                        dx: 0
+                    },
+                
                 ];
 
                 const makeAnnotations = d3.annotation()
