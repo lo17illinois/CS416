@@ -32,7 +32,7 @@
         .line-secondary {
             stroke: orange;
         }
-        #outbound-data {
+        #usd-data {
             margin-top: 20px;
         }
     </style>
@@ -49,7 +49,7 @@
         <svg width="800" height="500"></svg>
     </div>
     <p id="status"></p>
-    <div id="outbound-data"></div>
+    <div id="usd-data"></div>
     <script>
         let currentPage = 0;
         const pages = ['Page 1', 'Page 2', 'Page 3', 'Page 4'];
@@ -73,7 +73,7 @@
 
             const svg = d3.select('svg');
             svg.html('');  // Clear previous content
-            d3.select('#outbound-data').html('');  // Clear previous outbound data
+            d3.select('#usd-data').html('');  // Clear previous USDJPY data
 
             const margin = {top: 20, right: 60, bottom: 30, left: 50},
                 width = +svg.attr('width') - margin.left - margin.right,
@@ -116,7 +116,7 @@
                 lineSecondary.y(d => yRight(d.USDJPY));
                 yLeftLabel = 'Outbound Tourism from Japan';
                 yRightLabel = 'USD/JPY Exchange Rate';
-                printOutboundData(filteredDataPrimary);
+                printUSDJPYData(filteredDataSecondary);
             } else if (pageIndex === 3) {
                 filteredDataPrimary = data.filter(d => d.Inbound !== null);
                 filteredDataSecondary = data.filter(d => d.Outbound !== null);
@@ -126,7 +126,7 @@
                 lineSecondary.y(d => yRight(d.Outbound));
                 yLeftLabel = 'Inbound Tourism into Japan';
                 yRightLabel = 'Outbound Tourism from Japan';
-                printOutboundData(filteredDataSecondary);
+                printUSDJPYData(filteredDataPrimary);
             }
 
             console.log('Filtered data (Primary):', filteredDataPrimary); // Debugging statement
@@ -172,23 +172,23 @@
             document.getElementById('status').textContent = `Loaded ${pages[pageIndex]}`;
         }
 
-        function printOutboundData(data) {
-            const table = d3.select('#outbound-data').append('table');
+        function printUSDJPYData(data) {
+            const table = d3.select('#usd-data').append('table');
             table.append('thead').append('tr')
                 .selectAll('th')
-                .data(['Date', 'Outbound'])
+                .data(['Date', 'USDJPY'])
                 .enter()
                 .append('th')
                 .text(d => d);
 
             const rows = table.append('tbody')
                 .selectAll('tr')
-                .data(data.slice(0, 10))
+                .data(data.slice(0, 100))
                 .enter()
                 .append('tr');
 
             rows.append('td').text(d => d3.timeFormat("%m/%d/%Y")(d.Date));
-            rows.append('td').text(d => d.Outbound);
+            rows.append('td').text(d => d.USDJPY);
         }
 
         function showPage(pageIndex) {
