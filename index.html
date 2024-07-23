@@ -226,7 +226,7 @@
                 .attr("class", "dot")
                 .attr("cx", d => x(d.Date))
                 .attr("cy", d => yLeft(d[primaryDataset]))
-                .attr("r", 5)
+                .attr("r", 3)
                 .attr("fill", colorMapping[primaryDataset])
                 .on("mouseover", function(event, d) {
                     tooltip.transition()
