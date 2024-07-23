@@ -227,7 +227,16 @@
                 .attr("cx", d => x(d.Date))
                 .attr("cy", d => yLeft(d[primaryDataset]))
                 .attr("r", 2)
-                .attr("fill", colorMapping[primaryDataset])
+                .attr("fill", function(d) {
+                    if (primaryDataset === 'Inbound') {
+                        return colorMapping.Inbound;
+                    } else if (primaryDataset === 'Outbound') {
+                        return colorMapping.Outbound;
+                    } else if (primaryDataset === 'GDP') {
+                        return colorMapping.GDP;
+                    } else if (primaryDataset === 'USDJPY') {
+                        return colorMapping.USDJPY;
+                    }
                 .on("mouseover", function(event, d) {
                     tooltip.transition()
                         .duration(200)
@@ -249,7 +258,16 @@
                 .attr("cx", d => x(d.Date))
                 .attr("cy", d => yRight(d[secondaryDataset]))
                 .attr("r", 2)
-                .attr("fill", colorMapping[secondaryDataset])
+                .attr("fill", function(d) {
+                    if (primaryDataset === 'Inbound') {
+                        return colorMapping.Inbound;
+                    } else if (primaryDataset === 'Outbound') {
+                        return colorMapping.Outbound;
+                    } else if (primaryDataset === 'GDP') {
+                        return colorMapping.GDP;
+                    } else if (primaryDataset === 'USDJPY') {
+                        return colorMapping.USDJPY;
+                    }
                 .on("mouseover", function(event, d) {
                     tooltip.transition()
                         .duration(200)
