@@ -93,12 +93,12 @@ async function init() {
             .text('Inbound Tourism into Japan');
 
         g.append('path')
-            .datum(GDP)
+            .datum(data)
             .attr('class', 'line')
             .attr('d', lineGDP);
 
         g.append('path')
-            .datum(inboundData)
+            .datum(data)
             .attr('class', 'line-secondary')
             .attr('d', lineInbound);
 
