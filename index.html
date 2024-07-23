@@ -42,8 +42,8 @@
         .tooltip {
             position: absolute;
             text-align: center;
-            width: 100px;
-            height: 28px;
+            width: auto;
+            height: auto;
             padding: 2px;
             font: 12px sans-serif;
             background: lightsteelblue;
@@ -219,31 +219,55 @@
                 .attr('d', lineSecondary)
                 .attr('stroke', colorMapping[secondaryDataset]);
 
+            // Add circles for data points
+            g.selectAll(".dot")
+                .data(filteredDataPrimary)
+                .enter().append("circle")
+                .attr("class", "dot")
+                .attr("cx", d => x(d.Date))
+                .attr("cy", d => yLeft(d[primaryDataset]))
+                .attr("r", 5)
+                .attr("fill", colorMapping[primaryDataset])
+                .on("mouseover", function(event, d) {
+                    tooltip.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                    tooltip.html(`${primaryDataset}: ${d[primaryDataset]}<br>${secondaryDataset}: ${d[secondaryDataset]}`)
+                        .style("left", (event.pageX + 15) + "px")
+                        .style("top", (event.pageY - 28) + "px");
+                })
+                .on("mouseout", function() {
+                    tooltip.transition()
+                        .duration(500)
+                        .style("opacity", 0);
+                });
+
+            g.selectAll(".dot-secondary")
+                .data(filteredDataSecondary)
+                .enter().append("circle")
+                .attr("class", "dot-secondary")
+                .attr("cx", d => x(d.Date))
+                .attr("cy", d => yRight(d[secondaryDataset]))
+                .attr("r", 5)
+                .attr("fill", colorMapping[secondaryDataset])
+                .on("mouseover", function(event, d) {
+                    tooltip.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                    tooltip.html(`${primaryDataset}: ${d[primaryDataset]}<br>${secondaryDataset}: ${d[secondaryDataset]}`)
+                        .style("left", (event.pageX + 15) + "px")
+                        .style("top", (event.pageY - 28) + "px");
+                })
+                .on("mouseout", function() {
+                    tooltip.transition()
+                        .duration(500)
+                        .style("opacity", 0);
+                });
+
             // Tooltip
             const tooltip = d3.select("body").append("div")
                 .attr("class", "tooltip")
                 .style("opacity", 0);
-
-            svg.append("rect")
-                .attr("width", width)
-                .attr("height", height)
-                .attr("fill", "none")
-                .attr("pointer-events", "all")
-                .on("mouseover", function() { tooltip.style("opacity", 1); })
-                .on("mouseout", function() { tooltip.style("opacity", 0); })
-                .on("mousemove", function() {
-                    const mouse = d3.mouse(this);
-                    const xDate = x.invert(mouse[0]);
-                    const bisect = d3.bisector(d => d.Date).left;
-                    const idx = bisect(data, xDate);
-                    const d0 = data[idx - 1];
-                    const d1 = data[idx];
-                    const d = xDate - d0.Date > d1.Date - xDate ? d1 : d0;
-
-                    tooltip.html(`${primaryDataset}: ${d[primaryDataset]}<br>${secondaryDataset}: ${d[secondaryDataset]}`)
-                        .style("left", (d3.event.pageX + 15) + "px")
-                        .style("top", (d3.event.pageY - 28) + "px");
-                });
         }
 
         function showPage(pageIndex) {
