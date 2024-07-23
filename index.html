@@ -81,6 +81,9 @@
         }
 
         async function loadPage(pageIndex) {
+            const tooltip = d3.select("body").append("div")
+                .attr("class", "tooltip")
+                .style("opacity", 0);
             const data = await d3.csv('JapanTourism.csv', d => {
                 return {
                     Date: d3.timeParse("%m/%d/%Y")(d.Date),
@@ -243,11 +246,10 @@
                     tooltip.transition()
                         .duration(200)
                         .style("opacity", .9);
-                    const tooltipX = event.clientX + 10;
-                    const tooltipY = event.clientY - 10;
+                    const [mouseX, mouseY] = d3.pointer(event);
                     tooltip.html(`${primaryDataset}: ${d[primaryDataset]}<br>${secondaryDataset}: ${d[secondaryDataset]}`)
-                        .style("left", `${tooltipX}px`)
-                        .style("top", `${tooltipY}px`);
+                        .style("left", `${mouseX + 10}px`)
+                        .style("top", `${mouseY - 10}px`);
                 })
                 .on("mouseout", function() {
                     d3.select(this).attr("r",2);
@@ -279,11 +281,10 @@
                     tooltip.transition()
                         .duration(200)
                         .style("opacity", .9);
-                    const tooltipX = event.clientX + 10;
-                    const tooltipY = event.clientY - 10;
+                    const [mouseX, mouseY] = d3.pointer(event);
                     tooltip.html(`${primaryDataset}: ${d[primaryDataset]}<br>${secondaryDataset}: ${d[secondaryDataset]}`)
-                        .style("left", `${tooltipX}px`)
-                        .style("top", `${tooltipY}px`);
+                        .style("left", `${mouseX + 10}px`)
+                        .style("top", `${mouseY - 10}px`);
                 })
                 .on("mouseout", function() {
                     d3.select(this).attr("r",2);
