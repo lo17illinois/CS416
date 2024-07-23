@@ -39,6 +39,16 @@
         .line-usdjpy {
             stroke: purple;
         }
+        .tooltip {
+            position: absolute;
+            text-align: center;
+            padding: 8px;
+            font: 12px sans-serif;
+            background: lightsteelblue;
+            border: 0px;
+            border-radius: 8px;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body onload='init()'>
@@ -206,6 +216,55 @@
                 .attr('class', `line line-${secondaryDataset.toLowerCase()}`)
                 .attr('d', lineSecondary)
                 .attr('stroke', colorMapping[secondaryDataset]);
+
+            // Tooltip
+            const tooltip = d3.select('body').append('div')
+                .attr('class', 'tooltip')
+                .style('opacity', 0);
+
+            svg.selectAll('.dot-primary')
+                .data(filteredDataPrimary)
+                .enter().append('circle')
+                .attr('class', 'dot-primary')
+                .attr('cx', d => x(d.Date) + margin.left)
+                .attr('cy', d => yLeft(d[primaryDataset]))
+                .attr('r', 5)
+                .attr('fill', colorMapping[primaryDataset])
+                .on('mouseover', function(event, d) {
+                    tooltip.transition()
+                        .duration(200)
+                        .style('opacity', .9);
+                    tooltip.html(`Date: ${d3.timeFormat('%Y-%m-%d')(d.Date)}<br>${primaryDataset}: ${d[primaryDataset]}`)
+                        .style('left', (event.pageX + 5) + 'px')
+                        .style('top', (event.pageY - 28) + 'px');
+                })
+                .on('mouseout', function(d) {
+                    tooltip.transition()
+                        .duration(500)
+                        .style('opacity', 0);
+                });
+
+            svg.selectAll('.dot-secondary')
+                .data(filteredDataSecondary)
+                .enter().append('circle')
+                .attr('class', 'dot-secondary')
+                .attr('cx', d => x(d.Date) + margin.left)
+                .attr('cy', d => yRight(d[secondaryDataset]))
+                .attr('r', 5)
+                .attr('fill', colorMapping[secondaryDataset])
+                .on('mouseover', function(event, d) {
+                    tooltip.transition()
+                        .duration(200)
+                        .style('opacity', .9);
+                    tooltip.html(`Date: ${d3.timeFormat('%Y-%m-%d')(d.Date)}<br>${secondaryDataset}: ${d[secondaryDataset]}`)
+                        .style('left', (event.pageX + 5) + 'px')
+                        .style('top', (event.pageY - 28) + 'px');
+                })
+                .on('mouseout', function(d) {
+                    tooltip.transition()
+                        .duration(500)
+                        .style('opacity', 0);
+                });
         }
 
         function showPage(pageIndex) {
@@ -222,4 +281,3 @@
     </script>
 </body>
 </html>
-v
