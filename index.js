@@ -48,27 +48,6 @@ async function loadPage(pageIndex) {
         yRightLabel = 'GDP';
         primaryDataset = 'Inbound';
         secondaryDataset = 'GDP';
-        const annotations = [
-            {
-                note: { label: "TEXT1", wrap: 150, align: "left"},
-                x: 500,
-                y: 500,
-                dy: -50, dx: -50
-            },
-            {
-                note: { label: "TEXT3", wrap: 150, align: "left"},
-                connector: {end: "arrow"},
-                x: x(new Date(2007, 5, 1)),
-                y: yRight(data.find(d => d.Date.getTime() === new Date(2007, 5, 1).getTime()).GDP),
-                dy: -400, dx: -400
-            }
-        ];
-        const makeAnnotations = d3.annotation()
-            .type(d3.annotationLabel)
-            .annotations(annotations);
-        g.append("g")
-            .attr("class", "annotation-group")
-            .call(makeAnnotations);
     } else if (pageIndex === 1) {
         filteredDataPrimary = data.filter(d => d.Inbound !== null);
         filteredDataSecondary = data.filter(d => d.USDJPY !== null);
@@ -149,40 +128,39 @@ async function loadPage(pageIndex) {
         .attr('class', 'tooltip')
         .style('opacity', 0);
 
-    // Annotations
-    function createAnnotations(data, dataset) {
-        const labels = data.map(d => ({
-            data: { Date: d.Date, value: d[dataset] },
-            dy: 37,
-            dx: -142,
-            note: { title: `Value: ${d[dataset]}`, label: `${d3.timeFormat('%Y-%m-%d')(d.Date)}` },
-            subject: { radius: 4 }
-        }));
+    // Function to show the tooltip and annotation
+    function showTooltipAndAnnotation(event, d, dataset, yScale) {
+        tooltip.transition()
+            .duration(200)
+            .style('opacity', .9);
+        tooltip.html(`Date: ${d3.timeFormat('%Y-%m-%d')(d.Date)}<br>${dataset}: ${d[dataset]}`)
+            .style('left', (event.pageX + 10) + 'px')
+            .style('top', (event.pageY - 10) + 'px');
 
-        const makeAnnotations = d3.annotation()
+        const annotation = d3.annotation()
             .type(d3.annotationCalloutCircle)
-            .annotations(labels)
-            .accessors({
-                x: d => x(d.Date),
-                y: d => yLeft(d.value)
-            });
+            .annotations([{
+                note: { title: `${dataset}: ${d[dataset]}`, label: `${d3.timeFormat('%Y-%m-%d')(d.Date)}` },
+                x: x(d.Date),
+                y: yScale(d[dataset]),
+                dx: 0,
+                dy: -20,
+                subject: { radius: 4 }
+            }]);
 
-        return makeAnnotations;
+        g.selectAll('.annotation-group').remove();
+        g.append('g')
+            .attr('class', 'annotation-group')
+            .call(annotation);
     }
 
-    const annotationsPrimary = createAnnotations(filteredDataPrimary, primaryDataset);
-    const annotationsSecondary = createAnnotations(filteredDataSecondary, secondaryDataset);
-
-    g.append('g')
-        .attr('class', 'annotation-group-primary')
-        .call(annotationsPrimary);
-
-    g.append('g')
-        .attr('class', 'annotation-group-secondary')
-        .call(annotationsSecondary);
-
-    g.selectAll('.annotation-connector, .annotation-note')
-        .classed('hidden', true);
+    // Function to hide the tooltip and annotation
+    function hideTooltipAndAnnotation() {
+        tooltip.transition()
+            .duration(500)
+            .style('opacity', 0);
+        g.selectAll('.annotation-group').remove();
+    }
 
     svg.selectAll('.dot-primary')
         .data(filteredDataPrimary)
@@ -193,26 +171,13 @@ async function loadPage(pageIndex) {
         .attr('r', 5)
         .attr('fill', colorMapping[primaryDataset])
         .on('mouseover', function(event, d) {
-            tooltip.transition()
-                .duration(200)
-                .style('opacity', .9);
-            tooltip.html(`Date: ${d3.timeFormat('%Y-%m-%d')(d.Date)}<br>${primaryDataset}: ${d[primaryDataset]}`)
-                .style('left', (event.pageX + 10) + 'px')
-                .style('top', (event.pageY - 10) + 'px');
-            g.selectAll('.annotation-connector, .annotation-note')
-                .classed('hidden', false);
+            showTooltipAndAnnotation(event, d, primaryDataset, yLeft);
         })
         .on('mousemove', function(event) {
             tooltip.style('left', (event.pageX + 10) + 'px')
                 .style('top', (event.pageY - 10) + 'px');
         })
-        .on('mouseout', function() {
-            tooltip.transition()
-                .duration(500)
-                .style('opacity', 0);
-            g.selectAll('.annotation-connector, .annotation-note')
-                .classed('hidden', true);
-        });
+        .on('mouseout', hideTooltipAndAnnotation);
 
     svg.selectAll('.dot-secondary')
         .data(filteredDataSecondary)
@@ -223,26 +188,13 @@ async function loadPage(pageIndex) {
         .attr('r', 5)
         .attr('fill', colorMapping[secondaryDataset])
         .on('mouseover', function(event, d) {
-            tooltip.transition()
-                .duration(200)
-                .style('opacity', .9);
-            tooltip.html(`Date: ${d3.timeFormat('%Y-%m-%d')(d.Date)}<br>${secondaryDataset}: ${d[secondaryDataset]}`)
-                .style('left', (event.pageX + 10) + 'px')
-                .style('top', (event.pageY - 10) + 'px');
-            g.selectAll('.annotation-connector, .annotation-note')
-                .classed('hidden', false);
+            showTooltipAndAnnotation(event, d, secondaryDataset, yRight);
         })
         .on('mousemove', function(event) {
             tooltip.style('left', (event.pageX + 10) + 'px')
                 .style('top', (event.pageY - 10) + 'px');
         })
-        .on('mouseout', function() {
-            tooltip.transition()
-                .duration(500)
-                .style('opacity', 0);
-            g.selectAll('.annotation-connector, .annotation-note')
-                .classed('hidden', true);
-        });
+        .on('mouseout', hideTooltipAndAnnotation);
 }
 
 function showPage(pageIndex) {
