@@ -228,14 +228,10 @@
                 .attr("cy", d => yLeft(d[primaryDataset]))
                 .attr("r", 2)
                 .attr("fill", function(d) {
-                    if (primaryDataset === 'Inbound') {
+                    if (pageIndex === 1) {
                         return colorMapping.Inbound;
-                    } else if (primaryDataset === 'Outbound') {
+                    } else {
                         return colorMapping.Outbound;
-                    } else if (primaryDataset === 'GDP') {
-                        return colorMapping.GDP;
-                    } else if (primaryDataset === 'USDJPY') {
-                        return colorMapping.USDJPY;
                     }
                 })
                 .on("mouseover", function(event, d) {
@@ -260,13 +256,9 @@
                 .attr("cy", d => yRight(d[secondaryDataset]))
                 .attr("r", 2)
                 .attr("fill", function(d) {
-                    if (primaryDataset === 'Inbound') {
+                    if (pageIndex === 3) {
                         return colorMapping.Inbound;
-                    } else if (primaryDataset === 'Outbound') {
-                        return colorMapping.Outbound;
-                    } else if (primaryDataset === 'GDP') {
-                        return colorMapping.GDP;
-                    } else if (primaryDataset === 'USDJPY') {
+                    } else {
                         return colorMapping.USDJPY;
                     }
                 })
