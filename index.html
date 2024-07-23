@@ -39,18 +39,17 @@
         .line-usdjpy {
             stroke: purple;
         }
-        .mouse-line {
-            stroke: black;
-            stroke-width: 1px;
-            opacity: 0;
-        }
-        .mouse-per-line circle {
-            fill: none;
-            stroke-width: 1px;
-            opacity: 0;
-        }
-        .mouse-per-line text {
-            font-size: 12px;
+        .tooltip {
+            position: absolute;
+            text-align: center;
+            width: 100px;
+            height: 28px;
+            padding: 2px;
+            font: 12px sans-serif;
+            background: lightsteelblue;
+            border: 0px;
+            border-radius: 8px;
+            pointer-events: none;
         }
     </style>
 </head>
@@ -220,88 +219,30 @@
                 .attr('d', lineSecondary)
                 .attr('stroke', colorMapping[secondaryDataset]);
 
-            // Mouseover effects
-            const mouseG = svg.append("g")
-                .attr("class", "mouse-over-effects");
+            // Tooltip
+            const tooltip = d3.select("body").append("div")
+                .attr("class", "tooltip")
+                .style("opacity", 0);
 
-            mouseG.append("path")
-                .attr("class", "mouse-line")
-                .style("opacity", "0");
-
-            const lines = document.getElementsByClassName('line');
-
-            const mousePerLine = mouseG.selectAll('.mouse-per-line')
-                .data([primaryDataset, secondaryDataset])
-                .enter()
-                .append("g")
-                .attr("class", "mouse-per-line");
-
-            mousePerLine.append("circle")
-                .attr("r", 7)
-                .style("stroke", d => colorMapping[d])
-                .style("fill", "none")
-                .style("stroke-width", "1px")
-                .style("opacity", "0");
-
-            mousePerLine.append("text")
-                .attr("transform", "translate(10,3)");
-
-            mouseG.append('svg:rect')
-                .attr('width', width)
-                .attr('height', height)
-                .attr('fill', 'none')
-                .attr('pointer-events', 'all')
-                .on('mouseout', () => {
-                    d3.select(".mouse-line")
-                        .style("opacity", "0");
-                    d3.selectAll(".mouse-per-line circle")
-                        .style("opacity", "0");
-                    d3.selectAll(".mouse-per-line text")
-                        .style("opacity", "0");
-                })
-                .on('mouseover', () => {
-                    d3.select(".mouse-line")
-                        .style("opacity", "1");
-                    d3.selectAll(".mouse-per-line circle")
-                        .style("opacity", "1");
-                    d3.selectAll(".mouse-per-line text")
-                        .style("opacity", "1");
-                })
-                .on('mousemove', function() {
+            svg.append("rect")
+                .attr("width", width)
+                .attr("height", height)
+                .attr("fill", "none")
+                .attr("pointer-events", "all")
+                .on("mouseover", function() { tooltip.style("opacity", 1); })
+                .on("mouseout", function() { tooltip.style("opacity", 0); })
+                .on("mousemove", function() {
                     const mouse = d3.mouse(this);
-                    d3.select(".mouse-line")
-                        .attr("d", () => {
-                            let d = "M" + mouse[0] + "," + height;
-                            d += " " + mouse[0] + "," + 0;
-                            return d;
-                        });
+                    const xDate = x.invert(mouse[0]);
+                    const bisect = d3.bisector(d => d.Date).left;
+                    const idx = bisect(data, xDate);
+                    const d0 = data[idx - 1];
+                    const d1 = data[idx];
+                    const d = xDate - d0.Date > d1.Date - xDate ? d1 : d0;
 
-                    d3.selectAll(".mouse-per-line")
-                        .attr("transform", function(d, i) {
-                            const xDate = x.invert(mouse[0]),
-                                bisect = d3.bisector(d => d.Date).right;
-                            let idx = bisect(data, xDate);
-
-                            let beginning = 0,
-                                end = lines[i].getTotalLength(),
-                                target = null;
-
-                            while (true) {
-                                target = Math.floor((beginning + end) / 2);
-                                let pos = lines[i].getPointAtLength(target);
-                                if ((target === end || target === beginning) && pos.x !== mouse[0]) {
-                                    break;
-                                }
-                                if (pos.x > mouse[0]) end = target;
-                                else if (pos.x < mouse[0]) beginning = target;
-                                else break;
-                            }
-
-                            d3.select(this).select('text')
-                                .text(yLeft.invert(pos.y).toFixed(2));
-
-                            return "translate(" + mouse[0] + "," + pos.y + ")";
-                        });
+                    tooltip.html(`${primaryDataset}: ${d[primaryDataset]}<br>${secondaryDataset}: ${d[secondaryDataset]}`)
+                        .style("left", (d3.event.pageX + 15) + "px")
+                        .style("top", (d3.event.pageY - 28) + "px");
                 });
         }
 
