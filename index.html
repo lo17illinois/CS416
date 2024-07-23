@@ -2,7 +2,7 @@
 <html>
 <head>
     <script src='https://d3js.org/d3.v5.min.js'></script>
-    <script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/2.5.1/d3-annotation.min.js"></script>
     <style>
         .tab {
             display: inline-block;
@@ -97,56 +97,294 @@
                 const annotations = [
                     {
                         note: { label: "Start of 2007 Global Financial Crisis" },
-                        title: "d3.annotaationLLabel",
+                        title: "Global Financial Crisis",
                         x: x(new Date(2007, 5, 1)),
-                        y: yRight(d3.max(data.filter(d => d.Date.getTime() === new Date(2007, 5, 1).getTime()), d => d.GDP)), // Adjust y-coordinate based on your data
+                        y: yRight(d3.max(filteredDataSecondary, d => d.Date.getTime() === new Date(2007, 5, 1).getTime() && d.GDP)), // Adjust y-coordinate based on your data
                         dy: 137,
                         dx: 162
                     },
                     {
                         note: { label: "End of 2007 Global Financial Crisis" },
-                        title: "d3.annotaationLLabel",
+                        title: "End of Crisis",
                         x: x(new Date(2009, 5, 1)),
-                        y: yRight(d3.max(data.filter(d => d.Date.getTime() === new Date(2009, 5, 1).getTime()), d => d.GDP)), // Adjust y-coordinate based on your data
+                        y: yRight(d3.max(filteredDataSecondary, d => d.Date.getTime() === new Date(2009, 5, 1).getTime() && d.GDP)), // Adjust y-coordinate based on your data
                         dy: 137,
                         dx: 162
                     },
                     {
                         note: { label: "2011 East Japan Great Earthquake and Tsunami Disaster" },
-                        title: "d3.annotaationLLabel",
+                        title: "Earthquake & Tsunami",
                         x: x(new Date(2011, 2, 1)),
-                        y: yLeft(d3.max(data.filter(d => d.Date.getTime() === new Date(2011, 2, 1).getTime()), d => d.Inbound)), // Adjust y-coordinate based on your data
+                        y: yLeft(d3.max(filteredDataPrimary, d => d.Date.getTime() === new Date(2011, 2, 1).getTime() && d.Inbound)), // Adjust y-coordinate based on your data
                         dy: 137,
                         dx: 162
                     },
                     {
                         note: { label: "Start of Abenomics (fiscal stimulus)" },
-                        title: "d3.annotaationLLabel",
+                        title: "Abenomics",
                         x: x(new Date(2012, 5, 1)),
-                        y: yRight(d3.max(data.filter(d => d.Date.getTime() === new Date(2012, 5, 1).getTime()), d => d.GDP)), // Adjust y-coordinate based on your data
+                        y: yRight(d3.max(filteredDataSecondary, d => d.Date.getTime() === new Date(2012, 5, 1).getTime() && d.GDP)), // Adjust y-coordinate based on your data
                         dy: 137,
                         dx: 162
                     },
                     {
                         note: { label: "First case of Covid-19 in Japan" },
-                        title: "d3.annotaationLLabel",
+                        title: "Covid-19",
                         x: x(new Date(2020, 0, 1)),
-                        y: yLeft(d3.max(data.filter(d => d.Date.getTime() === new Date(2020, 0, 1).getTime()), d => d.Inbound)), // Adjust y-coordinate based on your data
+                        y: yLeft(d3.max(filteredDataPrimary, d => d.Date.getTime() === new Date(2020, 0, 1).getTime() && d.Inbound)), // Adjust y-coordinate based on your data
                         dy: 137,
                         dx: 162
                     },
                     {
                         note: { label: "Japan reopens to individual tourists" },
-                        title: "d3.annotaationLLabel",
+                        title: "Reopens to Tourism",
                         x: x(new Date(2022, 9, 1)),
-                        y: yLeft(d3.max(data.filter(d => d.Date.getTime() === new Date(2022, 9, 1).getTime()), d => d.Inbound)), // Adjust y-coordinate based on your data
+                        y: yLeft(d3.max(filteredDataPrimary, d => d.Date.getTime() === new Date(2022, 9, 1).getTime() && d.Inbound)), // Adjust y-coordinate based on your data
                         dy: 137,
                         dx: 162
                     }
                 ];
 
                 const makeAnnotations = d3.annotation()
-                    .type(d3.annotatiionLabel)
+                    .type(d3.annotationLabel)
+                    .annotations(annotations);
+
+                g.append("g")
+                    .attr("class", "annotation-group")
+                    .call(makeAnnotations);
+
+            } else if (pageIndex === 1) {
+                filteredDataPrimary = data.filter(d => d.Inbound !== null);
+                filteredDataSecondary = data.filter(d => d.USDJPY !== null);
+                yLeft.domain(d3.extent(filteredDataPrimary, d => d.Inbound));
+                yRight.domain(d3.extent(filteredDataSecondary, d => d.USDJPY));
+                linePrimary.y(d => yLeft(d.Inbound));
+                lineSecondary.y(d => yRight(d.USDJPY));
+                yLeftLabel = 'Inbound Tourism into Japan';
+                yRightLabel = 'USD/JPY Exchange Rate';
+            } else if (pageIndex === 2) {
+                filteredDataPrimary = data.filter(d => d.Outbound !== null);
+                filteredDataSecondary = data.filter(d => d.USDJPY !== null);
+                yLeft.domain(d3.extent(filteredDataPrimary, d => d.Outbound));
+                yRight.domain(d3.extent(filteredDataSecondary, d => d.USDJPY));
+                linePrimary.y(d => yLeft(d.Outbound));
+                lineSecondary.y(d => yRight(d.USDJPY));
+                yLeftLabel = 'Outbound Tourism from Japan';
+                yRightLabel = 'USD/JPY Exchange Rate';
+            } else if (pageIndex === 3) {
+                filteredDataPrimary = data.filter(d => d.Outbound !== null);
+                filteredDataSecondary = data.filter(d => d.Inbound !== null);
+                yLeft.domain(d3.extent(filteredDataPrimary, d => d.Outbound));
+                yRight.domain(d3.extent(filteredDataSecondary, d => d.Inbound));
+                linePrimary.y(d => yLeft(d.Outbound));
+                lineSecondary.y(d => yRight(d.Inbound));
+                yLeftLabel = 'Outbound Tourism from Japan';
+                yRightLabel = 'Inbound Tourism into Japan';
+            }
+
+            x.domain(d3.extent(data, d => d.Date));
+
+            g.append('g')
+                .attr('transform', `translate(0,${height})`)
+                .call(d3.axisBottom(x));
+
+            g.append('g')
+                .call(d3.axisLeft(yLeft))
+                .append('text')
+                .attr('fill', '#000')
+                .attr('transform', 'rotate(-90)')
+                .attr('y', 6)
+                .attr('dy', '0.71em')
+                .attr('text-anchor', 'end')
+                .text(yLeftLabel);
+
+            g.append('g')
+                .attr('transform', `translate(${width},0)`)
+                .call(d3.axisRight(yRight))
+                .append('text')
+                .attr('fill', '#000')
+                .attr('transform', 'rotate(-90)')
+                .attr('y', -12)
+                .attr('dy', '0.71em')
+                .attr('text-anchor', 'end')
+                .text(yRightLabel);
+
+            g.append('path')
+                .datum(filteredDataPrimary)
+                .attr('class', 'line line-primary')
+                .attr('d', linePrimary);
+
+            g.append('path')
+                .datum(filteredDataSecondary)
+                .attr('class', 'line line-secondary')
+                .attr('d', lineSecondary);
+
+            document.getElementById('status').textContent = `Loaded ${pages[pageIndex]}`;
+        }
+
+        function showPage(pageIndex) {
+            currentPage = pageIndex;
+            d3.selectAll('.tab').classed('active', false);
+            d3.selectAll('.tab').filter((d, i) => i === pageIndex).classed('active', true);
+            loadPage(pageIndex);
+        }
+
+        function nextPage() {
+            currentPage = (currentPage + 1) % pages.length;
+            showPage(currentPage);
+        }
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+    <script src='https://d3js.org/d3.v5.min.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/2.5.1/d3-annotation.min.js"></script>
+    <style>
+        .tab {
+            display: inline-block;
+            margin-right: 10px;
+            padding: 10px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .active {
+            background-color: #ddd;
+        }
+        .next-btn {
+            display: inline-block;
+            margin-left: 20px;
+            padding: 10px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .line {
+            fill: none;
+            stroke-width: 2px;
+        }
+        .line-primary {
+            stroke: steelblue;
+        }
+        .line-secondary {
+            stroke: orange;
+        }
+    </style>
+</head>
+<body onload='init()'>
+    <div id="tabs">
+        <div class="tab active" onclick="showPage(0)">Page 1</div>
+        <div class="tab" onclick="showPage(1)">Page 2</div>
+        <div class="tab" onclick="showPage(2)">Page 3</div>
+        <div class="tab" onclick="showPage(3)">Page 4</div>
+        <div class="next-btn" onclick="nextPage()">Next</div>
+    </div>
+    <div id="container">
+        <svg width="800" height="500"></svg>
+    </div>
+    <p id="status"></p>
+    <script>
+        let currentPage = 0;
+        const pages = ['Page 1', 'Page 2', 'Page 3', 'Page 4'];
+
+        async function init() {
+            await loadPage(currentPage);
+        }
+
+        async function loadPage(pageIndex) {
+            const data = await d3.csv('JapanTourism.csv', d => {
+                return {
+                    Date: d3.timeParse("%m/%d/%Y")(d.Date),
+                    Inbound: d.Inbound ? +d.Inbound : null,
+                    Outbound: d.Outbound ? +d.Outbound : null,
+                    GDP: d.GDP ? +d.GDP : null,
+                    USDJPY: d.USDJPY ? +d.USDJPY : null
+                };
+            });
+
+            const svg = d3.select('svg');
+            svg.html('');  // Clear previous content
+
+            const margin = {top: 20, right: 60, bottom: 30, left: 50},
+                width = +svg.attr('width') - margin.left - margin.right,
+                height = +svg.attr('height') - margin.top - margin.bottom,
+                g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const x = d3.scaleTime().rangeRound([0, width]),
+                yLeft = d3.scaleLinear().rangeRound([height, 0]),
+                yRight = d3.scaleLinear().rangeRound([height, 0]);
+
+            const linePrimary = d3.line().x(d => x(d.Date)),
+                lineSecondary = d3.line().x(d => x(d.Date));
+
+            let filteredDataPrimary, filteredDataSecondary, yLeftLabel, yRightLabel;
+
+            if (pageIndex === 0) {
+                filteredDataPrimary = data.filter(d => d.Inbound !== null);
+                filteredDataSecondary = data.filter(d => d.GDP !== null);
+                yLeft.domain(d3.extent(filteredDataPrimary, d => d.Inbound));
+                yRight.domain(d3.extent(filteredDataSecondary, d => d.GDP));
+                linePrimary.y(d => yLeft(d.Inbound));
+                lineSecondary.y(d => yRight(d.GDP));
+                yLeftLabel = 'Inbound Tourism into Japan';
+                yRightLabel = 'GDP';
+
+                // Annotations for Page 1
+                const annotations = [
+                    {
+                        note: { label: "Start of 2007 Global Financial Crisis" },
+                        title: "Global Financial Crisis",
+                        x: x(new Date(2007, 5, 1)),
+                        y: yRight(d3.max(filteredDataSecondary, d => d.Date.getTime() === new Date(2007, 5, 1).getTime() && d.GDP)), // Adjust y-coordinate based on your data
+                        dy: 137,
+                        dx: 162
+                    },
+                    {
+                        note: { label: "End of 2007 Global Financial Crisis" },
+                        title: "End of Crisis",
+                        x: x(new Date(2009, 5, 1)),
+                        y: yRight(d3.max(filteredDataSecondary, d => d.Date.getTime() === new Date(2009, 5, 1).getTime() && d.GDP)), // Adjust y-coordinate based on your data
+                        dy: 137,
+                        dx: 162
+                    },
+                    {
+                        note: { label: "2011 East Japan Great Earthquake and Tsunami Disaster" },
+                        title: "Earthquake & Tsunami",
+                        x: x(new Date(2011, 2, 1)),
+                        y: yLeft(d3.max(filteredDataPrimary, d => d.Date.getTime() === new Date(2011, 2, 1).getTime() && d.Inbound)), // Adjust y-coordinate based on your data
+                        dy: 137,
+                        dx: 162
+                    },
+                    {
+                        note: { label: "Start of Abenomics (fiscal stimulus)" },
+                        title: "Abenomics",
+                        x: x(new Date(2012, 5, 1)),
+                        y: yRight(d3.max(filteredDataSecondary, d => d.Date.getTime() === new Date(2012, 5, 1).getTime() && d.GDP)), // Adjust y-coordinate based on your data
+                        dy: 137,
+                        dx: 162
+                    },
+                    {
+                        note: { label: "First case of Covid-19 in Japan" },
+                        title: "Covid-19",
+                        x: x(new Date(2020, 0, 1)),
+                        y: yLeft(d3.max(filteredDataPrimary, d => d.Date.getTime() === new Date(2020, 0, 1).getTime() && d.Inbound)), // Adjust y-coordinate based on your data
+                        dy: 137,
+                        dx: 162
+                    },
+                    {
+                        note: { label: "Japan reopens to individual tourists" },
+                        title: "Reopens to Tourism",
+                        x: x(new Date(2022, 9, 1)),
+                        y: yLeft(d3.max(filteredDataPrimary, d => d.Date.getTime() === new Date(2022, 9, 1).getTime() && d.Inbound)), // Adjust y-coordinate based on your data
+                        dy: 137,
+                        dx: 162
+                    }
+                ];
+
+                const makeAnnotations = d3.annotation()
+                    .type(d3.annotationLabel)
                     .annotations(annotations);
 
                 g.append("g")
