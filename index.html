@@ -188,7 +188,7 @@
                         y: d => d.y
                     })
                     .on('note', function(annotation) {
-                        annotation.note.setStyle('fill', annotation.note.color);
+                        annotation.note.setStyle('fill', annotation.color);
                     });
                 g.append("g")
                     .attr("class", "annotation-group")
