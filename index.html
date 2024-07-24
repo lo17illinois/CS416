@@ -54,6 +54,12 @@
         .annotation-note-label {
             fill: #000;
         }
+        .annotation-group .annotation-green text {
+            fill: green;
+        }
+        .annotation-group .annotation-skyblue text {
+            fill: skyblue;
+        }
     </style>
 </head>
 <body onload='init()'>
@@ -126,13 +132,14 @@
                 primaryDataset = 'Inbound';
                 secondaryDataset = 'GDP';
                 const annotations = [
+                    // Annotations for Page 1
                     {
                         note: { label: "December 2007, Start of Global Financial Crisis",
                         wrap: 150, align: "left"},
                         x: 578,
                         y: 495,
                         dy:-50, dx:-20,
-                        color: "green"
+                        className: "annotation-green"
                     },
                     {
                         note: { label: "June 2009, End of Global Financial Crisis",
@@ -140,7 +147,7 @@
                         x: 649,
                         y: 671,
                         dy:10, dx:-60,
-                        color: "green"
+                        className: "annotation-green"
                     },
                     {
                         note: { label: "December 2012, Start of Abenomics (fiscal stimulus program)",
@@ -148,7 +155,7 @@
                         x: 823,
                         y: 545,
                         dy:-300, dx:-20,
-                        color: "green"
+                        className: "annotation-green"
                     },
                     {
                         note: { label: "March 2011, Japan Great Earthquake and Tsunami Disaster",
@@ -156,7 +163,7 @@
                         x: 729,
                         y: 630,
                         dy:50, dx:100,
-                        color: "skyblue"
+                        className: "annotation-skyblue"
                     },
                     {
                         note: { label: "January 2020, First case of Covid-19 in Japan",
@@ -164,7 +171,7 @@
                         x: 1160,
                         y: 100,
                         dy:-20, dx:20,
-                        color: "skyblue"
+                        className: "annotation-skyblue"
                     },
                     {
                         note: { label: "October 2022, Japan lifts Covid travel restrictions and reopens to individual tourists",
@@ -172,7 +179,7 @@
                         x: 1294,
                         y: 626,
                         dy:-20, dx:20,
-                        color: "skyblue"
+                        className: "annotation-skyblue"
                     }
                 ];
                 const makeAnnotations = d3.annotation()
@@ -185,9 +192,6 @@
                     .accessorsInverse({
                         x: d => d.x,
                         y: d => d.y
-                    })
-                    .on('note', function(annotation) {
-                        annotation.note.setStyle('fill', annotation.note.color);
                     });
                 g.append("g")
                     .attr("class", "annotation-group")
@@ -338,7 +342,6 @@
                         .duration(500)
                         .style("opacity", 0);
                 });
-
             function getLabel(dataset) {
                 if (dataset === 'Inbound') {
                     return 'Inbound Tourists into Japan';
