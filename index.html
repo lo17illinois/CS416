@@ -83,18 +83,15 @@
     <script>
         let currentPage = 0;
         const pages = ['Page 1', 'Page 2', 'Page 3', 'Page 4'];
-
         const colorMapping = {
             Inbound: 'skyblue',
             Outbound: 'orange',
             GDP: 'green',
             USDJPY: 'purple'
         };
-
         async function init() {
             await loadPage(currentPage);
         }
-
         async function loadPage(pageIndex) {
             const tooltip = d3.select("body").append("div")
                 .attr("class", "tooltip")
@@ -108,25 +105,19 @@
                     USDJPY: d.USDJPY ? +d.USDJPY : null
                 };
             });
-
             const svg = d3.select('svg');
             svg.html('');  // Clear previous content
-
             const margin = {top: 20, right: 60, bottom: 30, left: 150},
                 width = +svg.attr('width') - margin.left - margin.right,
                 height = +svg.attr('height') - margin.top - margin.bottom,
                 g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
-
             const x = d3.scaleTime().rangeRound([0, width]),
                 yLeft = d3.scaleLinear().rangeRound([height, 0]),
                 yRight = d3.scaleLinear().rangeRound([height, 0]);
-
             const linePrimary = d3.line().x(d => x(d.Date)),
                 lineSecondary = d3.line().x(d => x(d.Date));
-
             let filteredDataPrimary, filteredDataSecondary, yLeftLabel, yRightLabel, primaryDataset, secondaryDataset;
             let annotations;
-
             if (pageIndex === 0) {
                 filteredDataPrimary = data.filter(d => d.Inbound !== null);
                 filteredDataSecondary = data.filter(d => d.GDP !== null);
@@ -485,7 +476,6 @@
                         .duration(500)
                         .style("opacity", 0);
                 });
-
             g.selectAll(".dot-secondary")
                 .data(filteredDataSecondary)
                 .enter().append("circle")
@@ -520,7 +510,6 @@
                         .duration(500)
                         .style("opacity", 0);
                 });
-
             const makeAnnotations = d3.annotation()
                 .type(d3.annotationLabel)
                 .annotations(annotations)
@@ -532,11 +521,9 @@
                     x: d => d.x,
                     y: d => d.y
                 });
-
             g.append("g")
                 .attr("class", "annotation-group")
                 .call(makeAnnotations);
-
             function getLabel(dataset) {
                 if (dataset === 'Inbound') {
                     return 'Inbound Tourists into Japan';
@@ -549,22 +536,22 @@
                 }
                 return dataset;
             }
-        }
-        function handleMouseOver(dataset) 
-            d3.select(this).raise(); // Bring the line to front
-            d3.select('.axis-x').attr('stroke', colorMapping[dataset]).selectAll('text').attr('fill', colorMapping[dataset]);
-            if (dataset === primaryDataset) {
-                d3.select('.axis-y-left').attr('stroke', colorMapping[dataset]).selectAll('text').attr('fill', colorMapping[dataset]);
-            } else {
-                d3.select('.axis-y-right').attr('stroke', colorMapping[dataset]).selectAll('text').attr('fill', colorMapping[dataset]);
+            function handleMouseOver(dataset){
+                d3.select(this).raise(); // Bring the line to front
+                d3.select('.axis-x').attr('stroke', colorMapping[dataset]).selectAll('text').attr('fill', colorMapping[dataset]);
+                if (dataset === primaryDataset) {
+                    d3.select('.axis-y-left').attr('stroke', colorMapping[dataset]).selectAll('text').attr('fill', colorMapping[dataset]);
+                } else {
+                    d3.select('.axis-y-right').attr('stroke', colorMapping[dataset]).selectAll('text').attr('fill', colorMapping[dataset]);
+                }
             }
-        }
-        function handleMouseOut(dataset) {
-            d3.select('.axis-x').attr('stroke', null).selectAll('text').attr('fill', null);
-            if (dataset === primaryDataset) {
-                d3.select('.axis-y-left').attr('stroke', null).selectAll('text').attr('fill', null);
-            } else {
-                d3.select('.axis-y-right').attr('stroke', null).selectAll('text').attr('fill', null);
+            function handleMouseOut(dataset) {
+                d3.select('.axis-x').attr('stroke', null).selectAll('text').attr('fill', null);
+                if (dataset === primaryDataset) {
+                    d3.select('.axis-y-left').attr('stroke', null).selectAll('text').attr('fill', null);
+                } else {
+                    d3.select('.axis-y-right').attr('stroke', null).selectAll('text').attr('fill', null);
+                }
             }
         }
         function showPage(pageIndex) {
