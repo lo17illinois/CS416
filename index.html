@@ -92,11 +92,11 @@
         async function init() {
             await loadPage(currentPage);
         }
-        async function loadPage(pageIndex) {
+        async function loadPage(pageIndex) {                                                    //Loads page
             const tooltip = d3.select("body").append("div")
                 .attr("class", "tooltip")
                 .style("opacity", 0);
-            const data = await d3.csv('JapanTourism.csv', d => {
+            const data = await d3.csv('JapanTourism.csv', d => {                                //Loads data
                 return {
                     Date: d3.timeParse("%m/%d/%Y")(d.Date),
                     Inbound: d.Inbound ? +d.Inbound : null,
@@ -106,7 +106,7 @@
                 };
             });
             const svg = d3.select('svg');
-            svg.html('');  // Clear previous content
+            svg.html('');                                                                              //Clear previous content
             const margin = {top: 20, right: 60, bottom: 30, left: 150},
                 width = +svg.attr('width') - margin.left - margin.right,
                 height = +svg.attr('height') - margin.top - margin.bottom,
@@ -116,9 +116,9 @@
                 yRight = d3.scaleLinear().rangeRound([height, 0]);
             const linePrimary = d3.line().x(d => x(d.Date)),
                 lineSecondary = d3.line().x(d => x(d.Date));
-            let filteredDataPrimary, filteredDataSecondary, yLeftLabel, yRightLabel, primaryDataset, secondaryDataset;
+            let filteredDataPrimary, filteredDataSecondary, yLeftLabel, yRightLabel, primaryDataset, secondaryDataset;            //Parameter list
             let annotations;
-            if (pageIndex === 0) {
+            if (pageIndex === 0) {                                                                                                //Page 1
                 filteredDataPrimary = data.filter(d => d.Inbound !== null);
                 filteredDataSecondary = data.filter(d => d.GDP !== null);
                 yLeft.domain(d3.extent(filteredDataPrimary, d => d.Inbound));
@@ -130,7 +130,6 @@
                 primaryDataset = 'Inbound';
                 secondaryDataset = 'GDP';
                 annotations = [
-                    // Annotations for Page 1
                     {
                         note: { label: "December 2007, Start of Global Financial Crisis",
                         wrap: 150, align: "right"},
@@ -187,7 +186,7 @@
                         dy:0, dx:0
                     }
                 ];
-            } else if (pageIndex === 1) {
+            } else if (pageIndex === 1) {                                                                                         //Page 2
                 filteredDataPrimary = data.filter(d => d.Inbound !== null);
                 filteredDataSecondary = data.filter(d => d.USDJPY !== null);
                 yLeft.domain(d3.extent(filteredDataPrimary, d => d.Inbound));
@@ -199,7 +198,6 @@
                 primaryDataset = 'Inbound';
                 secondaryDataset = 'USDJPY';
                 annotations = [
-                    // Annotations for Page 2
                     {
                         note: { label: "December 2007, Start of Global Financial Crisis",
                         wrap: 150, align: "left"},
@@ -272,7 +270,7 @@
                         dy:0, dx:0
                     }
                 ];
-            } else if (pageIndex === 2) {
+            } else if (pageIndex === 2) {                                                                                         //Page 3
                 filteredDataPrimary = data.filter(d => d.Outbound !== null);
                 filteredDataSecondary = data.filter(d => d.USDJPY !== null);
                 yLeft.domain(d3.extent(filteredDataPrimary, d => d.Outbound));
@@ -284,7 +282,6 @@
                 primaryDataset = 'Outbound';
                 secondaryDataset = 'USDJPY';
                 annotations = [
-                    // Annotations for Page 3
                     {
                         note: { label: "December 2007, Start of Global Financial Crisis",
                         wrap: 150, align: "left"},
@@ -357,7 +354,7 @@
                         dy:0, dx:0
                     }
                 ];
-            } else if (pageIndex === 3) {
+            } else if (pageIndex === 3) {                                                                                         //Page 4
                 filteredDataPrimary = data.filter(d => d.Outbound !== null);
                 filteredDataSecondary = data.filter(d => d.Inbound !== null);
                 yLeft.domain(d3.extent(filteredDataPrimary, d => d.Outbound));
@@ -369,7 +366,6 @@
                 primaryDataset = 'Outbound';
                 secondaryDataset = 'Inbound';
                 annotations = [
-                    // Annotations for Page 4
                     {
                         note: { label: "March 2011, Japan Great Earthquake and Tsunami Disaster",
                         wrap: 150, align: "left"},
@@ -428,11 +424,11 @@
                 ];
             }
             x.domain(d3.extent(data, d => d.Date));
-            g.append('g')
+            g.append('g')                                                                                         //x-axis
                 .attr('class', 'axis axis-x')
                 .attr('transform', `translate(0,${height})`)
                 .call(d3.axisBottom(x));
-            g.append('g')
+            g.append('g')                                                                                         //y-axis-left
                 .attr('class', 'axis axis-y axis-y-left')
                 .call(d3.axisLeft(yLeft))
                 .append('text')
@@ -444,7 +440,7 @@
                 .attr('font-size', '24px')
                 .attr('font-weight', 'bold')
                 .text(yLeftLabel);
-            g.append('g')
+            g.append('g')                                                                                         //y-axis-right
                 .attr('class', 'axis axis-y axis-y-right')
                 .attr('transform', `translate(${width},0)`)
                 .call(d3.axisRight(yRight))
@@ -457,14 +453,14 @@
                 .attr('font-size', '24px')
                 .attr('font-weight', 'bold')
                 .text(yRightLabel);
-            g.append('path')
+            g.append('path')                                                                                         //primary data line
                 .datum(filteredDataPrimary)
                 .attr('class', `line line-${primaryDataset.toLowerCase()}`)
                 .attr('d', linePrimary)
                 .attr('stroke', colorMapping[primaryDataset])
                 .on('mouseover', function(event, d) { handleMouseOver.call(this, event, primaryDataset); })
                 .on('mouseout', function(event, d) { handleMouseOut.call(this, event, primaryDataset); });
-            g.append('path')
+            g.append('path')                                                                                         //secondary data line
                 .datum(filteredDataSecondary)
                 .attr('class', `line line-${secondaryDataset.toLowerCase()}`)
                 .attr('d', lineSecondary)
@@ -472,7 +468,7 @@
                 .on('mouseover', function(event, d) { handleMouseOver.call(this, event, secondaryDataset); })
                 .on('mouseout', function(event, d) { handleMouseOut.call(this, event, secondaryDataset); });
             // Add circles for data points
-            g.selectAll(".dot")
+            g.selectAll(".dot")                                                                                         //circles for primary data
                 .data(filteredDataPrimary)
                 .enter().append("circle")
                 .attr("class", "dot")
@@ -490,7 +486,7 @@
                         return colorMapping.USDJPY;
                     }
                 })
-                .on("mouseover", function(event, d) {
+                .on("mouseover", function(event, d) {                                        //mouseover primary data point
                     d3.select(this).attr("r",6);
                     tooltip.transition()
                         .duration(200)
@@ -500,13 +496,13 @@
                         .style("left", `${mouseX + 50}px`)
                         .style("top", `${mouseY + 35}px`);
                 })
-                .on("mouseout", function() {
+                .on("mouseout", function() {                                                //mouse off primary data point
                     d3.select(this).attr("r",2);
                     tooltip.transition()
                         .duration(500)
                         .style("opacity", 0);
                 });
-            g.selectAll(".dot-secondary")
+            g.selectAll(".dot-secondary")                                                                                 //circles for secondary data
                 .data(filteredDataSecondary)
                 .enter().append("circle")
                 .attr("class", "dot-secondary")
@@ -524,7 +520,7 @@
                         return colorMapping.USDJPY;
                     }
                 })
-                .on("mouseover", function(event, d) {
+                .on("mouseover", function(event, d) {                                        //mouseover secondary data point
                     d3.select(this).attr("r",6);
                     tooltip.transition()
                         .duration(200)
@@ -534,13 +530,13 @@
                         .style("left", `${mouseX + 50}px`)
                         .style("top", `${mouseY + 35}px`);
                 })
-                .on("mouseout", function() {
+                .on("mouseout", function() {                                                //mouse off secondary data point
                     d3.select(this).attr("r",2);
                     tooltip.transition()
                         .duration(500)
                         .style("opacity", 0);
                 });
-            const makeAnnotations = d3.annotation()
+            const makeAnnotations = d3.annotation()                                                                 //Annotations
                 .type(d3.annotationLabel)
                 .annotations(annotations)
                 .accessors({
@@ -554,7 +550,7 @@
             g.append("g")
                 .attr("class", "annotation-group")
                 .call(makeAnnotations);
-            function getLabel(dataset) {
+            function getLabel(dataset) {                                                                            //Relabel tooltips
                 if (dataset === 'Inbound') {
                     return 'Inbound Tourists into Japan';
                 } else if (dataset === 'Outbound') {
@@ -566,61 +562,55 @@
                 }
                 return dataset;
             }
-            function handleMouseOver(event, dataset) {
+            function handleMouseOver(event, dataset) {                                                                        //Mouse over data line
                 const line = d3.select(this);
                 line.raise(); // Bring the line to front
-                line.style('stroke-width', 3).attr('stroke-width', 3); // Increase line thickness
-                line.style('stroke-opacity', 1).attr('stroke-opacity', 1); // Set opacity to 1 for the hovered line
-                // Highlight the relevant axes
-                d3.select('.axis-x').attr('stroke', colorMapping[dataset])
+                line.style('stroke-width', 3).attr('stroke-width', 3);    //Increase line thickness on hover
+                line.style('stroke-opacity', 1).attr('stroke-opacity', 1);    //Set opacity to 1 on hover
+                d3.select('.axis-x').attr('stroke', colorMapping[dataset])    //Change relevant axes color on hover
                     .selectAll('text').attr('fill', colorMapping[dataset]);
-                d3.select('.axis-x path').attr('stroke', colorMapping[dataset]); // Change x-axis line color
+                d3.select('.axis-x path').attr('stroke', colorMapping[dataset]);    //Change x-axis line color on hover
                 if (dataset === primaryDataset) {
                     d3.select('.axis-y-left').attr('stroke', colorMapping[dataset])
                         .selectAll('text').attr('fill', colorMapping[dataset]);
-                    d3.select('.axis-y-left path').attr('stroke', colorMapping[dataset]); // Change y-axis left line color
-                    // Grey out the secondary dataset line and its axis
-                    d3.select(`.line-${secondaryDataset.toLowerCase()}`).style('stroke-opacity', 0.2).attr('stroke-opacity', 0.2);
+                    d3.select('.axis-y-left path').attr('stroke', colorMapping[dataset]);    //Change y-axis left line color
+                    d3.select(`.line-${secondaryDataset.toLowerCase()}`).style('stroke-opacity', 0.2).attr('stroke-opacity', 0.2);    //Grey out secondary data line and its axis
                     d3.select('.axis-y-right').attr('stroke', 'lightgrey')
                         .selectAll('text').attr('fill', 'lightgrey');
-                    d3.select('.axis-y-right path').attr('stroke', 'lightgrey'); // Grey out y-axis right line color
+                    d3.select('.axis-y-right path').attr('stroke', 'lightgrey');    //Grey out y-axis right line color
                 } else {
                     d3.select('.axis-y-right').attr('stroke', colorMapping[dataset])
                         .selectAll('text').attr('fill', colorMapping[dataset]);
-                    d3.select('.axis-y-right path').attr('stroke', colorMapping[dataset]); // Change y-axis right line color
-                    // Grey out the primary dataset line and its axis
-                    d3.select(`.line-${primaryDataset.toLowerCase()}`).style('stroke-opacity', 0.2).attr('stroke-opacity', 0.2);
+                    d3.select('.axis-y-right path').attr('stroke', colorMapping[dataset]);     //Change y-axis right line color
+                    d3.select(`.line-${primaryDataset.toLowerCase()}`).style('stroke-opacity', 0.2).attr('stroke-opacity', 0.2);    //Grey out primary data line and its axis
                     d3.select('.axis-y-left').attr('stroke', 'lightgrey')
                         .selectAll('text').attr('fill', 'lightgrey');
-                    d3.select('.axis-y-left path').attr('stroke', 'lightgrey'); // Grey out y-axis left line color
+                    d3.select('.axis-y-left path').attr('stroke', 'lightgrey');     //Grey out y-axis left line color
                 }
             }
-            function handleMouseOut(event, dataset) {
+            function handleMouseOut(event, dataset) {                                                                        //Mouse off data line
                 const line = d3.select(this);
-                line.style('stroke-width', 2).attr('stroke-width', 2); // Reset line thickness
-                line.style('stroke-opacity', 1).attr('stroke-opacity', 1); // Reset opacity to 1 for the hovered line
-                // Reset all axes to default black
-                d3.select('.axis-x').attr('stroke', 'black')
+                line.style('stroke-width', 2).attr('stroke-width', 2);    //Reset line thickness
+                line.style('stroke-opacity', 1).attr('stroke-opacity', 1);    //Reset opacity to 1 for hovered line
+                d3.select('.axis-x').attr('stroke', 'black')    //Reset all axes to black
                     .selectAll('text').attr('fill', 'black');
-                d3.select('.axis-x path').attr('stroke', 'black'); // Reset x-axis line color
+                d3.select('.axis-x path').attr('stroke', 'black');    //Reset x-axis line color
                 if (dataset === primaryDataset) {
                     d3.select('.axis-y-left').attr('stroke', 'black')
                         .selectAll('text').attr('fill', 'black');
-                    d3.select('.axis-y-left path').attr('stroke', 'black'); // Reset y-axis left line color
-                    // Reset secondary dataset line and its axis
-                    d3.select(`.line-${secondaryDataset.toLowerCase()}`).style('stroke-opacity', 1).attr('stroke-opacity', 1);
+                    d3.select('.axis-y-left path').attr('stroke', 'black');    //Reset y-axis left line color
+                    d3.select(`.line-${secondaryDataset.toLowerCase()}`).style('stroke-opacity', 1).attr('stroke-opacity', 1);    //Reset secondary data line and its axis
                     d3.select('.axis-y-right').attr('stroke', 'black')
                         .selectAll('text').attr('fill', 'black');
-                    d3.select('.axis-y-right path').attr('stroke', 'black'); // Reset y-axis right line color
+                    d3.select('.axis-y-right path').attr('stroke', 'black');    //Reset y-axis right line color
                 } else {
                     d3.select('.axis-y-right').attr('stroke', 'black')
                         .selectAll('text').attr('fill', 'black');
-                    d3.select('.axis-y-right path').attr('stroke', 'black'); // Reset y-axis right line color
-                    // Reset primary dataset line and its axis
-                    d3.select(`.line-${primaryDataset.toLowerCase()}`).style('stroke-opacity', 1).attr('stroke-opacity', 1);
+                    d3.select('.axis-y-right path').attr('stroke', 'black');    //Reset y-axis right line color
+                    d3.select(`.line-${primaryDataset.toLowerCase()}`).style('stroke-opacity', 1).attr('stroke-opacity', 1);    //Reset primary data line and its axis
                     d3.select('.axis-y-left').attr('stroke', 'black')
                         .selectAll('text').attr('fill', 'black');
-                    d3.select('.axis-y-left path').attr('stroke', 'black'); // Reset y-axis left line color
+                    d3.select('.axis-y-left path').attr('stroke', 'black');    //Reset y-axis left line color
                 }
             }
         }
