@@ -145,7 +145,7 @@
                         wrap: 150, align: "right"},
                         x: 578,
                         y: 495,
-                        dy:-50, dx:50,
+                        dy:-50, dx:-20,
                         className: "annotation-green"
                     },
                     {
@@ -153,7 +153,7 @@
                         wrap: 150, align: "right"},
                         x: 649,
                         y: 671,
-                        dy:10, dx:60,
+                        dy:10, dx:-60,
                         className: "annotation-green"
                     },
                     {
@@ -161,7 +161,7 @@
                         wrap: 150, align: "right"},
                         x: 821,
                         y: 545,
-                        dy:-300, dx:50,
+                        dy:-300, dx:-20,
                         className: "annotation-green"
                     },
                     {
@@ -169,11 +169,11 @@
                         wrap: 150, align: "left"},
                         x: 729,
                         y: 630,
-                        dy:50, dx:170,
+                        dy:50, dx:100,
                         className: "annotation-skyblue"
                     },
                     {
-                        note: { label: "January 2020, First case of Covid-19 in Japan",
+                        note: { label: "January 2020, Covid-19 Pandemic",
                         wrap: 150, align: "left"},
                         x: 1160,
                         y: 100,
@@ -203,28 +203,68 @@
                 annotations = [
                     // Annotations for Page 2
                     {
-                        note: { label: "September 2010, Record high Yen",
+                        note: { label: "December 2007, Start of Global Financial Crisis",
                         wrap: 150, align: "left"},
-                        x: 800,
-                        y: 300,
-                        dy:-50, dx:50,
+                        x: 578,
+                        y: 444,
+                        dy:-50, dx:20,
                         className: "annotation-purple"
                     },
                     {
-                        note: { label: "October 2014, Yen weakens further",
+                        note: { label: "June 2009, End of Global Financial Crisis",
                         wrap: 150, align: "left"},
-                        x: 1000,
-                        y: 600,
-                        dy:50, dx:50,
+                        x: 649,
+                        y: 584,
+                        dy:-70, dx:20,
                         className: "annotation-purple"
                     },
                     {
-                        note: { label: "April 2016, Yen strengthens",
+                        note: { label: "December 2012, Start of Abenomics (fiscal stimulus program)",
                         wrap: 150, align: "left"},
-                        x: 1100,
+                        x: 820,
+                        y: 658,
+                        dy:-20, dx:30,
+                        className: "annotation-purple"
+                    },
+                    {
+                        note: { label: "July 1997, Start of Asian Financial Crisis",
+                        wrap: 150, align: "left"},
+                        x: 50,
                         y: 400,
-                        dy:-50, dx:50,
+                        dy:70, dx:-30,
                         className: "annotation-purple"
+                    },
+                    {
+                        note: { label: "March 2022, Federal Reserve begin raising interest rates",
+                        wrap: 150, align: "right"},
+                        x: 1255,
+                        y: 406,
+                        dy:-40, dx:-30,
+                        className: "annotation-purple"
+                    },
+                    {
+                        note: { label: "March 2011, Japan Great Earthquake and Tsunami Disaster",
+                        wrap: 150, align: "left"},
+                        x: 729,
+                        y: 630,
+                        dy:50, dx:100,
+                        className: "annotation-skyblue"
+                    },
+                    {
+                        note: { label: "January 2020, Covid-19 Pandemic",
+                        wrap: 150, align: "left"},
+                        x: 1160,
+                        y: 100,
+                        dy:-20, dx:20,
+                        className: "annotation-skyblue"
+                    },
+                    {
+                        note: { label: "October 2022, Japan lifts Covid travel restrictions and reopens to individual tourists",
+                        wrap: 150, align: "right"},
+                        x: 1293,
+                        y: 627,
+                        dy:-20, dx:-150,
+                        className: "annotation-skyblue"
                     }
                 ];
             } else if (pageIndex === 2) {
@@ -368,14 +408,11 @@
                     }
                 ];
             }
-
             x.domain(d3.extent(data, d => d.Date));
-
             g.append('g')
                 .attr('class', 'axis axis-x')
                 .attr('transform', `translate(0,${height})`)
                 .call(d3.axisBottom(x));
-
             g.append('g')
                 .attr('class', 'axis axis-y axis-y-left')
                 .call(d3.axisLeft(yLeft))
@@ -387,7 +424,6 @@
                 .attr('text-anchor', 'end')
                 .attr('font-size', '24px')
                 .text(yLeftLabel);
-
             g.append('g')
                 .attr('class', 'axis axis-y axis-y-right')
                 .attr('transform', `translate(${width},0)`)
@@ -400,23 +436,20 @@
                 .attr('text-anchor', 'end')
                 .attr('font-size', '24px')
                 .text(yRightLabel);
-
             g.append('path')
                 .datum(filteredDataPrimary)
                 .attr('class', `line line-${primaryDataset.toLowerCase()}`)
                 .attr('d', linePrimary)
                 .attr('stroke', colorMapping[primaryDataset])
-                .on('mouseover', function(event, d) { handleMouseOver.call(this, primaryDataset); })
-                .on('mouseout', function(event, d) { handleMouseOut.call(this, primaryDataset); });
-
+                .on('mouseover', function(event, d) { handleMouseOver.call(this, d, primaryDataset); })
+                .on('mouseout', function(event, d) { handleMouseOut.call(this, d, primaryDataset); });
             g.append('path')
                 .datum(filteredDataSecondary)
                 .attr('class', `line line-${secondaryDataset.toLowerCase()}`)
                 .attr('d', lineSecondary)
                 .attr('stroke', colorMapping[secondaryDataset])
-                .on('mouseover', function(event, d) { handleMouseOver.call(this, secondaryDataset); })
-                .on('mouseout', function(event, d) { handleMouseOut.call(this, secondaryDataset); });
-
+                .on('mouseover', function(event, d) { handleMouseOver.call(this, d, secondaryDataset); })
+                .on('mouseout', function(event, d) { handleMouseOut.call(this, d, secondaryDataset); });
             // Add circles for data points
             g.selectAll(".dot")
                 .data(filteredDataPrimary)
@@ -425,7 +458,17 @@
                 .attr("cx", d => x(d.Date))
                 .attr("cy", d => yLeft(d[primaryDataset]))
                 .attr("r", 2)
-                .attr("fill", colorMapping[primaryDataset])
+                .attr("fill", function(d) {
+                    if (primaryDataset === 'Inbound') {
+                        return colorMapping.Inbound;
+                    } else if (primaryDataset === 'Outbound') {
+                        return colorMapping.Outbound;
+                    } else if (primaryDataset === 'GDP') {
+                        return colorMapping.GDP;
+                    } else if (primaryDataset === 'USDJPY') {
+                        return colorMapping.USDJPY;
+                    }
+                })
                 .on("mouseover", function(event, d) {
                     d3.select(this).attr("r",6);
                     tooltip.transition()
@@ -450,7 +493,17 @@
                 .attr("cx", d => x(d.Date))
                 .attr("cy", d => yRight(d[secondaryDataset]))
                 .attr("r", 2)
-                .attr("fill", colorMapping[secondaryDataset])
+                .attr("fill", function(d) {
+                    if (secondaryDataset === 'Inbound') {
+                        return colorMapping.Inbound;
+                    } else if (secondaryDataset === 'Outbound') {
+                        return colorMapping.Outbound;
+                    } else if (secondaryDataset === 'GDP') {
+                        return colorMapping.GDP;
+                    } else if (secondaryDataset === 'USDJPY') {
+                        return colorMapping.USDJPY;
+                    }
+                })
                 .on("mouseover", function(event, d) {
                     d3.select(this).attr("r",6);
                     tooltip.transition()
@@ -496,34 +549,30 @@
                 }
                 return dataset;
             }
-
-            function handleMouseOver(dataset) {
-                d3.select(this).raise(); // Bring the line to front
-                d3.select('.axis-x').attr('stroke', colorMapping[dataset]).selectAll('text').attr('fill', colorMapping[dataset]);
-                if (dataset === primaryDataset) {
-                    d3.select('.axis-y-left').attr('stroke', colorMapping[dataset]).selectAll('text').attr('fill', colorMapping[dataset]);
-                } else {
-                    d3.select('.axis-y-right').attr('stroke', colorMapping[dataset]).selectAll('text').attr('fill', colorMapping[dataset]);
-                }
-            }
-
-            function handleMouseOut(dataset) {
-                d3.select('.axis-x').attr('stroke', null).selectAll('text').attr('fill', null);
-                if (dataset === primaryDataset) {
-                    d3.select('.axis-y-left').attr('stroke', null).selectAll('text').attr('fill', null);
-                } else {
-                    d3.select('.axis-y-right').attr('stroke', null).selectAll('text').attr('fill', null);
-                }
+        }
+        function handleMouseOver(dataset) 
+            d3.select(this).raise(); // Bring the line to front
+            d3.select('.axis-x').attr('stroke', colorMapping[dataset]).selectAll('text').attr('fill', colorMapping[dataset]);
+            if (dataset === primaryDataset) {
+                d3.select('.axis-y-left').attr('stroke', colorMapping[dataset]).selectAll('text').attr('fill', colorMapping[dataset]);
+            } else {
+                d3.select('.axis-y-right').attr('stroke', colorMapping[dataset]).selectAll('text').attr('fill', colorMapping[dataset]);
             }
         }
-
+        function handleMouseOut(dataset) {
+            d3.select('.axis-x').attr('stroke', null).selectAll('text').attr('fill', null);
+            if (dataset === primaryDataset) {
+                d3.select('.axis-y-left').attr('stroke', null).selectAll('text').attr('fill', null);
+            } else {
+                d3.select('.axis-y-right').attr('stroke', null).selectAll('text').attr('fill', null);
+            }
+        }
         function showPage(pageIndex) {
             currentPage = pageIndex;
             d3.selectAll('.tab').classed('active', false);
             d3.selectAll('.tab').filter((d, i) => i === pageIndex).classed('active', true);
             loadPage(pageIndex);
         }
-
         function nextPage() {
             currentPage = (currentPage + 1) % pages.length;
             showPage(currentPage);
