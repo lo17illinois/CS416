@@ -66,11 +66,11 @@
         .annotation-group .annotation-purple text {
             fill: purple;
         }
-        .annotation-group .note {
-            background: white;
-            border: 2px solid black;
-            border-radius: 5px;
-            padding: 5px;
+        .annotation-group .annotation-text .note {
+            background: lightgray; /* Background color of the annotation box */
+            padding: 5px; /* Padding inside the annotation box */
+            border: 1px solid black; /* Border around the annotation box */
+            border-radius: 5px; /* Rounded corners for the annotation box */
         }
     </style>
 </head>
@@ -191,7 +191,7 @@
                         x: 50,
                         y: 0,
                         dy:0, dx:0,
-                        className: "note"
+                        className: "annotation-text"
                     }
                 ];
             } else if (pageIndex === 1) {
@@ -276,7 +276,8 @@
                         wrap: 1000, align: "left", bgPadding: 10},
                         x: 50,
                         y: 0,
-                        dy:0, dx:0
+                        dy:0, dx:0,
+                        className: "annotation-text"
                     }
                 ];
             } else if (pageIndex === 2) {
@@ -361,7 +362,8 @@
                         wrap: 1000, align: "left", bgPadding: 10},
                         x: 50,
                         y: 0,
-                        dy:0, dx:0
+                        dy:0, dx:0,
+                        className: "annotation-text"
                     }
                 ];
             } else if (pageIndex === 3) {
@@ -430,7 +432,8 @@
                         wrap: 1000, align: "left", bgPadding: 10},
                         x: 50,
                         y: 0,
-                        dy:0, dx:0
+                        dy:0, dx:0,
+                        className: "annotation-text"
                     }
                 ];
             }
