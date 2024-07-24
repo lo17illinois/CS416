@@ -66,12 +66,6 @@
         .annotation-group .annotation-purple text {
             fill: purple;
         }
-        .axis--highlighted {
-            stroke: currentColor;
-        }
-        .axis--highlighted text {
-            fill: currentColor;
-        }
     </style>
 </head>
 <body onload='init()'>
@@ -414,14 +408,13 @@
                     }
                 ];
             }
-
             x.domain(d3.extent(data, d => d.Date));
-
             g.append('g')
+                .attr('class', 'axis axis-x')
                 .attr('transform', `translate(0,${height})`)
                 .call(d3.axisBottom(x));
-
             g.append('g')
+                .attr('class', 'axis axis-y axis-y-left')
                 .call(d3.axisLeft(yLeft))
                 .append('text')
                 .attr('fill', '#000')
@@ -431,8 +424,8 @@
                 .attr('text-anchor', 'end')
                 .attr('font-size', '24px')
                 .text(yLeftLabel);
-
             g.append('g')
+                .attr('class', 'axis axis-y axis-y-right')
                 .attr('transform', `translate(${width},0)`)
                 .call(d3.axisRight(yRight))
                 .append('text')
@@ -443,19 +436,20 @@
                 .attr('text-anchor', 'end')
                 .attr('font-size', '24px')
                 .text(yRightLabel);
-
             g.append('path')
                 .datum(filteredDataPrimary)
                 .attr('class', `line line-${primaryDataset.toLowerCase()}`)
                 .attr('d', linePrimary)
-                .attr('stroke', colorMapping[primaryDataset]);
-
+                .attr('stroke', colorMapping[primaryDataset])
+                .on('mouseover', function(event, d) { handleMouseOver.call(this, d, colorMapping[primaryDataset]); })
+                .on('mouseout', function(event, d) { handleMouseOut.call(this, d, colorMapping[primaryDataset]); });
             g.append('path')
                 .datum(filteredDataSecondary)
                 .attr('class', `line line-${secondaryDataset.toLowerCase()}`)
                 .attr('d', lineSecondary)
-                .attr('stroke', colorMapping[secondaryDataset]);
-
+                .attr('stroke', colorMapping[secondaryDataset])
+                .on('mouseover', function(event, d) { handleMouseOver.call(this, d, colorMapping[secondaryDataset]); })
+                .on('mouseout', function(event, d) { handleMouseOut.call(this, d, colorMapping[secondaryDataset]); });
             // Add circles for data points
             g.selectAll(".dot")
                 .data(filteredDataPrimary)
@@ -556,7 +550,17 @@
                 return dataset;
             }
         }
-
+        function handleMouseOver(d, color) {
+            d3.select(this).raise(); // Bring the line to front
+            d3.selectAll('.axis').classed('axis--highlighted', false); // Remove highlighted class from all axes
+            d3.select('.axis-x').attr('stroke', color).selectAll('text').attr('fill', color); // Highlight x-axis
+            d3.select(this.parentNode).select('.axis-y').attr('stroke', color).selectAll('text').attr('fill', color); // Highlight y-axis
+        }
+        function handleMouseOut(d, color) {
+            d3.selectAll('.axis').classed('axis--highlighted', true); // Reapply highlighted class to all axes
+            d3.select('.axis-x').attr('stroke', null).selectAll('text').attr('fill', null); // Reset x-axis color
+            d3.select(this.parentNode).select('.axis-y').attr('stroke', null).selectAll('text').attr('fill', null); // Reset y-axis color
+        }
         function showPage(pageIndex) {
             currentPage = pageIndex;
             d3.selectAll('.tab').classed('active', false);
