@@ -99,7 +99,6 @@
             await loadPage(currentPage);
         }
         async function loadPage(pageIndex) {
-            logAxisChanges('.axis-x', d3.select('.axis-x'));
             const tooltip = d3.select("body").append("div")
                 .attr("class", "tooltip")
                 .style("opacity", 0);
@@ -468,6 +467,7 @@
                 .attr('font-size', '24px')
                 .attr('font-weight', 'bold')
                 .text(yRightLabel);
+            logAxisChanges('.axis-x', d3.select('.axis-x'));
             g.append('path')
                 .datum(filteredDataPrimary)
                 .attr('class', `line line-${primaryDataset.toLowerCase()}`)
@@ -565,7 +565,6 @@
             g.append("g")
                 .attr("class", "annotation-group")
                 .call(makeAnnotations);
-            logAxisChanges('.axis-x', d3.select('.axis-x'));
             function getLabel(dataset) {
                 if (dataset === 'Inbound') {
                     return 'Inbound Tourists into Japan';
