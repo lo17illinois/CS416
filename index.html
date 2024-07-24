@@ -138,7 +138,20 @@
                         x: x(new Date(2007, 5, 1)),
                         y: yRight(data.find(d => d.Date.getTime() === new Date(2007, 5, 1).getTime()).GDP),
                         dy:-400, dx:-400
+                    },
+                    {
+                        note: { 
+                            label: "Significant event",
+                            title: "June 1, 2007",
+                            wrap: 150, 
+                            align: "left"
+                        },
+                        x: x(new Date(2007, 5, 1)),
+                        y: yRight(73929.15),
+                        dy: -50, 
+                        dx: -50
                     }
+                    
                 ];
                 const makeAnnotations = d3.annotation()
                     .type(d3.annotationLabel)
