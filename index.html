@@ -472,15 +472,15 @@
                 .attr('class', `line line-${primaryDataset.toLowerCase()}`)
                 .attr('d', linePrimary)
                 .attr('stroke', colorMapping[primaryDataset])
-                .on('mouseover', handleMouseOver)
-                .on('mouseout', handleMouseOut);
+                .on('mouseover', function(event, d) { handleMouseOver.call(this, event, primaryDataset); })
+                .on('mouseout', function(event, d) { handleMouseOut.call(this, event, primaryDataset); });
             g.append('path')
                 .datum(filteredDataSecondary)
                 .attr('class', `line line-${secondaryDataset.toLowerCase()}`)
                 .attr('d', lineSecondary)
                 .attr('stroke', colorMapping[secondaryDataset])
-                .on('mouseover', handleMouseOver)
-                .on('mouseout', handleMouseOut);
+                .on('mouseover', function(event, d) { handleMouseOver.call(this, event, secondaryDataset); })
+                .on('mouseout', function(event, d) { handleMouseOut.call(this, event, secondaryDataset); });
             // Add circles for data points
             g.selectAll(".dot")
                 .data(filteredDataPrimary)
@@ -508,7 +508,7 @@
                     const [mouseX, mouseY] = d3.pointer(event);
                     tooltip.html(`Date: ${d3.timeFormat("%Y-%m-%d")(d.Date)}<br>${getLabel(primaryDataset)}: ${d[primaryDataset]}`)
                         .style("left", `${mouseX + 50}px`)
-                        .style("top", `${mouseY + 50}px`);
+                        .style("top", `${mouseY + 35}px`);
                 })
                 .on("mouseout", function() {
                     d3.select(this).attr("r",2);
@@ -542,7 +542,7 @@
                     const [mouseX, mouseY] = d3.pointer(event);
                     tooltip.html(`Date: ${d3.timeFormat("%Y-%m-%d")(d.Date)}<br>${getLabel(secondaryDataset)}: ${d[secondaryDataset]}`)
                         .style("left", `${mouseX + 50}px`)
-                        .style("top", `${mouseY + 50}px`);
+                        .style("top", `${mouseY + 35}px`);
                 })
                 .on("mouseout", function() {
                     d3.select(this).attr("r",2);
@@ -580,20 +580,14 @@
                 d3.select(this).raise(); // Bring the line to front
                 d3.select(this).attr('stroke-width', 4); // Increase line thickness
                 d3.select(this).attr('stroke-opacity', 1); // Set opacity to 1 for the hovered line
-            
-                // Log the current styles for debugging
-                console.log("Hovered line styles:", this.style.strokeWidth, this.style.strokeOpacity);
-            
                 // Highlight the relevant axes
                 d3.select('.axis-x').attr('stroke', colorMapping[dataset])
                     .selectAll('text').attr('fill', colorMapping[dataset]);
                 d3.select('.axis-x path').attr('stroke', colorMapping[dataset]); // Change x-axis line color
-            
                 if (dataset === primaryDataset) {
                     d3.select('.axis-y-left').attr('stroke', colorMapping[dataset])
                         .selectAll('text').attr('fill', colorMapping[dataset]);
                     d3.select('.axis-y-left path').attr('stroke', colorMapping[dataset]); // Change y-axis left line color
-            
                     // Grey out the secondary dataset line and its axis
                     d3.select(`.line-${secondaryDataset.toLowerCase()}`).attr('stroke-opacity', 0.2);
                     d3.select('.axis-y-right').attr('stroke', 'lightgrey')
@@ -603,7 +597,6 @@
                     d3.select('.axis-y-right').attr('stroke', colorMapping[dataset])
                         .selectAll('text').attr('fill', colorMapping[dataset]);
                     d3.select('.axis-y-right path').attr('stroke', colorMapping[dataset]); // Change y-axis right line color
-            
                     // Grey out the primary dataset line and its axis
                     d3.select(`.line-${primaryDataset.toLowerCase()}`).attr('stroke-opacity', 0.2);
                     d3.select('.axis-y-left').attr('stroke', 'lightgrey')
@@ -611,24 +604,17 @@
                     d3.select('.axis-y-left path').attr('stroke', 'lightgrey'); // Grey out y-axis left line color
                 }
             }
-            
             function handleMouseOut(event, dataset) {
                 d3.select(this).attr('stroke-width', 2); // Reset line thickness
                 d3.select(this).attr('stroke-opacity', 1); // Reset opacity to 1 for the hovered line
-            
-                // Log the current styles for debugging
-                console.log("Mouseout line styles:", this.style.strokeWidth, this.style.strokeOpacity);
-            
                 // Reset all axes to default black
                 d3.select('.axis-x').attr('stroke', 'black')
                     .selectAll('text').attr('fill', 'black');
                 d3.select('.axis-x path').attr('stroke', 'black'); // Reset x-axis line color
-            
                 if (dataset === primaryDataset) {
                     d3.select('.axis-y-left').attr('stroke', 'black')
                         .selectAll('text').attr('fill', 'black');
                     d3.select('.axis-y-left path').attr('stroke', 'black'); // Reset y-axis left line color
-            
                     // Reset secondary dataset line and its axis
                     d3.select(`.line-${secondaryDataset.toLowerCase()}`).attr('stroke-opacity', 1);
                     d3.select('.axis-y-right').attr('stroke', 'black')
@@ -638,7 +624,6 @@
                     d3.select('.axis-y-right').attr('stroke', 'black')
                         .selectAll('text').attr('fill', 'black');
                     d3.select('.axis-y-right path').attr('stroke', 'black'); // Reset y-axis right line color
-            
                     // Reset primary dataset line and its axis
                     d3.select(`.line-${primaryDataset.toLowerCase()}`).attr('stroke-opacity', 1);
                     d3.select('.axis-y-left').attr('stroke', 'black')
