@@ -432,15 +432,15 @@
                 .attr('class', `line line-${primaryDataset.toLowerCase()}`)
                 .attr('d', linePrimary)
                 .attr('stroke', colorMapping[primaryDataset])
-                .on('mouseover', function(event, d) { handleMouseOver.call(this, d, primaryDataset); })
-                .on('mouseout', function(event, d) { handleMouseOut.call(this, d, primaryDataset); });
+                .on('mouseover', function(event, d) { handleMouseOver.call(this, event, primaryDataset); })
+                .on('mouseout', function(event, d) { handleMouseOut.call(this, event, primaryDataset); });
             g.append('path')
                 .datum(filteredDataSecondary)
                 .attr('class', `line line-${secondaryDataset.toLowerCase()}`)
                 .attr('d', lineSecondary)
                 .attr('stroke', colorMapping[secondaryDataset])
-                .on('mouseover', function(event, d) { handleMouseOver.call(this, d, secondaryDataset); })
-                .on('mouseout', function(event, d) { handleMouseOut.call(this, d, secondaryDataset); });
+                .on('mouseover', function(event, d) { handleMouseOver.call(this, event, secondaryDataset); })
+                .on('mouseout', function(event, d) { handleMouseOut.call(this, event, secondaryDataset); });
             // Add circles for data points
             g.selectAll(".dot")
                 .data(filteredDataPrimary)
@@ -536,7 +536,7 @@
                 }
                 return dataset;
             }
-            function handleMouseOver(dataset){
+            function handleMouseOver(event, dataset) {
                 d3.select(this).raise(); // Bring the line to front
                 d3.select('.axis-x').attr('stroke', colorMapping[dataset]).selectAll('text').attr('fill', colorMapping[dataset]);
                 if (dataset === primaryDataset) {
@@ -545,7 +545,7 @@
                     d3.select('.axis-y-right').attr('stroke', colorMapping[dataset]).selectAll('text').attr('fill', colorMapping[dataset]);
                 }
             }
-            function handleMouseOut(dataset) {
+            function handleMouseOut(event, dataset) {
                 d3.select('.axis-x').attr('stroke', null).selectAll('text').attr('fill', null);
                 if (dataset === primaryDataset) {
                     d3.select('.axis-y-left').attr('stroke', null).selectAll('text').attr('fill', null);
