@@ -586,6 +586,11 @@
                 console.log(`Markers Font Size: ${axisElement.selectAll('g.tick text').style('font-size')}`);
                 console.log(`Markers Font Weight: ${axisElement.selectAll('g.tick text').style('font-weight')}`);
                 console.log(`Color: ${axisElement.select('path').style('stroke')}`);
+                // Additional logging for more detailed styles
+                console.log(`Stroke Width: ${axisElement.select('path').style('stroke-width')}`);
+                console.log(`Text Fill: ${axisElement.select('text').style('fill')}`);
+                console.log(`Tick Text Fill: ${axisElement.selectAll('g.tick text').style('fill')}`);
+                console.log(`Path Stroke: ${axisElement.select('path').style('stroke')}`);
             }
             
             function handleMouseOver(event, dataset) {
