@@ -126,7 +126,6 @@
                 primaryDataset = 'Inbound';
                 secondaryDataset = 'GDP';
                 const annotations = [
-                    // Annotations for Page 1
                     {
                         note: { label: "December 2007, Start of Global Financial Crisis",
                         wrap: 150, align: "left"},
@@ -188,7 +187,7 @@
                         y: d => d.y
                     })
                     .on('note', function(annotation) {
-                        annotation.note.setStyle('fill', annotation.color);
+                        annotation.note.setStyle('fill', annotation.note.color);
                     });
                 g.append("g")
                     .attr("class", "annotation-group")
@@ -339,6 +338,7 @@
                         .duration(500)
                         .style("opacity", 0);
                 });
+
             function getLabel(dataset) {
                 if (dataset === 'Inbound') {
                     return 'Inbound Tourists into Japan';
