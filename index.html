@@ -579,18 +579,17 @@
             }
             function logAxisChanges(axisClass, axisElement) {
                 console.log(`${axisClass} changes:`);
+                console.log(`Title Fill: ${axisElement.select('text').style('fill')}`);
                 console.log(`Title Font: ${axisElement.select('text').style('font-family')}`);
                 console.log(`Title Font Size: ${axisElement.select('text').style('font-size')}`);
                 console.log(`Title Font Weight: ${axisElement.select('text').style('font-weight')}`);
-                console.log(`Markers Font: ${axisElement.selectAll('g.tick text').style('font-family')}`);
-                console.log(`Markers Font Size: ${axisElement.selectAll('g.tick text').style('font-size')}`);
-                console.log(`Markers Font Weight: ${axisElement.selectAll('g.tick text').style('font-weight')}`);
-                console.log(`Color: ${axisElement.select('path').style('stroke')}`);
-                // Additional logging for more detailed styles
-                console.log(`Stroke Width: ${axisElement.select('path').style('stroke-width')}`);
-                console.log(`Text Fill: ${axisElement.select('text').style('fill')}`);
                 console.log(`Tick Text Fill: ${axisElement.selectAll('g.tick text').style('fill')}`);
+                console.log(`Tick Text Font: ${axisElement.selectAll('g.tick text').style('font-family')}`);
+                console.log(`Tick Text Font Size: ${axisElement.selectAll('g.tick text').style('font-size')}`);
+                console.log(`Tick Text Font Weight: ${axisElement.selectAll('g.tick text').style('font-weight')}`);
                 console.log(`Path Stroke: ${axisElement.select('path').style('stroke')}`);
+                console.log(`Path Stroke Width: ${axisElement.select('path').style('stroke-width')}`);
+                console.log(`Path Stroke Opacity: ${axisElement.select('path').style('stroke-opacity')}`);
             }
             function handleMouseOver(event, dataset) {
                 d3.select(this).raise(); // Bring the line to front
