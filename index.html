@@ -247,7 +247,7 @@
                         .duration(200)
                         .style("opacity", .9);
                     const [mouseX, mouseY] = d3.pointer(event);
-                    tooltip.html(`${getLabel(primaryDataset)}: ${d[primaryDataset]}<br>${getLabel(secondaryDataset)}: ${d[secondaryDataset]}`)
+                    tooltip.html(`Date: ${d3.timeFormat("%Y-%m-%d")(d.Date)}<br>${getLabel(primaryDataset)}: ${d[primaryDataset]}`)
                         .style("left", `${mouseX + 10}px`)
                         .style("top", `${mouseY - 10}px`);
                 })
@@ -282,7 +282,7 @@
                         .duration(200)
                         .style("opacity", .9);
                     const [mouseX, mouseY] = d3.pointer(event);
-                    tooltip.html(`${getLabel(primaryDataset)}: ${d[primaryDataset]}<br>${getLabel(secondaryDataset)}: ${d[secondaryDataset]}`)
+                    tooltip.html(`Date: ${d3.timeFormat("%Y-%m-%d")(d.Date)}<br>${getLabel(secondaryDataset)}: ${d[secondaryDataset]}`)
                         .style("left", `${mouseX + 10}px`)
                         .style("top", `${mouseY - 10}px`);
                 })
