@@ -66,6 +66,11 @@
         .annotation-group .annotation-purple text {
             fill: purple;
         }
+        .page-text {
+        margin: 20px;
+        font-size: 18px;
+        line-height: 1.5;
+    }
     </style>
 </head>
 <body onload='init()'>
@@ -78,6 +83,7 @@
     </div>
     <div id="container">
         <svg width="1600" height="800"></svg>
+        <div id="page-text" class="page-text"></div>
     </div>
     <p id="status"></p>
     <script>
@@ -89,10 +95,16 @@
             GDP: 'green',
             USDJPY: 'purple'
         };
+        const pageText = ["Alongside the opening of Japan to tourists post-pandemic and the historically weak yen, tourists have recently flooded into Japan. We'll examine multiple facets of this, starting with a look at the countries GDP plotted alongside its inbound tourist numbers.
+        Tourism in Japan contributes ~7% of the countries GDP. Shown here is the 'Private Consumption' portion of the GDP that includes tourism plotted alongside inbound number of tourists into Japan showing a clear correlation between the 2.",
+        "Many tourists are currently taking advantage of the weak yen to make the most of their vacations. Plotted on this page is the USD/Yen exchange rate superimposed on top of the inbound tourist numbers. While there is definitely some positive correlation between the two, it appears that other factors may play a larger role in determining how many tourists come to Japan.",
+        "However, it seems the exchange rate plays a much larger role in determining the number of outbound tourists out of Japan. With the current yen at a historic low, it seems Japanese citizens are no longer traveling as much.",
+        "This page shows that distinction even more clearly, with inbound tourist numbers higher than ever before and outbound tourists numbers lower than ever before. Another interesting trend shown is that while outbound tourist numbers had remained pretty stable ovver the past 3 decades, the inbound tourist numbers had been climbing (barring the disruption caused by the Covd-19 pandemic."];
         async function init() {
             await loadPage(currentPage);
         }
         async function loadPage(pageIndex) {
+            document.getElementById('page-text').innerText = pageText[pageIndex];
             const tooltip = d3.select("body").append("div")
                 .attr("class", "tooltip")
                 .style("opacity", 0);
