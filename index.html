@@ -507,8 +507,8 @@
                         .style("opacity", .9);
                     const [mouseX, mouseY] = d3.pointer(event);
                     tooltip.html(`Date: ${d3.timeFormat("%Y-%m-%d")(d.Date)}<br>${getLabel(primaryDataset)}: ${d[primaryDataset]}`)
-                        .style("left", `${mouseX + 2}px`)
-                        .style("top", `${mouseY - 2}px`);
+                        .style("left", `${mouseX + 50}px`)
+                        .style("top", `${mouseY + 50}px`);
                 })
                 .on("mouseout", function() {
                     d3.select(this).attr("r",2);
@@ -541,8 +541,8 @@
                         .style("opacity", .9);
                     const [mouseX, mouseY] = d3.pointer(event);
                     tooltip.html(`Date: ${d3.timeFormat("%Y-%m-%d")(d.Date)}<br>${getLabel(secondaryDataset)}: ${d[secondaryDataset]}`)
-                        .style("left", `${mouseX + 2}px`)
-                        .style("top", `${mouseY - 2}px`);
+                        .style("left", `${mouseX + 50}px`)
+                        .style("top", `${mouseY + 50}px`);
                 })
                 .on("mouseout", function() {
                     d3.select(this).attr("r",2);
