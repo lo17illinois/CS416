@@ -125,33 +125,47 @@
                 const annotations = [
                     // Annotations for Page 1
                     {
-                        note: { label: "TEXT1",
+                        note: { label: "December 2007, Start of Global Financial Crisis",
                         wrap: 150, align: "left"},
-                        x: 500,
-                        y: 500,
+                        x: 580,
+                        y: 490,
                         dy:-50, dx:-50
                     },
                     {
-                        note: { label: "TEXT3",
-                        wrap: 150, align: "left"
-                        }, connector: {end: "arrow"},
-                        x: x(new Date(2007, 5, 1)),
-                        y: yRight(data.find(d => d.Date.getTime() === new Date(2007, 5, 1).getTime()).GDP),
-                        dy:-400, dx:-400
+                        note: { label: "June 2009, End of Global Financial Crisis",
+                        wrap: 150, align: "left"},
+                        x: 680,
+                        y: 690,
+                        dy:-50, dx:-50
                     },
                     {
-                        note: { 
-                            label: "Significant event",
-                            title: "June 1, 2007",
-                            wrap: 150, 
-                            align: "left"
-                        },
-                        x: x(new Date(2007, 5, 1)),
-                        y: yRight(73929.15),
-                        dy: -50, 
-                        dx: -50
+                        note: { label: "December 2012, Start of Abenomics (fiscal stimulus program)",
+                        wrap: 150, align: "left"},
+                        x: 750,
+                        y: 520,
+                        dy:-50, dx:-50
+                    },
+                    {
+                        note: { label: "March 2011, Japan Great Earthquake and Tsunami Disaster",
+                        wrap: 150, align: "left"},
+                        x: 750,
+                        y: 600,
+                        dy:-50, dx:-50
+                    },
+                    {
+                        note: { label: "January 2020, First case of Covid-19 in Japan",
+                        wrap: 150, align: "left"},
+                        x: 1100,
+                        y: 180,
+                        dy:-50, dx:-50
+                    },
+                    {
+                        note: { label: "October 2022, Japan lifts Covid travel restrictions and reopens to individual tourists",
+                        wrap: 150, align: "left"},
+                        x: 1200,
+                        y: 700,
+                        dy:-50, dx:-50
                     }
-                    
                 ];
                 const makeAnnotations = d3.annotation()
                     .type(d3.annotationLabel)
