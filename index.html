@@ -119,6 +119,7 @@
                 lineSecondary = d3.line().x(d => x(d.Date));
 
             let filteredDataPrimary, filteredDataSecondary, yLeftLabel, yRightLabel, primaryDataset, secondaryDataset;
+            let annotations;
 
             if (pageIndex === 0) {
                 filteredDataPrimary = data.filter(d => d.Inbound !== null);
@@ -131,7 +132,7 @@
                 yRightLabel = 'GDP';
                 primaryDataset = 'Inbound';
                 secondaryDataset = 'GDP';
-                const annotations = [
+                annotations = [
                     // Annotations for Page 1
                     {
                         note: { label: "December 2007, Start of Global Financial Crisis",
@@ -152,7 +153,7 @@
                     {
                         note: { label: "December 2012, Start of Abenomics (fiscal stimulus program)",
                         wrap: 150, align: "left"},
-                        x: 823,
+                        x: 821,
                         y: 545,
                         dy:-300, dx:-20,
                         className: "annotation-green"
@@ -176,26 +177,12 @@
                     {
                         note: { label: "October 2022, Japan lifts Covid travel restrictions and reopens to individual tourists",
                         wrap: 150, align: "left"},
-                        x: 1294,
-                        y: 626,
+                        x: 1293,
+                        y: 627,
                         dy:-20, dx:20,
                         className: "annotation-skyblue"
                     }
                 ];
-                const makeAnnotations = d3.annotation()
-                    .type(d3.annotationLabel)
-                    .annotations(annotations)
-                    .accessors({
-                        x: d => d.x,
-                        y: d => d.y
-                    })
-                    .accessorsInverse({
-                        x: d => d.x,
-                        y: d => d.y
-                    });
-                g.append("g")
-                    .attr("class", "annotation-group")
-                    .call(makeAnnotations);
             } else if (pageIndex === 1) {
                 filteredDataPrimary = data.filter(d => d.Inbound !== null);
                 filteredDataSecondary = data.filter(d => d.USDJPY !== null);
@@ -207,6 +194,57 @@
                 yRightLabel = 'USD/JPY Exchange Rate';
                 primaryDataset = 'Inbound';
                 secondaryDataset = 'USDJPY';
+                annotations = [
+                    // Annotations for Page 2
+                    {
+                        note: { label: "December 2007, Start of Global Financial Crisis",
+                        wrap: 150, align: "left"},
+                        x: 578,
+                        y: 495,
+                        dy:-50, dx:-20,
+                        className: "annotation-purple"
+                    },
+                    {
+                        note: { label: "June 2009, End of Global Financial Crisis",
+                        wrap: 150, align: "left"},
+                        x: 649,
+                        y: 671,
+                        dy:10, dx:-60,
+                        className: "annotation-purple"
+                    },
+                    {
+                        note: { label: "December 2012, Start of Abenomics (fiscal stimulus program)",
+                        wrap: 150, align: "left"},
+                        x: 821,
+                        y: 545,
+                        dy:-300, dx:-20,
+                        className: "annotation-purple"
+                    },
+                    {
+                        note: { label: "March 2011, Japan Great Earthquake and Tsunami Disaster",
+                        wrap: 150, align: "left"},
+                        x: 729,
+                        y: 630,
+                        dy:50, dx:100,
+                        className: "annotation-skyblue"
+                    },
+                    {
+                        note: { label: "January 2020, First case of Covid-19 in Japan",
+                        wrap: 150, align: "left"},
+                        x: 1160,
+                        y: 100,
+                        dy:-20, dx:20,
+                        className: "annotation-skyblue"
+                    },
+                    {
+                        note: { label: "October 2022, Japan lifts Covid travel restrictions and reopens to individual tourists",
+                        wrap: 150, align: "left"},
+                        x: 1293,
+                        y: 627,
+                        dy:-20, dx:20,
+                        className: "annotation-skyblue"
+                    }
+                ];
             } else if (pageIndex === 2) {
                 filteredDataPrimary = data.filter(d => d.Outbound !== null);
                 filteredDataSecondary = data.filter(d => d.USDJPY !== null);
@@ -218,6 +256,65 @@
                 yRightLabel = 'USD/JPY Exchange Rate';
                 primaryDataset = 'Outbound';
                 secondaryDataset = 'USDJPY';
+                annotations = [
+                    // Annotations for Page 3
+                    {
+                        note: { label: "December 2007, Start of Global Financial Crisis",
+                        wrap: 150, align: "left"},
+                        x: 578,
+                        y: 495,
+                        dy:-50, dx:-20,
+                        className: "annotation-purple"
+                    },
+                    {
+                        note: { label: "June 2009, End of Global Financial Crisis",
+                        wrap: 150, align: "left"},
+                        x: 649,
+                        y: 671,
+                        dy:10, dx:-60,
+                        className: "annotation-purple"
+                    },
+                    {
+                        note: { label: "December 2012, Start of Abenomics (fiscal stimulus program)",
+                        wrap: 150, align: "left"},
+                        x: 821,
+                        y: 545,
+                        dy:-300, dx:-20,
+                        className: "annotation-purple"
+                    },
+                    {
+                        note: { label: "September 2001, 911 Attack on World Trade Center",
+                        wrap: 150, align: "left"},
+                        x: 821,
+                        y: 545,
+                        dy:-300, dx:-20,
+                        className: "annotation-orange"
+                    }
+                    {
+                        note: { label: "March 2003, SARS Pandemc",
+                        wrap: 150, align: "left"},
+                        x: 729,
+                        y: 630,
+                        dy:50, dx:100,
+                        className: "annotation-orange"
+                    },
+                    {
+                        note: { label: "January 2020, Covid-19 Pandemic",
+                        wrap: 150, align: "left"},
+                        x: 1160,
+                        y: 100,
+                        dy:-20, dx:20,
+                        className: "annotation-orange"
+                    },
+                    {
+                        note: { label: "October 2022, Japan lifts Covid travel restrictions and reopens to individual tourists",
+                        wrap: 150, align: "left"},
+                        x: 1293,
+                        y: 627,
+                        dy:-20, dx:20,
+                        className: "annotation-orange"
+                    }
+                ];
             } else if (pageIndex === 3) {
                 filteredDataPrimary = data.filter(d => d.Outbound !== null);
                 filteredDataSecondary = data.filter(d => d.Inbound !== null);
@@ -229,6 +326,65 @@
                 yRightLabel = 'Inbound Tourism into Japan';
                 primaryDataset = 'Outbound';
                 secondaryDataset = 'Inbound';
+                annotations = [
+                    // Annotations for Page 4
+                    {
+                        note: { label: "March 2011, Japan Great Earthquake and Tsunami Disaster",
+                        wrap: 150, align: "left"},
+                        x: 729,
+                        y: 630,
+                        dy:50, dx:100,
+                        className: "annotation-skyblue"
+                    },
+                    {
+                        note: { label: "January 2020, First case of Covid-19 in Japan",
+                        wrap: 150, align: "left"},
+                        x: 1160,
+                        y: 100,
+                        dy:-20, dx:20,
+                        className: "annotation-skyblue"
+                    },
+                    {
+                        note: { label: "October 2022, Japan lifts Covid travel restrictions and reopens to individual tourists",
+                        wrap: 150, align: "left"},
+                        x: 1293,
+                        y: 627,
+                        dy:-20, dx:20,
+                        className: "annotation-skyblue"
+                    },
+                    {
+                        note: { label: "September 2001, 911 Attack on World Trade Center",
+                        wrap: 150, align: "left"},
+                        x: 821,
+                        y: 545,
+                        dy:-300, dx:-20,
+                        className: "annotation-orange"
+                    }
+                    {
+                        note: { label: "March 2003, SARS Pandemc",
+                        wrap: 150, align: "left"},
+                        x: 729,
+                        y: 630,
+                        dy:50, dx:100,
+                        className: "annotation-orange"
+                    },
+                    {
+                        note: { label: "January 2020, Covid-19 Pandemic",
+                        wrap: 150, align: "left"},
+                        x: 1160,
+                        y: 100,
+                        dy:-20, dx:20,
+                        className: "annotation-orange"
+                    },
+                    {
+                        note: { label: "October 2022, Japan lifts Covid travel restrictions and reopens to individual tourists",
+                        wrap: 150, align: "left"},
+                        x: 1293,
+                        y: 627,
+                        dy:-20, dx:20,
+                        className: "annotation-orange"
+                    }
+                ];
             }
 
             x.domain(d3.extent(data, d => d.Date));
@@ -342,6 +498,23 @@
                         .duration(500)
                         .style("opacity", 0);
                 });
+
+            const makeAnnotations = d3.annotation()
+                .type(d3.annotationLabel)
+                .annotations(annotations)
+                .accessors({
+                    x: d => d.x,
+                    y: d => d.y
+                })
+                .accessorsInverse({
+                    x: d => d.x,
+                    y: d => d.y
+                });
+
+            g.append("g")
+                .attr("class", "annotation-group")
+                .call(makeAnnotations);
+
             function getLabel(dataset) {
                 if (dataset === 'Inbound') {
                     return 'Inbound Tourists into Japan';
