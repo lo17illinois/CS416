@@ -66,6 +66,12 @@
         .annotation-group .annotation-purple text {
             fill: purple;
         }
+        .annotation-group .note {
+            background: white;
+            border: 2px solid black;
+            border-radius: 5px;
+            padding: 5px;
+        }
     </style>
 </head>
 <body onload='init()'>
@@ -184,7 +190,8 @@
                         wrap: 1000, align: "left", bgPadding: 10},
                         x: 50,
                         y: 0,
-                        dy:0, dx:0
+                        dy:0, dx:0,
+                        className: "note"
                     }
                 ];
             } else if (pageIndex === 1) {
@@ -350,7 +357,7 @@
                         className: "annotation-orange"
                     },
                     {
-                        note: { label: "However, it seems the exchange rate plays a much larger role in determining the number of outbound tourists out of Japan. With the current yen at a historic low, it seems Japanese citizens are no longer traveling as much.",
+                        note: { label: "However, it seems the exchange rate plays a much larger role in determining the number of outbound tourists out of Japan. With the current yen at a historic low, it seems Japanese citizens are less inclined to travel abroad.",
                         wrap: 1000, align: "left", bgPadding: 10},
                         x: 50,
                         y: 0,
@@ -419,7 +426,7 @@
                         className: "annotation-orange"
                     },
                     {
-                        note: { label: "This page shows that distinction even more clearly, with inbound tourist numbers higher than ever before and outbound tourists numbers lower than ever before. Another interesting trend shown is that while outbound tourist numbers had remained pretty stable ovver the past 3 decades, the inbound tourist numbers had been climbing (barring the disruption caused by the Covd-19 pandemic.",
+                        note: { label: "This page shows that distinction even more clearly, with inbound tourist numbers higher than ever before and outbound tourists numbers lower than ever before (excluding events such as SARS, COVID, or the 911 attacks). Another interesting trend shown is that while outbound tourist numbers had remained relatively stable over the past 3 decades, the inbound tourist numbers had been steadily climbing since 2012 (barring the disruption caused by the Covd-19 pandemic).",
                         wrap: 1000, align: "left", bgPadding: 10},
                         x: 50,
                         y: 0,
