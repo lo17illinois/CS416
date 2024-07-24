@@ -247,7 +247,7 @@
                         .duration(200)
                         .style("opacity", .9);
                     const [mouseX, mouseY] = d3.pointer(event);
-                    tooltip.html(`${primaryDataset}: ${d[primaryDataset]}<br>${secondaryDataset}: ${d[secondaryDataset]}`)
+                    tooltip.html(`${getLabel(primaryDataset)}: ${d[primaryDataset]}<br>${getLabel(secondaryDataset)}: ${d[secondaryDataset]}`)
                         .style("left", `${mouseX + 10}px`)
                         .style("top", `${mouseY - 10}px`);
                 })
@@ -282,7 +282,7 @@
                         .duration(200)
                         .style("opacity", .9);
                     const [mouseX, mouseY] = d3.pointer(event);
-                    tooltip.html(`${primaryDataset}: ${d[primaryDataset]}<br>${secondaryDataset}: ${d[secondaryDataset]}`)
+                    tooltip.html(`${getLabel(primaryDataset)}: ${d[primaryDataset]}<br>${getLabel(secondaryDataset)}: ${d[secondaryDataset]}`)
                         .style("left", `${mouseX + 10}px`)
                         .style("top", `${mouseY - 10}px`);
                 })
@@ -292,6 +292,18 @@
                         .duration(500)
                         .style("opacity", 0);
                 });
+            function getLabel(dataset) {
+                if (dataset === 'Inbound') {
+                    return 'Inbound Tourists into Japan';
+                } else if (dataset === 'Outbound') {
+                    return 'Outbound Tourists from Japan';
+                } else if (dataset === 'USDJPY') {
+                    return 'USD/JPY Exchange Rate';
+                } else if (dataset === 'GDP') {
+                    return 'GDP';
+                }
+                return dataset;
+            }
         }
 
         function showPage(pageIndex) {
