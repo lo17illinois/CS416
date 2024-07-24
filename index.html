@@ -467,7 +467,6 @@
                 .attr('font-size', '24px')
                 .attr('font-weight', 'bold')
                 .text(yRightLabel);
-            logAxisChanges('.axis-x', d3.select('.axis-x'));
             g.append('path')
                 .datum(filteredDataPrimary)
                 .attr('class', `line line-${primaryDataset.toLowerCase()}`)
@@ -577,101 +576,79 @@
                 }
                 return dataset;
             }
-            function logAxisChanges(axisClass, axisElement) {
-                console.log(`${axisClass} changes:`);
-                console.log(`Title Fill: ${axisElement.select('text').style('fill')}`);
-                console.log(`Title Font: ${axisElement.select('text').style('font-family')}`);
-                console.log(`Title Font Size: ${axisElement.select('text').style('font-size')}`);
-                console.log(`Title Font Weight: ${axisElement.select('text').style('font-weight')}`);
-                console.log(`Tick Text Fill: ${axisElement.selectAll('g.tick text').style('fill')}`);
-                console.log(`Tick Text Font: ${axisElement.selectAll('g.tick text').style('font-family')}`);
-                console.log(`Tick Text Font Size: ${axisElement.selectAll('g.tick text').style('font-size')}`);
-                console.log(`Tick Text Font Weight: ${axisElement.selectAll('g.tick text').style('font-weight')}`);
-                console.log(`Path Stroke: ${axisElement.select('path').style('stroke')}`);
-                console.log(`Path Stroke Width: ${axisElement.select('path').style('stroke-width')}`);
-                console.log(`Path Stroke Opacity: ${axisElement.select('path').style('stroke-opacity')}`);
-            }
             function handleMouseOver(event, dataset) {
-                d3.select(this).raise(); // Bring the line to front
-                d3.select(this).attr('stroke-width', 4); // Increase line thickness
-                d3.select(this).attr('stroke-opacity', 1); // Set opacity to 1 for the hovered line
+                const line = d3.select(this);
+                console.log(`Mouseover: ${dataset}`);
+                console.log(`Initial stroke-width: ${line.style('stroke-width')}`);
+            
+                line.raise(); // Bring the line to front
+                line.attr('stroke-width', 4); // Increase line thickness
+                line.attr('stroke-opacity', 1); // Set opacity to 1 for the hovered line
+                
                 // Highlight the relevant axes
                 d3.select('.axis-x').attr('stroke', colorMapping[dataset])
                     .selectAll('text').attr('fill', colorMapping[dataset]);
                 d3.select('.axis-x path').attr('stroke', colorMapping[dataset]); // Change x-axis line color
             
-                logAxisChanges('.axis-x', d3.select('.axis-x'));
-            
                 if (dataset === primaryDataset) {
                     d3.select('.axis-y-left').attr('stroke', colorMapping[dataset])
                         .selectAll('text').attr('fill', colorMapping[dataset]);
                     d3.select('.axis-y-left path').attr('stroke', colorMapping[dataset]); // Change y-axis left line color
-            
-                    logAxisChanges('.axis-y-left', d3.select('.axis-y-left'));
-            
+                    
                     // Grey out the secondary dataset line and its axis
                     d3.select(`.line-${secondaryDataset.toLowerCase()}`).attr('stroke-opacity', 0.2);
                     d3.select('.axis-y-right').attr('stroke', 'lightgrey')
                         .selectAll('text').attr('fill', 'lightgrey');
                     d3.select('.axis-y-right path').attr('stroke', 'lightgrey'); // Grey out y-axis right line color
-            
-                    logAxisChanges('.axis-y-right', d3.select('.axis-y-right'));
                 } else {
                     d3.select('.axis-y-right').attr('stroke', colorMapping[dataset])
                         .selectAll('text').attr('fill', colorMapping[dataset]);
                     d3.select('.axis-y-right path').attr('stroke', colorMapping[dataset]); // Change y-axis right line color
-            
-                    logAxisChanges('.axis-y-right', d3.select('.axis-y-right'));
-            
+                    
                     // Grey out the primary dataset line and its axis
                     d3.select(`.line-${primaryDataset.toLowerCase()}`).attr('stroke-opacity', 0.2);
                     d3.select('.axis-y-left').attr('stroke', 'lightgrey')
                         .selectAll('text').attr('fill', 'lightgrey');
                     d3.select('.axis-y-left path').attr('stroke', 'lightgrey'); // Grey out y-axis left line color
-            
-                    logAxisChanges('.axis-y-left', d3.select('.axis-y-left'));
                 }
             }
             
             function handleMouseOut(event, dataset) {
-                d3.select(this).attr('stroke-width', 2); // Reset line thickness
-                d3.select(this).attr('stroke-opacity', 1); // Reset opacity to 1 for the hovered line
+                const line = d3.select(this);
+                console.log(`Mouseout: ${dataset}`);
+                console.log(`Before reset stroke-width: ${line.style('stroke-width')}`);
+            
+                line.attr('stroke-width', 2); // Reset line thickness
+                line.attr('stroke-opacity', 1); // Reset opacity to 1 for the hovered line
+                
                 // Reset all axes to default black
                 d3.select('.axis-x').attr('stroke', 'black')
                     .selectAll('text').attr('fill', 'black');
                 d3.select('.axis-x path').attr('stroke', 'black'); // Reset x-axis line color
             
-                logAxisChanges('.axis-x', d3.select('.axis-x'));
-            
                 if (dataset === primaryDataset) {
                     d3.select('.axis-y-left').attr('stroke', 'black')
                         .selectAll('text').attr('fill', 'black');
                     d3.select('.axis-y-left path').attr('stroke', 'black'); // Reset y-axis left line color
-            
-                    logAxisChanges('.axis-y-left', d3.select('.axis-y-left'));
-            
+                    
                     // Reset secondary dataset line and its axis
                     d3.select(`.line-${secondaryDataset.toLowerCase()}`).attr('stroke-opacity', 1);
                     d3.select('.axis-y-right').attr('stroke', 'black')
                         .selectAll('text').attr('fill', 'black');
                     d3.select('.axis-y-right path').attr('stroke', 'black'); // Reset y-axis right line color
-            
-                    logAxisChanges('.axis-y-right', d3.select('.axis-y-right'));
                 } else {
                     d3.select('.axis-y-right').attr('stroke', 'black')
                         .selectAll('text').attr('fill', 'black');
                     d3.select('.axis-y-right path').attr('stroke', 'black'); // Reset y-axis right line color
-            
-                    logAxisChanges('.axis-y-right', d3.select('.axis-y-right'));
-            
+                    
                     // Reset primary dataset line and its axis
                     d3.select(`.line-${primaryDataset.toLowerCase()}`).attr('stroke-opacity', 1);
                     d3.select('.axis-y-left').attr('stroke', 'black')
                         .selectAll('text').attr('fill', 'black');
                     d3.select('.axis-y-left path').attr('stroke', 'black'); // Reset y-axis left line color
-            
-                    logAxisChanges('.axis-y-left', d3.select('.axis-y-left'));
                 }
+            
+                console.log(`After reset stroke-width: ${line.style('stroke-width')}`);
             }
         }
         function showPage(pageIndex) {
