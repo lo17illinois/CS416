@@ -551,14 +551,14 @@
             }
             function handleMouseOut(event, dataset) {
                 d3.select(this).attr('stroke-width', 2); // Reset line thickness
-                d3.select('.axis-x').attr('stroke', null).selectAll('text').attr('fill', null);
-                d3.select('.axis-x path').attr('stroke', null); // Reset x-axis line color
+                d3.select('.axis-x').attr('stroke', 'black').selectAll('text').attr('fill', 'black');
+                d3.select('.axis-x path').attr('stroke', 'black'); // Reset x-axis line color
                 if (dataset === primaryDataset) {
-                    d3.select('.axis-y-left').attr('stroke', null).selectAll('text').attr('fill', null);
-                    d3.select('.axis-y-left path').attr('stroke', null); // Reset y-axis left line color
+                    d3.select('.axis-y-left').attr('stroke', 'black').selectAll('text').attr('fill', 'black');
+                    d3.select('.axis-y-left path').attr('stroke', 'black'); // Reset y-axis left line color
                 } else {
-                    d3.select('.axis-y-right').attr('stroke', null).selectAll('text').attr('fill', null);
-                    d3.select('.axis-y-right path').attr('stroke', null); // Reset y-axis right line color
+                    d3.select('.axis-y-right').attr('stroke', 'black').selectAll('text').attr('fill', 'black');
+                    d3.select('.axis-y-right path').attr('stroke', 'black'); // Reset y-axis right line color
                 }
             }
         }
