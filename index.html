@@ -72,6 +72,15 @@
             border: 1px solid black; /* Border around the annotation box */
             border-radius: 5px; /* Rounded corners for the annotation box */
         }
+        .axis text {
+            font-family: sans-serif;
+            font-size: 12px;
+        }
+        .axis-title {
+            font-family: sans-serif;
+            font-size: 24px;
+            fill: #000;
+        }
     </style>
 </head>
 <body onload='init()'>
@@ -451,7 +460,7 @@
                 .attr('y', 6)
                 .attr('dy', '0.71em')
                 .attr('text-anchor', 'end')
-                .attr('font-size', '24px')
+                .attr('class', 'axis-title')
                 .text(yLeftLabel);
             g.append('g')
                 .attr('class', 'axis axis-y axis-y-right')
@@ -463,7 +472,7 @@
                 .attr('y', -12)
                 .attr('dy', '0.71em')
                 .attr('text-anchor', 'end')
-                .attr('font-size', '24px')
+                .attr('class', 'axis-title')
                 .text(yRightLabel);
             g.append('path')
                 .datum(filteredDataPrimary)
@@ -584,21 +593,25 @@
                 d3.select('.axis-x path').attr('stroke', colorMapping[dataset]); // Change x-axis line color
                 if (dataset === primaryDataset) {
                     d3.select('.axis-y-left').attr('stroke', colorMapping[dataset])
-                        .selectAll('text').attr('fill', colorMapping[dataset]);
+                        .selectAll('text').attr('fill', colorMapping[dataset])
+                        .attr('class', 'axis-title');
                     d3.select('.axis-y-left path').attr('stroke', colorMapping[dataset]); // Change y-axis left line color
                     // Grey out the secondary dataset line and its axis
                     d3.select(`.line-${secondaryDataset.toLowerCase()}`).attr('stroke-opacity', 0.2);
                     d3.select('.axis-y-right').attr('stroke', 'lightgrey')
-                        .selectAll('text').attr('fill', 'lightgrey');
+                        .selectAll('text').attr('fill', 'lightgrey')
+                        .attr('class', 'axis-title');
                     d3.select('.axis-y-right path').attr('stroke', 'lightgrey'); // Grey out y-axis right line color
                 } else {
                     d3.select('.axis-y-right').attr('stroke', colorMapping[dataset])
-                        .selectAll('text').attr('fill', colorMapping[dataset]);
+                        .selectAll('text').attr('fill', colorMapping[dataset])
+                        .attr('class', 'axis-title');
                     d3.select('.axis-y-right path').attr('stroke', colorMapping[dataset]); // Change y-axis right line color
                     // Grey out the primary dataset line and its axis
                     d3.select(`.line-${primaryDataset.toLowerCase()}`).attr('stroke-opacity', 0.2);
                     d3.select('.axis-y-left').attr('stroke', 'lightgrey')
-                        .selectAll('text').attr('fill', 'lightgrey');
+                        .selectAll('text').attr('fill', 'lightgrey')
+                        .attr('class', 'axis-title');
                     d3.select('.axis-y-left path').attr('stroke', 'lightgrey'); // Grey out y-axis left line color
                 }
             }
@@ -607,25 +620,30 @@
                 d3.select(this).attr('stroke-opacity', 1); // Reset opacity to 1 for the hovered line
                 // Reset all axes to default black
                 d3.select('.axis-x').attr('stroke', 'black')
-                    .selectAll('text').attr('fill', 'black');
+                    .selectAll('text').attr('fill', 'black')
+                    .attr('class', 'axis-title');
                 d3.select('.axis-x path').attr('stroke', 'black'); // Reset x-axis line color
                 if (dataset === primaryDataset) {
                     d3.select('.axis-y-left').attr('stroke', 'black')
-                        .selectAll('text').attr('fill', 'black');
+                        .selectAll('text').attr('fill', 'black')
+                        .attr('class', 'axis-title');
                     d3.select('.axis-y-left path').attr('stroke', 'black'); // Reset y-axis left line color
                     // Reset secondary dataset line and its axis
                     d3.select(`.line-${secondaryDataset.toLowerCase()}`).attr('stroke-opacity', 1);
                     d3.select('.axis-y-right').attr('stroke', 'black')
-                        .selectAll('text').attr('fill', 'black');
+                        .selectAll('text').attr('fill', 'black')
+                        .attr('class', 'axis-title');
                     d3.select('.axis-y-right path').attr('stroke', 'black'); // Reset y-axis right line color
                 } else {
                     d3.select('.axis-y-right').attr('stroke', 'black')
-                        .selectAll('text').attr('fill', 'black');
+                        .selectAll('text').attr('fill', 'black')
+                        .attr('class', 'axis-title');
                     d3.select('.axis-y-right path').attr('stroke', 'black'); // Reset y-axis right line color
                     // Reset primary dataset line and its axis
                     d3.select(`.line-${primaryDataset.toLowerCase()}`).attr('stroke-opacity', 1);
                     d3.select('.axis-y-left').attr('stroke', 'black')
-                        .selectAll('text').attr('fill', 'black');
+                        .selectAll('text').attr('fill', 'black')
+                        .attr('class', 'axis-title');
                     d3.select('.axis-y-left path').attr('stroke', 'black'); // Reset y-axis left line color
                 }
             }
