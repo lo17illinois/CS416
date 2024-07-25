@@ -94,7 +94,7 @@
         }
         const transitionDuration = 1000;
         const annotationTransitionDuration = 3000;
-        async function loadPage(pageIndex) {
+        async function loadPage(pageIndex, previousPage) {
             const tooltip = d3.select("body").append("div")
                 .attr("class", "tooltip")
                 .style("opacity", 0);
@@ -200,9 +200,6 @@
                             dy:0, dx:0
                         }
                     ];
-                    if (currentPage === 1) {
-                        primaryTransitionDuration = 0;
-                    }
                 } else if (pageIndex === 1) { // Page 2
                     filteredDataPrimary = data.filter(d => d.Inbound !== null);
                     filteredDataSecondary = data.filter(d => d.USDJPY !== null);
@@ -295,8 +292,8 @@
                             dy:0, dx:0
                         }
                     ];
-                    if (currentPage === 2) {
-                        secondaryTransitionDuration = 0;
+                    if (previousPage == 0) {
+                        primaryTransitionDuration = 0;
                     }
                 } else if (pageIndex === 2) { // Page 3
                     filteredDataPrimary = data.filter(d => d.Outbound !== null);
@@ -390,8 +387,8 @@
                             dy:0, dx:0
                         }
                     ];
-                    if (currentPage === 3) {
-                        primaryTransitionDuration = 0;
+                    if (previousPage == 1) {
+                        secondaryTransitionDuration = 0;
                     }
                 } else if (pageIndex === 3) { // Page 4
                     filteredDataPrimary = data.filter(d => d.Outbound !== null);
@@ -469,6 +466,9 @@
                             dy:0, dx:0
                         }
                     ];
+                    if (previousPage == 2) {
+                        primaryTransitionDuration = 0;
+                    }
                 }
                 console.log("Primary Transition Duration:", primaryTransitionDuration); // Debugging statement
                 console.log("Secondary Transition Duration:", secondaryTransitionDuration); // Debugging statement
@@ -663,11 +663,11 @@
             }
         }
 
-        function showPage(pageIndex) {
+        function showPage(pageIndex, prevIndex) {
             currentPage = pageIndex;
             d3.selectAll('.tab').classed('active', false);
             d3.selectAll('.tab').filter((d, i) => i === pageIndex).classed('active', true);
-            loadPage(pageIndex);
+            loadPage(pageIndex, prevIndex);
         }
         
         function nextPage() {
@@ -675,7 +675,7 @@
             console.log("Previous Page:", previousPage); // Debugging statement
             currentPage = (currentPage + 1) % pages.length;
             console.log("Current Page:", currentPage); // Debugging statement
-            showPage(currentPage);
+            showPage(currentPage, previousPage);
         }
     </script>
 </body>
