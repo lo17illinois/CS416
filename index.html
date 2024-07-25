@@ -524,9 +524,6 @@
                             return colorMapping.USDJPY;
                         }
                     })
-                    .style('opacity', 0)
-                    .transition().duration(transitionDuration)
-                    .style('opacity', 1)
                     .on("mouseover", function(event, d) {                                        //mouseover primary data point
                         d3.select(this).attr("r",6);
                         tooltip.transition()
@@ -542,7 +539,10 @@
                         tooltip.transition()
                             .duration(500)
                             .style("opacity", 0);
-                    });
+                    })
+                    .style('opacity', 0)
+                    .transition().duration(transitionDuration)
+                    .style('opacity', 1);
                 g.selectAll(".dot-secondary")                                                                                 //circles for secondary data
                     .data(filteredDataSecondary)
                     .enter().append("circle")
@@ -561,9 +561,6 @@
                             return colorMapping.USDJPY;
                         }
                     })
-                    .style('opacity', 0)
-                    .transition().duration(transitionDuration)
-                    .style('opacity', 1)
                     .on("mouseover", function(event, d) {                                        //mouseover secondary data point
                         d3.select(this).attr("r",6);
                         tooltip.transition()
@@ -579,7 +576,10 @@
                         tooltip.transition()
                             .duration(500)
                             .style("opacity", 0);
-                    });
+                    })
+                    .style('opacity', 0)
+                    .transition().duration(transitionDuration)
+                    .style('opacity', 1);
                 const makeAnnotations = d3.annotation()                                                                 //Annotations
                     .type(d3.annotationLabel)
                     .annotations(annotations)
