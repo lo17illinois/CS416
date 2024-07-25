@@ -516,7 +516,7 @@
                     .attr('d', linePrimary)
                     .attr('stroke', colorMapping[primaryDataset])
                     .style('opacity', 0)
-                    .transition().duration(primaryTransitionDuration)
+                    .transition().duration(transitionDuration)
                     .style('opacity', 1)
                     .on('end', function () {
                         d3.select(this)
@@ -529,7 +529,7 @@
                     .attr('d', lineSecondary)
                     .attr('stroke', colorMapping[secondaryDataset])
                     .style('opacity', 0)
-                    .transition().duration(secondaryTransitionDuration)
+                    .transition().duration(transitionDuration)
                     .style('opacity', 1)
                     .on('end', function () {
                         d3.select(this)
