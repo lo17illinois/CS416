@@ -92,8 +92,8 @@
         async function init() {
             await loadPage(currentPage);
         }
-        const transitionDuration = 1000;
-        const annotationTransitionDuration = 3000;
+        const transitionDuration = 3000;
+        const annotationTransitionDuration = 6000;
         async function loadPage(pageIndex, previousPage) {
             const tooltip = d3.select("body").append("div")
                 .attr("class", "tooltip")
