@@ -495,7 +495,9 @@
                     .attr('stroke', colorMapping[primaryDataset])
                     .style('opacity', 0)
                     .transition().duration(transitionDuration)
-                    .style('opacity', 1);
+                    .style('opacity', 1)
+                    .on('mouseover', function(event, d) { handleMouseOver.call(this, event, d, primaryDataset); })
+                    .on('mouseout', function(event, d) { handleMouseOut.call(this, event, d, primaryDataset); });
                 g.append('path')
                     .datum(filteredDataSecondary)
                     .attr('class', `line line-${secondaryDataset.toLowerCase()}`)
@@ -503,8 +505,9 @@
                     .attr('stroke', colorMapping[secondaryDataset])
                     .style('opacity', 0)
                     .transition().duration(transitionDuration)
-                    .style('opacity', 1);
-                
+                    .style('opacity', 1)
+                    .on('mouseover', function(event, d) { handleMouseOver.call(this, event, d, secondaryDataset); })
+                    .on('mouseout', function(event, d) { handleMouseOut.call(this, event, d, secondaryDataset); });
                 // Add circles for data points
                 g.selectAll(".dot")
                     .data(filteredDataPrimary)
@@ -533,33 +536,33 @@
                             .duration(500)
                             .style("opacity", 0);
                     });
-                g.selectAll(".dot-secondary")
-                    .data(filteredDataSecondary)
-                    .enter().append("circle")
-                    .attr("class", "dot-secondary")
-                    .attr("cx", d => x(d.Date))
-                    .attr("cy", d => yRight(d[secondaryDataset]))
-                    .attr("r", 2)
-                    .attr("fill", colorMapping[secondaryDataset])
-                    .style('opacity', 0)
-                    .transition().duration(transitionDuration)
-                    .style('opacity', 1)
-                    .on("mouseover", function(event, d) {
-                        d3.select(this).transition().duration(transitionDuration).attr("r", 6); // Add transition for smooth effect
-                        tooltip.transition()
-                            .duration(200)
-                            .style("opacity", .9);
-                        const [mouseX, mouseY] = d3.pointer(event);
-                        tooltip.html(`Date: ${d3.timeFormat("%Y-%m-%d")(d.Date)}<br>${getLabel(secondaryDataset)}: ${d[secondaryDataset]}`)
-                            .style("left", `${mouseX + 50}px`)
-                            .style("top", `${mouseY + 35}px`);
-                    })
-                    .on("mouseout", function() {
-                        d3.select(this).transition().duration(transitionDuration).attr("r", 2); // Add transition for smooth effect
-                        tooltip.transition()
-                            .duration(500)
-                            .style("opacity", 0);
-                    });
+                    g.selectAll(".dot-secondary")
+                        .data(filteredDataSecondary)
+                        .enter().append("circle")
+                        .attr("class", "dot-secondary")
+                        .attr("cx", d => x(d.Date))
+                        .attr("cy", d => yRight(d[secondaryDataset]))
+                        .attr("r", 2)
+                        .attr("fill", colorMapping[secondaryDataset])
+                        .style('opacity', 0)
+                        .transition().duration(transitionDuration)
+                        .style('opacity', 1)
+                        .on("mouseover", function(event, d) {
+                            d3.select(this).transition().duration(transitionDuration).attr("r", 6); // Add transition for smooth effect
+                            tooltip.transition()
+                                .duration(200)
+                                .style("opacity", .9);
+                            const [mouseX, mouseY] = d3.pointer(event);
+                            tooltip.html(`Date: ${d3.timeFormat("%Y-%m-%d")(d.Date)}<br>${getLabel(secondaryDataset)}: ${d[secondaryDataset]}`)
+                                .style("left", `${mouseX + 50}px`)
+                                .style("top", `${mouseY + 35}px`);
+                        })
+                        .on("mouseout", function() {
+                            d3.select(this).transition().duration(transitionDuration).attr("r", 2); // Add transition for smooth effect
+                            tooltip.transition()
+                                .duration(500)
+                                .style("opacity", 0);
+                        });
                 const makeAnnotations = d3.annotation()                                                                 //Annotations
                     .type(d3.annotationLabel)
                     .annotations(annotations)
@@ -589,7 +592,7 @@
                     }
                     return dataset;
                 }
-                function handleMouseOver(event, dataset) {
+                function handleMouseOver(event, d, dataset) {
                     const line = d3.select(this);
                     line.raise(); // Bring the line to front
                     line.transition().duration(transitionDuration) // Add transition for smooth effect
@@ -645,7 +648,7 @@
                     }
                 }
                 
-                function handleMouseOut(event, dataset) {
+                function handleMouseOut(event, d, dataset) {
                     const line = d3.select(this);
                     line.transition().duration(transitionDuration) // Add transition for smooth effect
                         .style('stroke-width', 2)
@@ -699,6 +702,7 @@
                             .attr('stroke', 'black'); // Reset y-axis left line color
                     }
                 }
+
 
             });
         }
