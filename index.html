@@ -506,26 +506,19 @@
                     .style('opacity', 1);
                 
                 // Add circles for data points
-                g.selectAll(".dot")                                                                                         //circles for primary data
+                g.selectAll(".dot")
                     .data(filteredDataPrimary)
                     .enter().append("circle")
                     .attr("class", "dot")
                     .attr("cx", d => x(d.Date))
                     .attr("cy", d => yLeft(d[primaryDataset]))
                     .attr("r", 2)
-                    .attr("fill", function(d) {
-                        if (primaryDataset === 'Inbound') {
-                            return colorMapping.Inbound;
-                        } else if (primaryDataset === 'Outbound') {
-                            return colorMapping.Outbound;
-                        } else if (primaryDataset === 'GDP') {
-                            return colorMapping.GDP;
-                        } else if (primaryDataset === 'USDJPY') {
-                            return colorMapping.USDJPY;
-                        }
-                    })
-                    .on("mouseover", function(event, d) {                                        //mouseover primary data point
-                        d3.select(this).attr("r",6);
+                    .attr("fill", colorMapping[primaryDataset])
+                    .style('opacity', 0)
+                    .transition().duration(transitionDuration)
+                    .style('opacity', 1)
+                    .on("mouseover", function(event, d) {
+                        d3.select(this).transition().duration(transitionDuration).attr("r", 6); // Add transition for smooth effect
                         tooltip.transition()
                             .duration(200)
                             .style("opacity", .9);
@@ -534,35 +527,25 @@
                             .style("left", `${mouseX + 50}px`)
                             .style("top", `${mouseY + 35}px`);
                     })
-                    .on("mouseout", function() {                                                //mouse off primary data point
-                        d3.select(this).attr("r",2);
+                    .on("mouseout", function() {
+                        d3.select(this).transition().duration(transitionDuration).attr("r", 2); // Add transition for smooth effect
                         tooltip.transition()
                             .duration(500)
                             .style("opacity", 0);
-                    })
-                    .style('opacity', 0)
-                    .transition().duration(transitionDuration)
-                    .style('opacity', 1);
-                g.selectAll(".dot-secondary")                                                                                 //circles for secondary data
+                    });
+                g.selectAll(".dot-secondary")
                     .data(filteredDataSecondary)
                     .enter().append("circle")
                     .attr("class", "dot-secondary")
                     .attr("cx", d => x(d.Date))
                     .attr("cy", d => yRight(d[secondaryDataset]))
                     .attr("r", 2)
-                    .attr("fill", function(d) {
-                        if (secondaryDataset === 'Inbound') {
-                            return colorMapping.Inbound;
-                        } else if (secondaryDataset === 'Outbound') {
-                            return colorMapping.Outbound;
-                        } else if (secondaryDataset === 'GDP') {
-                            return colorMapping.GDP;
-                        } else if (secondaryDataset === 'USDJPY') {
-                            return colorMapping.USDJPY;
-                        }
-                    })
-                    .on("mouseover", function(event, d) {                                        //mouseover secondary data point
-                        d3.select(this).attr("r",6);
+                    .attr("fill", colorMapping[secondaryDataset])
+                    .style('opacity', 0)
+                    .transition().duration(transitionDuration)
+                    .style('opacity', 1)
+                    .on("mouseover", function(event, d) {
+                        d3.select(this).transition().duration(transitionDuration).attr("r", 6); // Add transition for smooth effect
                         tooltip.transition()
                             .duration(200)
                             .style("opacity", .9);
@@ -571,15 +554,12 @@
                             .style("left", `${mouseX + 50}px`)
                             .style("top", `${mouseY + 35}px`);
                     })
-                    .on("mouseout", function() {                                                //mouse off secondary data point
-                        d3.select(this).attr("r",2);
+                    .on("mouseout", function() {
+                        d3.select(this).transition().duration(transitionDuration).attr("r", 2); // Add transition for smooth effect
                         tooltip.transition()
                             .duration(500)
                             .style("opacity", 0);
-                    })
-                    .style('opacity', 0)
-                    .transition().duration(transitionDuration)
-                    .style('opacity', 1);
+                    });
                 const makeAnnotations = d3.annotation()                                                                 //Annotations
                     .type(d3.annotationLabel)
                     .annotations(annotations)
@@ -609,57 +589,117 @@
                     }
                     return dataset;
                 }
-                function handleMouseOver(event, dataset) {                                                                        //Mouse over data line
+                function handleMouseOver(event, dataset) {
                     const line = d3.select(this);
                     line.raise(); // Bring the line to front
-                    line.style('stroke-width', 3).attr('stroke-width', 3);    //Increase line thickness on hover
-                    line.style('stroke-opacity', 1).attr('stroke-opacity', 1);    //Set opacity to 1 on hover
-                    d3.select('.axis-x').attr('stroke', colorMapping[dataset])    //Change relevant axes color on hover
-                        .selectAll('text').attr('fill', colorMapping[dataset]);
-                    d3.select('.axis-x path').attr('stroke', colorMapping[dataset]);    //Change x-axis line color on hover
+                    line.transition().duration(transitionDuration) // Add transition for smooth effect
+                        .style('stroke-width', 3)
+                        .style('stroke-opacity', 1); // Set opacity to 1 on hover
+                
+                    d3.select('.axis-x').transition().duration(transitionDuration) // Add transition for smooth effect
+                        .attr('stroke', colorMapping[dataset])
+                        .selectAll('text')
+                        .attr('fill', colorMapping[dataset]);
+                
+                    d3.select('.axis-x path').transition().duration(transitionDuration) // Add transition for smooth effect
+                        .attr('stroke', colorMapping[dataset]); // Change x-axis line color on hover
+                
                     if (dataset === primaryDataset) {
-                        d3.select('.axis-y-left').attr('stroke', colorMapping[dataset])
-                            .selectAll('text').attr('fill', colorMapping[dataset]);
-                        d3.select('.axis-y-left path').attr('stroke', colorMapping[dataset]);    //Change y-axis left line color
-                        d3.select(`.line-${secondaryDataset.toLowerCase()}`).style('stroke-opacity', 0.2).attr('stroke-opacity', 0.2);    //Grey out secondary data line and its axis
-                        d3.select('.axis-y-right').attr('stroke', 'lightgrey')
-                            .selectAll('text').attr('fill', 'lightgrey');
-                        d3.select('.axis-y-right path').attr('stroke', 'lightgrey');    //Grey out y-axis right line color
+                        d3.select('.axis-y-left').transition().duration(transitionDuration) // Add transition for smooth effect
+                            .attr('stroke', colorMapping[dataset])
+                            .selectAll('text')
+                            .attr('fill', colorMapping[dataset]);
+                
+                        d3.select('.axis-y-left path').transition().duration(transitionDuration) // Add transition for smooth effect
+                            .attr('stroke', colorMapping[dataset]); // Change y-axis left line color
+                
+                        d3.select(`.line-${secondaryDataset.toLowerCase()}`).transition().duration(transitionDuration) // Add transition for smooth effect
+                            .style('stroke-opacity', 0.2); // Grey out secondary data line and its axis
+                
+                        d3.select('.axis-y-right').transition().duration(transitionDuration) // Add transition for smooth effect
+                            .attr('stroke', 'lightgrey')
+                            .selectAll('text')
+                            .attr('fill', 'lightgrey');
+                
+                        d3.select('.axis-y-right path').transition().duration(transitionDuration) // Add transition for smooth effect
+                            .attr('stroke', 'lightgrey'); // Grey out y-axis right line color
                     } else {
-                        d3.select('.axis-y-right').attr('stroke', colorMapping[dataset])
-                            .selectAll('text').attr('fill', colorMapping[dataset]);
-                        d3.select('.axis-y-right path').attr('stroke', colorMapping[dataset]);     //Change y-axis right line color
-                        d3.select(`.line-${primaryDataset.toLowerCase()}`).style('stroke-opacity', 0.2).attr('stroke-opacity', 0.2);    //Grey out primary data line and its axis
-                        d3.select('.axis-y-left').attr('stroke', 'lightgrey')
-                            .selectAll('text').attr('fill', 'lightgrey');
-                        d3.select('.axis-y-left path').attr('stroke', 'lightgrey');     //Grey out y-axis left line color
+                        d3.select('.axis-y-right').transition().duration(transitionDuration) // Add transition for smooth effect
+                            .attr('stroke', colorMapping[dataset])
+                            .selectAll('text')
+                            .attr('fill', colorMapping[dataset]);
+                
+                        d3.select('.axis-y-right path').transition().duration(transitionDuration) // Add transition for smooth effect
+                            .attr('stroke', colorMapping[dataset]); // Change y-axis right line color
+                
+                        d3.select(`.line-${primaryDataset.toLowerCase()}`).transition().duration(transitionDuration) // Add transition for smooth effect
+                            .style('stroke-opacity', 0.2); // Grey out primary data line and its axis
+                
+                        d3.select('.axis-y-left').transition().duration(transitionDuration) // Add transition for smooth effect
+                            .attr('stroke', 'lightgrey')
+                            .selectAll('text')
+                            .attr('fill', 'lightgrey');
+                
+                        d3.select('.axis-y-left path').transition().duration(transitionDuration) // Add transition for smooth effect
+                            .attr('stroke', 'lightgrey'); // Grey out y-axis left line color
                     }
                 }
-                function handleMouseOut(event, dataset) {                                                                        //Mouse off data line
+                
+                function handleMouseOut(event, dataset) {
                     const line = d3.select(this);
-                    line.style('stroke-width', 2).attr('stroke-width', 2);    //Reset line thickness
-                    line.style('stroke-opacity', 1).attr('stroke-opacity', 1);    //Reset opacity to 1 for hovered line
-                    d3.select('.axis-x').attr('stroke', 'black')    //Reset all axes to black
-                        .selectAll('text').attr('fill', 'black');
-                    d3.select('.axis-x path').attr('stroke', 'black');    //Reset x-axis line color
+                    line.transition().duration(transitionDuration) // Add transition for smooth effect
+                        .style('stroke-width', 2)
+                        .style('stroke-opacity', 1); // Reset line thickness and opacity
+                
+                    d3.select('.axis-x').transition().duration(transitionDuration) // Add transition for smooth effect
+                        .attr('stroke', 'black')
+                        .selectAll('text')
+                        .attr('fill', 'black');
+                
+                    d3.select('.axis-x path').transition().duration(transitionDuration) // Add transition for smooth effect
+                        .attr('stroke', 'black'); // Reset x-axis line color
+                
                     if (dataset === primaryDataset) {
-                        d3.select('.axis-y-left').attr('stroke', 'black')
-                            .selectAll('text').attr('fill', 'black');
-                        d3.select('.axis-y-left path').attr('stroke', 'black');    //Reset y-axis left line color
-                        d3.select(`.line-${secondaryDataset.toLowerCase()}`).style('stroke-opacity', 1).attr('stroke-opacity', 1);    //Reset secondary data line and its axis
-                        d3.select('.axis-y-right').attr('stroke', 'black')
-                            .selectAll('text').attr('fill', 'black');
-                        d3.select('.axis-y-right path').attr('stroke', 'black');    //Reset y-axis right line color
+                        d3.select('.axis-y-left').transition().duration(transitionDuration) // Add transition for smooth effect
+                            .attr('stroke', 'black')
+                            .selectAll('text')
+                            .attr('fill', 'black');
+                
+                        d3.select('.axis-y-left path').transition().duration(transitionDuration) // Add transition for smooth effect
+                            .attr('stroke', 'black'); // Reset y-axis left line color
+                
+                        d3.select(`.line-${secondaryDataset.toLowerCase()}`).transition().duration(transitionDuration) // Add transition for smooth effect
+                            .style('stroke-opacity', 1); // Reset secondary data line and its axis
+                
+                        d3.select('.axis-y-right').transition().duration(transitionDuration) // Add transition for smooth effect
+                            .attr('stroke', 'black')
+                            .selectAll('text')
+                            .attr('fill', 'black');
+                
+                        d3.select('.axis-y-right path').transition().duration(transitionDuration) // Add transition for smooth effect
+                            .attr('stroke', 'black'); // Reset y-axis right line color
                     } else {
-                        d3.select('.axis-y-right').attr('stroke', 'black')
-                            .selectAll('text').attr('fill', 'black');
-                        d3.select('.axis-y-right path').attr('stroke', 'black');    //Reset y-axis right line color
-                        d3.select(`.line-${primaryDataset.toLowerCase()}`).style('stroke-opacity', 1).attr('stroke-opacity', 1);    //Reset primary data line and its axis
-                        d3.select('.axis-y-left').attr('stroke', 'black')
-                            .selectAll('text').attr('fill', 'black');
-                        d3.select('.axis-y-left path').attr('stroke', 'black');    //Reset y-axis left line color
+                        d3.select('.axis-y-right').transition().duration(transitionDuration) // Add transition for smooth effect
+                            .attr('stroke', 'black')
+                            .selectAll('text')
+                            .attr('fill', 'black');
+                
+                        d3.select('.axis-y-right path').transition().duration(transitionDuration) // Add transition for smooth effect
+                            .attr('stroke', 'black'); // Reset y-axis right line color
+                
+                        d3.select(`.line-${primaryDataset.toLowerCase()}`).transition().duration(transitionDuration) // Add transition for smooth effect
+                            .style('stroke-opacity', 1); // Reset primary data line and its axis
+                
+                        d3.select('.axis-y-left').transition().duration(transitionDuration) // Add transition for smooth effect
+                            .attr('stroke', 'black')
+                            .selectAll('text')
+                            .attr('fill', 'black');
+                
+                        d3.select('.axis-y-left path').transition().duration(transitionDuration) // Add transition for smooth effect
+                            .attr('stroke', 'black'); // Reset y-axis left line color
                     }
                 }
+
             });
         }
         function showPage(pageIndex) {
