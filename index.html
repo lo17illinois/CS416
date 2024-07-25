@@ -108,7 +108,6 @@
                 };
             });
             const svg = d3.select('svg');
-            svg.transition().duration(0).style("opacity", 0).on("end", () => {
                 svg.html(''); // Clear previous content
                 const margin = {top: 20, right: 60, bottom: 30, left: 150},
                     width = +svg.attr('width') - margin.left - margin.right,
@@ -648,7 +647,6 @@
                         d3.select('.axis-y-left path').attr('stroke', 'black'); // Reset y-axis left line color
                     }
                 }
-            }).transition().duration(transitionDuration).style("opacity", 1);
             function getLabel(dataset) { // Relabel tooltips
                 if (dataset === 'Inbound') {
                     return 'Inbound Tourists into Japan';
