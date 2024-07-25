@@ -469,8 +469,6 @@
                         primaryTransitionDuration = 0;
                     }
                 }
-                console.log("Primary Transition Duration:", primaryTransitionDuration); // Debugging statement
-                console.log("Secondary Transition Duration:", secondaryTransitionDuration); // Debugging statement
                 x.domain(d3.extent(data, d => d.Date));
                 g.append('g') // x-axis
                     .attr('class', 'axis axis-x')
@@ -482,6 +480,9 @@
                 g.append('g') // y-axis-left
                     .attr('class', 'axis axis-y axis-y-left')
                     .call(d3.axisLeft(yLeft))
+                    .style('opacity', 0)
+                    .transition().duration(transitionDuration)
+                    .style('opacity', 1)
                     .append('text')
                     .attr('fill', '#000')
                     .attr('transform', 'rotate(-90)')
@@ -490,14 +491,14 @@
                     .attr('text-anchor', 'end')
                     .attr('font-size', '24px')
                     .attr('font-weight', 'bold')
-                    .text(yLeftLabel)
-                    .style('opacity', 0)
-                    .transition().duration(transitionDuration)
-                    .style('opacity', 1);
+                    .text(yLeftLabel);
                 g.append('g') // y-axis-right
                     .attr('class', 'axis axis-y axis-y-right')
                     .attr('transform', `translate(${width},0)`)
                     .call(d3.axisRight(yRight))
+                    .style('opacity', 0)
+                    .transition().duration(transitionDuration)
+                    .style('opacity', 1)
                     .append('text')
                     .attr('fill', '#000')
                     .attr('transform', 'rotate(-90) translate(0, -10)')
@@ -506,10 +507,7 @@
                     .attr('text-anchor', 'end')
                     .attr('font-size', '24px')
                     .attr('font-weight', 'bold')
-                    .text(yRightLabel)
-                    .style('opacity', 0)
-                    .transition().duration(transitionDuration)
-                    .style('opacity', 1);
+                    .text(yRightLabel);
                 g.append('path') // primary data line
                     .datum(filteredDataPrimary)
                     .attr('class', `line line-${primaryDataset.toLowerCase()}`)
@@ -685,9 +683,7 @@
         
         function nextPage() {
             const previousPage = currentPage;
-            console.log("Previous Page:", previousPage); // Debugging statement
             currentPage = (currentPage + 1) % pages.length;
-            console.log("Current Page:", currentPage); // Debugging statement
             showPage(currentPage, previousPage);
         }
     </script>
