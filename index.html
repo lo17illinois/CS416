@@ -108,6 +108,7 @@
                 };
             });
             const svg = d3.select('svg');
+            svg.transition().duration(0).style("opacity", 0).on("end", () => {
                 svg.html(''); // Clear previous content
                 const margin = {top: 20, right: 60, bottom: 30, left: 150},
                     width = +svg.attr('width') - margin.left - margin.right,
@@ -469,20 +470,16 @@
                         primaryTransitionDuration = 0;
                     }
                 }
+                console.log("Primary Transition Duration:", primaryTransitionDuration); // Debugging statement
+                console.log("Secondary Transition Duration:", secondaryTransitionDuration); // Debugging statement
                 x.domain(d3.extent(data, d => d.Date));
                 g.append('g') // x-axis
                     .attr('class', 'axis axis-x')
                     .attr('transform', `translate(0,${height})`)
-                    .call(d3.axisBottom(x))
-                    .style('opacity', 0)
-                    .transition().duration(transitionDuration)
-                    .style('opacity', 1);
+                    .call(d3.axisBottom(x));
                 g.append('g') // y-axis-left
                     .attr('class', 'axis axis-y axis-y-left')
                     .call(d3.axisLeft(yLeft))
-                    .style('opacity', 0)
-                    .transition().duration(transitionDuration)
-                    .style('opacity', 1)
                     .append('text')
                     .attr('fill', '#000')
                     .attr('transform', 'rotate(-90)')
@@ -496,9 +493,6 @@
                     .attr('class', 'axis axis-y axis-y-right')
                     .attr('transform', `translate(${width},0)`)
                     .call(d3.axisRight(yRight))
-                    .style('opacity', 0)
-                    .transition().duration(transitionDuration)
-                    .style('opacity', 1)
                     .append('text')
                     .attr('fill', '#000')
                     .attr('transform', 'rotate(-90) translate(0, -10)')
@@ -514,7 +508,7 @@
                     .attr('d', linePrimary)
                     .attr('stroke', colorMapping[primaryDataset])
                     .style('opacity', 0)
-                    .transition().duration(transitionDuration)
+                    .transition().duration(primaryTransitionDuration)
                     .style('opacity', 1)
                     .on('end', function () {
                         d3.select(this)
@@ -527,7 +521,7 @@
                     .attr('d', lineSecondary)
                     .attr('stroke', colorMapping[secondaryDataset])
                     .style('opacity', 0)
-                    .transition().duration(transitionDuration)
+                    .transition().duration(secondaryTransitionDuration)
                     .style('opacity', 1)
                     .on('end', function () {
                         d3.select(this)
@@ -544,9 +538,6 @@
                     .attr("cy", d => yLeft(d[primaryDataset]))
                     .attr("r", 2)
                     .attr("fill", colorMapping[primaryDataset])
-                    .style('opacity', 0)
-                    .transition().duration(transitionDuration)
-                    .style('opacity', 1)
                     .on("mouseover", function (event, d) { // mouseover primary data point
                         d3.select(this).attr("r", 6);
                         tooltip.transition()
@@ -571,9 +562,6 @@
                     .attr("cy", d => yRight(d[secondaryDataset]))
                     .attr("r", 2)
                     .attr("fill", colorMapping[secondaryDataset])
-                    .style('opacity', 0)
-                    .transition().duration(transitionDuration)
-                    .style('opacity', 1)
                     .on("mouseover", function (event, d) { // mouseover secondary data point
                         d3.select(this).attr("r", 6);
                         tooltip.transition()
@@ -660,6 +648,7 @@
                         d3.select('.axis-y-left path').attr('stroke', 'black'); // Reset y-axis left line color
                     }
                 }
+            }).transition().duration(transitionDuration).style("opacity", 1);
             function getLabel(dataset) { // Relabel tooltips
                 if (dataset === 'Inbound') {
                     return 'Inbound Tourists into Japan';
@@ -683,7 +672,9 @@
         
         function nextPage() {
             const previousPage = currentPage;
+            console.log("Previous Page:", previousPage); // Debugging statement
             currentPage = (currentPage + 1) % pages.length;
+            console.log("Current Page:", currentPage); // Debugging statement
             showPage(currentPage, previousPage);
         }
     </script>
