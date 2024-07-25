@@ -66,6 +66,18 @@
         .annotation-group .annotation-purple text {
             fill: purple;
         }
+        .annotation-inbound {
+            fill: skyblue;
+        }
+        .annotation-outbound {
+            fill: orange;
+        }
+        .annotation-gdp {
+            fill: green;
+        }
+        .annotation-usdjpy {
+            fill: purple;
+        }
     </style>
 </head>
 <body onload='init()'>
@@ -141,7 +153,7 @@
                             x: 578,
                             y: 495,
                             dy:-50, dx:-20,
-                            className: "annotation-green"
+                            className: "annotation-green annotation-gdp"
                         },
                         {
                             note: { label: "June 2009, End of Global Financial Crisis",
@@ -149,7 +161,7 @@
                             x: 649,
                             y: 671,
                             dy:10, dx:-60,
-                            className: "annotation-green"
+                            className: "annotation-green annotation-gdp"
                         },
                         {
                             note: { label: "December 2012, Start of Abenomics (fiscal stimulus program)",
@@ -157,7 +169,7 @@
                             x: 821,
                             y: 545,
                             dy:-300, dx:-20,
-                            className: "annotation-green"
+                            className: "annotation-green annotation-gdp"
                         },
                         {
                             note: { label: "March 2011, Japan Great Earthquake and Tsunami Disaster",
@@ -165,7 +177,7 @@
                             x: 729,
                             y: 630,
                             dy:50, dx:100,
-                            className: "annotation-skyblue"
+                            className: "annotation-skyblue annotation-inbound"
                         },
                         {
                             note: { label: "January 2020, Covid-19 Pandemic",
@@ -173,7 +185,7 @@
                             x: 1160,
                             y: 100,
                             dy:20, dx:10,
-                            className: "annotation-skyblue"
+                            className: "annotation-skyblue annotation-inbound"
                         },
                         {
                             note: { label: "October 2022, Japan lifts Covid travel restrictions and reopens to individual tourists",
@@ -181,7 +193,7 @@
                             x: 1293,
                             y: 627,
                             dy:-20, dx:-150,
-                            className: "annotation-skyblue"
+                            className: "annotation-skyblue annotation-inbound"
                         },
                         {
                             note: { label: "March 2024, inbound tourist numbers have surpassed pre-pandemc levels and at an all-time high",
@@ -189,7 +201,7 @@
                             x: 1360,
                             y: 0,
                             dy:10, dx:-15,
-                            className: "annotation-skyblue"
+                            className: "annotation-skyblue annotation-inbound"
                         },
                         {
                             note: { label: "Alongside the opening of Japan to tourists post-pandemic and the historically weak yen, tourism in Japan has recently broken historic records. \n\n\n We'll examine multiple facets of this, starting with a look at the countries GDP plotted alongside its inbound tourist numbers. There is a clear correlation between two, however, note that the GDP numbers plotted here do not represent the countries entire GDP, only the subsection 'Private Consumpton' that includes tourism. Nevertheless, tourism accounts for ~7% of Japan's GDP historically.",
@@ -217,7 +229,7 @@
                             x: 578,
                             y: 444,
                             dy:-50, dx:20,
-                            className: "annotation-purple"
+                            className: "annotation-purple annotation-usdjpy"
                         },
                         {
                             note: { label: "June 2009, End of Global Financial Crisis",
@@ -225,7 +237,7 @@
                             x: 649,
                             y: 584,
                             dy:-70, dx:20,
-                            className: "annotation-purple"
+                            className: "annotation-purple annotation-usdjpy"
                         },
                         {
                             note: { label: "December 2012, Start of Abenomics (fiscal stimulus program)",
@@ -233,7 +245,7 @@
                             x: 820,
                             y: 658,
                             dy:-20, dx:30,
-                            className: "annotation-purple"
+                            className: "annotation-purple annotation-usdjpy"
                         },
                         {
                             note: { label: "July 1997, Start of Asian Financial Crisis",
@@ -241,7 +253,7 @@
                             x: 50,
                             y: 400,
                             dy:70, dx:-30,
-                            className: "annotation-purple"
+                            className: "annotation-purple annotation-usdjpy"
                         },
                         {
                             note: { label: "March 2022, Federal Reserve begin raising interest rates",
@@ -249,7 +261,7 @@
                             x: 1255,
                             y: 406,
                             dy:-40, dx:-30,
-                            className: "annotation-purple"
+                            className: "annotation-purple annotation-usdjpy"
                         },
                         {
                             note: { label: "March 2011, Japan Great Earthquake and Tsunami Disaster",
@@ -257,7 +269,7 @@
                             x: 729,
                             y: 630,
                             dy:50, dx:100,
-                            className: "annotation-skyblue"
+                            className: "annotation-skyblue annotation-inbound"
                         },
                         {
                             note: { label: "January 2020, Covid-19 Pandemic",
@@ -265,7 +277,7 @@
                             x: 1160,
                             y: 100,
                             dy:20, dx:10,
-                            className: "annotation-skyblue"
+                            className: "annotation-skyblue annotation-inbound"
                         },
                         {
                             note: { label: "October 2022, Japan lifts Covid travel restrictions and reopens to individual tourists",
@@ -273,7 +285,7 @@
                             x: 1293,
                             y: 627,
                             dy:-20, dx:-150,
-                            className: "annotation-skyblue"
+                            className: "annotation-skyblue annotation-inbound"
                         },
                         {
                             note: { label: "March 2024, inbound tourist numbers have surpassed pre-pandemc levels and at an all-time high",
@@ -281,7 +293,7 @@
                             x: 1360,
                             y: 0,
                             dy:10, dx:-15,
-                            className: "annotation-skyblue"
+                            className: "annotation-skyblue annotation-inbound"
                         },
                         {
                             note: { label: "Many tourists are currently taking advantage of the weak yen to make the most of their vacations. Plotted on this page is the USD/Yen exchange rate superimposed on top of the inbound tourist numbers. While there is definitely some positive correlation between the two, it appears that other factors may play a larger role in determining how many tourists come to Japan.",
@@ -312,7 +324,7 @@
                             x: 578,
                             y: 444,
                             dy:-50, dx:20,
-                            className: "annotation-purple"
+                            className: "annotation-purple annotation-usdjpy"
                         },
                         {
                             note: { label: "June 2009, End of Global Financial Crisis",
@@ -320,7 +332,7 @@
                             x: 649,
                             y: 584,
                             dy:-70, dx:20,
-                            className: "annotation-purple"
+                            className: "annotation-purple annotation-usdjpy"
                         },
                         {
                             note: { label: "December 2012, Start of Abenomics (fiscal stimulus program)",
@@ -328,7 +340,7 @@
                             x: 820,
                             y: 658,
                             dy:-20, dx:30,
-                            className: "annotation-purple"
+                            className: "annotation-purple annotation-usdjpy"
                         },
                         {
                             note: { label: "July 1997, Start of Asian Financial Crisis",
@@ -336,7 +348,7 @@
                             x: 50,
                             y: 400,
                             dy:70, dx:-30,
-                            className: "annotation-purple"
+                            className: "annotation-purple annotation-usdjpy"
                         },
                         {
                             note: { label: "March 2022, Federal Reserve begin raising interest rates",
@@ -344,7 +356,7 @@
                             x: 1255,
                             y: 406,
                             dy:-40, dx:-30,
-                            className: "annotation-purple"
+                            className: "annotation-purple annotation-usdjpy"
                         },
                         {
                             note: { label: "September 2001, 911 Attack on World Trade Center",
@@ -352,7 +364,7 @@
                             x: 353,
                             y: 550,
                             dy:10, dx:-20,
-                            className: "annotation-orange"
+                            className: "annotation-orange annotation-outbound"
                         },
                         {
                             note: { label: "March 2003, SARS Pandemc",
@@ -360,7 +372,7 @@
                             x: 281,
                             y: 446,
                             dy:80, dx:-120,
-                            className: "annotation-orange"
+                            className: "annotation-orange annotation-outbound"
                         },
                         {
                             note: { label: "January 2020, Covid-19 Pandemic",
@@ -368,7 +380,7 @@
                             x: 1156,
                             y: 139,
                             dy:-20, dx:20,
-                            className: "annotation-orange"
+                            className: "annotation-orange annotation-outbound"
                         },
                         {
                             note: { label: "March 2024, outbound tourist numbers are at a historic low",
@@ -376,7 +388,7 @@
                             x: 1363,
                             y: 318,
                             dy:-15, dx:-20,
-                            className: "annotation-orange"
+                            className: "annotation-orange annotation-outbound"
                         },
                         {
                             note: { label: "However, it seems the exchange rate plays a much larger role in determining the number of outbound tourists out of Japan. With the current yen at a historic low, it seems Japanese citizens are less inclined to travel abroad.",
@@ -407,7 +419,7 @@
                             x: 729,
                             y: 630,
                             dy:50, dx:100,
-                            className: "annotation-skyblue"
+                            className: "annotation-skyblue annotation-inbound"
                         },
                         {
                             note: { label: "January 2020, Covid-19 Pandemic",
@@ -415,7 +427,7 @@
                             x: 1160,
                             y: 100,
                             dy:20, dx:10,
-                            className: "annotation-skyblue"
+                            className: "annotation-skyblue annotation-inbound"
                         },
                         {
                             note: { label: "October 2022, Japan lifts Covid travel restrictions and reopens to individual tourists",
@@ -423,7 +435,7 @@
                             x: 1293,
                             y: 627,
                             dy:-20, dx:-150,
-                            className: "annotation-skyblue"
+                            className: "annotation-skyblue annotation-inbound"
                         },
                         {
                             note: { label: "March 2024, inbound tourist numbers have surpassed pre-pandemc levels and at an all-time high",
@@ -431,7 +443,7 @@
                             x: 1360,
                             y: 0,
                             dy:10, dx:-15,
-                            className: "annotation-skyblue"
+                            className: "annotation-skyblue annotation-inbound"
                         },
                         {
                             note: { label: "September 2001, 911 Attack on World Trade Center",
@@ -439,7 +451,7 @@
                             x: 353,
                             y: 550,
                             dy:10, dx:-20,
-                            className: "annotation-orange"
+                            className: "annotation-orange annotation-outbound"
                         },
                         {
                             note: { label: "March 2003, SARS Pandemc",
@@ -447,7 +459,7 @@
                             x: 281,
                             y: 446,
                             dy:80, dx:-120,
-                            className: "annotation-orange"
+                            className: "annotation-orange annotation-outbound"
                         },
                         {
                             note: { label: "March 2024, outbound tourist numbers are at a historic low",
@@ -455,7 +467,7 @@
                             x: 1363,
                             y: 318,
                             dy:-15, dx:-20,
-                            className: "annotation-orange"
+                            className: "annotation-orange annotation-outbound"
                         },
                         {
                             note: { label: "This page shows that distinction even more clearly, with inbound tourist numbers higher than ever before and outbound tourists numbers lower than ever before (excluding events such as SARS, COVID, or the 911 attacks). Another interesting trend shown is that while outbound tourist numbers had remained relatively stable over the past 3 decades, the inbound tourist numbers had been steadily climbing since 2012 (barring the disruption caused by the Covd-19 pandemic).",
@@ -595,58 +607,63 @@
                     .transition().duration(annotationTransitionDuration)
                     .style('opacity', 1);
         
-                function handleMouseOver(event, dataset) { // Mouse over data line
-                    const line = d3.select(this);
-                    line.raise(); // Bring the line to front
-                    line.style('stroke-width', 3).attr('stroke-width', 3); // Increase line thickness on hover
-                    line.style('stroke-opacity', 1).attr('stroke-opacity', 1); // Set opacity to 1 on hover
-                    d3.select('.axis-x').attr('stroke', colorMapping[dataset]) // Change relevant axes color on hover
+            function handleMouseOver(event, dataset) { // Mouse over data line
+                const line = d3.select(this);
+                line.raise(); // Bring the line to front
+                line.style('stroke-width', 3).attr('stroke-width', 3); // Increase line thickness on hover
+                line.style('stroke-opacity', 1).attr('stroke-opacity', 1); // Set opacity to 1 on hover
+                d3.select('.axis-x').attr('stroke', colorMapping[dataset]) // Change relevant axes color on hover
+                    .selectAll('text').attr('fill', colorMapping[dataset]);
+                d3.select('.axis-x path').attr('stroke', colorMapping[dataset]); // Change x-axis line color on hover
+                if (dataset === primaryDataset) {
+                    d3.select('.axis-y-left').attr('stroke', colorMapping[dataset])
                         .selectAll('text').attr('fill', colorMapping[dataset]);
-                    d3.select('.axis-x path').attr('stroke', colorMapping[dataset]); // Change x-axis line color on hover
-                    if (dataset === primaryDataset) {
-                        d3.select('.axis-y-left').attr('stroke', colorMapping[dataset])
-                            .selectAll('text').attr('fill', colorMapping[dataset]);
-                        d3.select('.axis-y-left path').attr('stroke', colorMapping[dataset]); // Change y-axis left line color
-                        d3.select(`.line-${secondaryDataset.toLowerCase()}`).style('stroke-opacity', 0.2).attr('stroke-opacity', 0.2); // Grey out secondary data line and its axis
-                        d3.select('.axis-y-right').attr('stroke', 'lightgrey')
-                            .selectAll('text').attr('fill', 'lightgrey');
-                        d3.select('.axis-y-right path').attr('stroke', 'lightgrey'); // Grey out y-axis right line color
-                    } else {
-                        d3.select('.axis-y-right').attr('stroke', colorMapping[dataset])
-                            .selectAll('text').attr('fill', colorMapping[dataset]);
-                        d3.select('.axis-y-right path').attr('stroke', colorMapping[dataset]); // Change y-axis right line color
-                        d3.select(`.line-${primaryDataset.toLowerCase()}`).style('stroke-opacity', 0.2).attr('stroke-opacity', 0.2); // Grey out primary data line and its axis
-                        d3.select('.axis-y-left').attr('stroke', 'lightgrey')
-                            .selectAll('text').attr('fill', 'lightgrey');
-                        d3.select('.axis-y-left path').attr('stroke', 'lightgrey'); // Grey out y-axis left line color
-                    }
+                    d3.select('.axis-y-left path').attr('stroke', colorMapping[dataset]); // Change y-axis left line color
+                    d3.select(`.line-${secondaryDataset.toLowerCase()}`).style('stroke-opacity', 0.2).attr('stroke-opacity', 0.2); // Grey out secondary data line and its axis
+                    d3.select('.axis-y-right').attr('stroke', 'lightgrey')
+                        .selectAll('text').attr('fill', 'lightgrey');
+                    d3.select('.axis-y-right path').attr('stroke', 'lightgrey'); // Grey out y-axis right line color
+                    d3.selectAll(`.annotation-${secondaryDataset.toLowerCase()}`).style('opacity', 0.2); // Grey out secondary annotations
+                } else {
+                    d3.select('.axis-y-right').attr('stroke', colorMapping[dataset])
+                        .selectAll('text').attr('fill', colorMapping[dataset]);
+                    d3.select('.axis-y-right path').attr('stroke', colorMapping[dataset]); // Change y-axis right line color
+                    d3.select(`.line-${primaryDataset.toLowerCase()}`).style('stroke-opacity', 0.2).attr('stroke-opacity', 0.2); // Grey out primary data line and its axis
+                    d3.select('.axis-y-left').attr('stroke', 'lightgrey')
+                        .selectAll('text').attr('fill', 'lightgrey');
+                    d3.select('.axis-y-left path').attr('stroke', 'lightgrey'); // Grey out y-axis left line color
+                    d3.selectAll(`.annotation-${primaryDataset.toLowerCase()}`).style('opacity', 0.2); // Grey out primary annotations
                 }
-        
-                function handleMouseOut(event, dataset) { // Mouse off data line
-                    const line = d3.select(this);
-                    line.style('stroke-width', 2).attr('stroke-width', 2); // Reset line thickness
-                    line.style('stroke-opacity', 1).attr('stroke-opacity', 1); // Reset opacity to 1 for hovered line
-                    d3.select('.axis-x').attr('stroke', 'black') // Reset all axes to black
+            }
+            
+            function handleMouseOut(event, dataset) { // Mouse off data line
+                const line = d3.select(this);
+                line.style('stroke-width', 2).attr('stroke-width', 2); // Reset line thickness
+                line.style('stroke-opacity', 1).attr('stroke-opacity', 1); // Reset opacity to 1 for hovered line
+                d3.select('.axis-x').attr('stroke', 'black') // Reset all axes to black
+                    .selectAll('text').attr('fill', 'black');
+                d3.select('.axis-x path').attr('stroke', 'black'); // Reset x-axis line color
+                if (dataset === primaryDataset) {
+                    d3.select('.axis-y-left').attr('stroke', 'black')
                         .selectAll('text').attr('fill', 'black');
-                    d3.select('.axis-x path').attr('stroke', 'black'); // Reset x-axis line color
-                    if (dataset === primaryDataset) {
-                        d3.select('.axis-y-left').attr('stroke', 'black')
-                            .selectAll('text').attr('fill', 'black');
-                        d3.select('.axis-y-left path').attr('stroke', 'black'); // Reset y-axis left line color
-                        d3.select(`.line-${secondaryDataset.toLowerCase()}`).style('stroke-opacity', 1).attr('stroke-opacity', 1); // Reset secondary data line and its axis
-                        d3.select('.axis-y-right').attr('stroke', 'black')
-                            .selectAll('text').attr('fill', 'black');
-                        d3.select('.axis-y-right path').attr('stroke', 'black'); // Reset y-axis right line color
-                    } else {
-                        d3.select('.axis-y-right').attr('stroke', 'black')
-                            .selectAll('text').attr('fill', 'black');
-                        d3.select('.axis-y-right path').attr('stroke', 'black'); // Reset y-axis right line color
-                        d3.select(`.line-${primaryDataset.toLowerCase()}`).style('stroke-opacity', 1).attr('stroke-opacity', 1); // Reset primary data line and its axis
-                        d3.select('.axis-y-left').attr('stroke', 'black')
-                            .selectAll('text').attr('fill', 'black');
-                        d3.select('.axis-y-left path').attr('stroke', 'black'); // Reset y-axis left line color
-                    }
+                    d3.select('.axis-y-left path').attr('stroke', 'black'); // Reset y-axis left line color
+                    d3.select(`.line-${secondaryDataset.toLowerCase()}`).style('stroke-opacity', 1).attr('stroke-opacity', 1); // Reset secondary data line and its axis
+                    d3.select('.axis-y-right').attr('stroke', 'black')
+                        .selectAll('text').attr('fill', 'black');
+                    d3.select('.axis-y-right path').attr('stroke', 'black'); // Reset y-axis right line color
+                    d3.selectAll(`.annotation-${secondaryDataset.toLowerCase()}`).style('opacity', 1); // Reset secondary annotations
+                } else {
+                    d3.select('.axis-y-right').attr('stroke', 'black')
+                        .selectAll('text').attr('fill', 'black');
+                    d3.select('.axis-y-right path').attr('stroke', 'black'); // Reset y-axis right line color
+                    d3.select(`.line-${primaryDataset.toLowerCase()}`).style('stroke-opacity', 1).attr('stroke-opacity', 1); // Reset primary data line and its axis
+                    d3.select('.axis-y-left').attr('stroke', 'black')
+                        .selectAll('text').attr('fill', 'black');
+                    d3.select('.axis-y-left path').attr('stroke', 'black'); // Reset y-axis left line color
+                    d3.selectAll(`.annotation-${primaryDataset.toLowerCase()}`).style('opacity', 1); // Reset primary annotations
                 }
+            }
+
             function getLabel(dataset) { // Relabel tooltips
                 if (dataset === 'Inbound') {
                     return 'Inbound Tourists into Japan';
