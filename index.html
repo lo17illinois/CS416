@@ -108,7 +108,7 @@
                 };
             });
             const svg = d3.select('svg');
-            svg.transition().duration(transitionDuration).style("opacity", 0).on("end", () => {
+            svg.transition().duration(0).style("opacity", 0).on("end", () => {
                 svg.html(''); // Clear previous content
                 const margin = {top: 20, right: 60, bottom: 30, left: 150},
                     width = +svg.attr('width') - margin.left - margin.right,
