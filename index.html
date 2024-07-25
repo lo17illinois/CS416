@@ -625,20 +625,18 @@
                 d3.select('.axis-x').selectAll('path, line').attr('stroke', 'black');    //Reset all axes to black
                 d3.select('.axis-x').selectAll('text').attr('fill', 'black');
             
+                d3.select('.axis-y-left').selectAll('path, line').attr('stroke', 'black');
+                d3.select('.axis-y-left').selectAll('text').attr('fill', 'black');
+                d3.select('.axis-y-right').selectAll('path, line').attr('stroke', 'black');
+                d3.select('.axis-y-right').selectAll('text').attr('fill', 'black');
+            
                 if (dataset === primaryDataset) {
-                    d3.select('.axis-y-left').selectAll('path, line').attr('stroke', 'black');
-                    d3.select('.axis-y-left').selectAll('text').attr('fill', 'black');
                     d3.select(`.line-${secondaryDataset.toLowerCase()}`).style('stroke-opacity', 1).attr('stroke-opacity', 1);    //Reset secondary data line and its axis
-                    d3.select('.axis-y-right').selectAll('path, line').attr('stroke', 'black');
-                    d3.select('.axis-y-right').selectAll('text').attr('fill', 'black');
                 } else {
-                    d3.select('.axis-y-right').selectAll('path, line').attr('stroke', 'black');
-                    d3.select('.axis-y-right').selectAll('text').attr('fill', 'black');
                     d3.select(`.line-${primaryDataset.toLowerCase()}`).style('stroke-opacity', 1).attr('stroke-opacity', 1);    //Reset primary data line and its axis
-                    d3.select('.axis-y-left').selectAll('path, line').attr('stroke', 'black');
-                    d3.select('.axis-y-left').selectAll('text').attr('fill', 'black');
                 }
             }
+
 
         }
         function showPage(pageIndex) {
