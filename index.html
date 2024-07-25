@@ -470,7 +470,8 @@
                         }
                     ];
                 }
-        
+                console.log("Primary Transition Duration:", primaryTransitionDuration); // Debugging statement
+                console.log("Secondary Transition Duration:", secondaryTransitionDuration); // Debugging statement
                 x.domain(d3.extent(data, d => d.Date));
                 g.append('g') // x-axis
                     .attr('class', 'axis axis-x')
@@ -671,7 +672,9 @@
         
         function nextPage() {
             const previousPage = currentPage;
+            console.log("Previous Page:", previousPage); // Debugging statement
             currentPage = (currentPage + 1) % pages.length;
+            console.log("Current Page:", currentPage); // Debugging statement
             loadPage(currentPage);
         }
     </script>
