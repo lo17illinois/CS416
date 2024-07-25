@@ -668,9 +668,11 @@
             d3.selectAll('.tab').filter((d, i) => i === pageIndex).classed('active', true);
             loadPage(pageIndex);
         }
+        
         function nextPage() {
+            const previousPage = currentPage;
             currentPage = (currentPage + 1) % pages.length;
-            showPage(currentPage);
+            loadPage(currentPage);
         }
     </script>
 </body>
